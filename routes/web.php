@@ -16,7 +16,9 @@ Route::get('/', function () {
 });
 
 Route::any("/habitat/creer", "HabitatController@create");
-Route::any("/habitat/store", "HabitatController@store")->name("store");
+Route::any("/habitat/store", "HabitatController@store")->name("storeHabitat");
+
+Route::any("/activite/store", "ActiviteController@store")->name("storActivite");
 
 
 Route::resource('habitat', 'HabitatController');

@@ -10,10 +10,7 @@
           </div>
           <div class="modal-body">
 
-            <div class="row">
-              <div class="col-md-4">.col-md-4</div>
-              <div class="col-md-4 col-md-offset-4">.col-md-4 .col-md-offset-4</div>
-            </div>
+            <div id="alert-error-activite" class="alert alert-danger" style="display:none"></div>
 
             <div class="row">
               <div class="col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
@@ -45,7 +42,7 @@
 
 	<h1>Créer un habitat</h1>
   
-  <div class="alert alert-danger" style="display:none"></div>
+  <div id="alert-error-habitat" class="alert alert-danger" style="display:none"></div>
 
   {!! Form::open(array('route' => 'store', 'method' => 'POST', 'class' => 'form-horizontal')) !!}	
   		<div class="form-group">
@@ -134,9 +131,6 @@
                 jQuery('.alert-danger').hide();
                 jQuery('.alert-error').remove();
                 e.preventDefault();
-
-                var url = route('postHabitat');
-
                 
                 var nom_habitat = $('#nom_habitat').val();
                 var categorie = $('#categorie').val();
@@ -156,14 +150,14 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     type:'POST',
-                    url: url,
+                    url: route('storeHabitat'),
                     data: {inputs: inputs},
 
                     success:function(data){
 
                         jQuery.each(data.errors, function(key, value){
-                            jQuery('.alert-danger').show();
-                            jQuery('.alert-danger').append('<p class="alert-error">'+value+'</p>');
+                            jQuery('#alert-error-habitat').show();
+                            jQuery('#alert-error-habitat').append('<p class="alert-error">'+value+'</p>');
                         });
 
                         if(data.success){
@@ -172,6 +166,39 @@
                         
                     }
                 });
+            });
+
+            $("#btnAjoutActivite").click(function(){
+
+              var libelle_activite = $('#libelle_activite').val();
+              var adresse_activite = $('#adresse_activite').val();
+              var descriptif_activite = $('#descriptif_activite').val();
+
+              var inputs = [libelle_activite, adresse_activite, descriptif_activite];
+
+              $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type:'POST',
+                    url: route('storeActivite'),
+                    data: {inputs: inputs},
+
+                    success:function(data){
+
+                        jQuery.each(data.errors, function(key, value){
+                            jQuery('#alert-error-habitat').show();
+                            jQuery('#alert-error-habitat').append('<p class="alert-error">'+value+'</p>');
+                        });
+
+                        if(data.success){
+                            
+
+                            //timeout visible
+                            /*$("#succesActivite").attr("visible", "visible");*/
+                        }
+                        
+                    }
             });
 
         });
