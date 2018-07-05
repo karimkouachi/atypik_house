@@ -38,24 +38,8 @@ class HabitatController extends Controller
    */
   public function store(HabitatRequest $habitatRequest, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
   {
+      $validated = $habitatRequest->validated();
 
-      $validator = \Validator::make($habitatRequest->all(), [
-          'nom_habitat' => 'required',
-          'capacite_habitat' => 'required',
-          'prix_habitat' => 'required',
-          'adresse_habitat' => 'required',
-          'cp_habitat' => 'required',
-          'ville_habitat' => 'required',
-          'pays_habitat' => 'required',
-          'num_habitat' => 'required',
-          'photo_habitat' => 'required'
-        ]);
-        
-        /*if ($validator->fails())
-        {
-            return response()->json(['errors'=>$validator->errors()->all()]);
-        }*/
-/*var_dump($habitatRequest->all());die;*/
         $idCategrorie = $categorieRepository->getIdCategorie($_POST["categorie"]);
     
         $habitatRepository->save(

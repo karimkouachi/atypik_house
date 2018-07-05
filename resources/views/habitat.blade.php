@@ -47,6 +47,14 @@
   
   <!-- <div class="alert alert-danger" style="display:none"></div> -->
 
+  @if ($errors->any())
+      <div>
+        @foreach ($errors->all() as $error)
+            <p class="alert alert-danger">{{ $error }}</p>
+        @endforeach
+      </div>
+  @endif
+
   {!! Form::open(array('route' => 'store', 'method' => 'POST', 'class' => 'form-horizontal')) !!}	
   		<div class="form-group">
   			{!! Form::label('nom_habitat', "Nom de l'habitat:", ['class' => 'col-lg-2 control-label']) !!}
