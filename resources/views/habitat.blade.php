@@ -17,9 +17,9 @@
 			<p>Pays: {{$habitat->pays_habitat}}</p>
 		</div>
     {{ Form::open(array('url' => 'habitat/' . $habitat->id . '/delete', 'class' => 'pull-right')) }}
-                    {{ Form::hidden('_method', 'DELETE') }}
-                    {{ Form::submit('Supprimer', array('class' => 'btn btn-danger')) }}
-                {{ Form::close() }}
+        {{ Form::hidden('_method', 'DELETE') }}
+        {{ Form::submit('Supprimer', array('class' => 'btn btn-danger')) }}
+    {{ Form::close() }}
   </div>
 @endsection
 

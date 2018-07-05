@@ -17,6 +17,7 @@
   			<p>Ville: {{$habitat->ville_habitat}}</p>
   			<p>Pays: {{$habitat->pays_habitat}}</p>
   		</div>
+      <a href="{{ URL::to('habitat/'.$habitat->id) }}" class="btn btn-info pull-right">Voir</a>
     </div>
   @endforeach
 @endsection
