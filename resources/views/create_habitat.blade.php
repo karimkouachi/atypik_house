@@ -1,4 +1,4 @@
-@extends("welcome")
+@extends("layout")
 
 @section('content')
 <div id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
@@ -44,8 +44,6 @@
     </div>
 
 	<h1>Créer un habitat</h1>
-  
-  <!-- <div class="alert alert-danger" style="display:none"></div> -->
 
   @if ($errors->any())
       <div>

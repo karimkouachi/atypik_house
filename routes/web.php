@@ -12,18 +12,20 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layout');
 });
 
 
-
-Route::any("/habitat/creer", "HabitatController@create");
-
+Route::any("/habitats", "HabitatController@index");
+Route::any("/habitat/create", "HabitatController@create");
 Route::any("/habitat/store", "HabitatController@store")->name("storeHabitat");
+Route::any("/habitat/{idHabitat}", "HabitatController@show")->name("showHabitat");
+Route::any("/habitat/{idHabitat}/edit", "HabitatController@edit");
+Route::any("/habitat/{idHabitat}/update", "HabitatController@update")->name("updateHabitat");
+Route::any("/habitat/{idHabitat}/delete", "HabitatController@delete");
 
 Route::any("/activite/store", "ActiviteController@store")->name("storeActivite");
-
-Route::any("/habitat/{idHabitat}", "HabitatController@show");
+Route::any("/activite/create", "ActiviteController@create")->name("creerActivite");
 
 
 
