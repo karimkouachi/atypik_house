@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 Route::any("/habitat/creer", "HabitatController@create");
 Route::any("/habitat/store", "HabitatController@store")->name("store");
 

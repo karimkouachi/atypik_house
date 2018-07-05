@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Validator;
 use App\Http\Requests\HabitatRequest;
 use App\Http\Repositories\HabitatRepository;
 use App\Http\Repositories\CategorieRepository;
@@ -35,11 +36,12 @@ class HabitatController extends Controller
    *
    * @return Response
    */
-  public function store(HabitatRequest $HabitatRequest, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
+  public function store(HabitatRequest $habitatRequest, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
   {
-      $validator = \Validator::make($HabitatRequest->all(), [
+
+      $validator = \Validator::make($habitatRequest->all(), [
           'nom_habitat' => 'required',
-          'nombre_habitat' => 'required',
+          'capacite_habitat' => 'required',
           'prix_habitat' => 'required',
           'adresse_habitat' => 'required',
           'cp_habitat' => 'required',
@@ -49,33 +51,35 @@ class HabitatController extends Controller
           'photo_habitat' => 'required'
         ]);
         
-        if ($validator->fails())
+        /*if ($validator->fails())
         {
             return response()->json(['errors'=>$validator->errors()->all()]);
-        }
-
-        $idCategrorie = $categorieRepository->getIdCategorie($_POST['inputs'][1]);
+        }*/
+/*var_dump($habitatRequest->all());die;*/
+        $idCategrorie = $categorieRepository->getIdCategorie($_POST["categorie"]);
     
         $habitatRepository->save(
-          $_POST['inputs'][0],
-          $_POST['inputs'][2],
-          $_POST['inputs'][3],
-          $_POST['inputs'][4],
-          $_POST['inputs'][5],
-          $_POST['inputs'][6],
-          $_POST['inputs'][7],
-          $_POST['inputs'][8],
-          $_POST['inputs'][9],
+          $_POST["nom_habitat"],
+          $_POST["capacite_habitat"],
+          $_POST["prix_habitat"],
+          $_POST["adresse_habitat"],
+          $_POST["cp_habitat"],
+          $_POST["ville_habitat"],
+          $_POST["pays_habitat"],
+          $_POST["num_habitat"],
+          $_POST["photo_habitat"],
           false/*$HabitatRequest->input('actif_habitat')*/,
           true/*$HabitatRequest->input('dispo_habitat')*/,
           true/*$HabitatRequest->input('en_attente_habitat')*/,
-          new DateTime()/*$HabitatRequest->input('date_create_habitat')*/,
-          new DateTime()/*$HabitatRequest->input('date_valide_habitat')*/,
+          new \DateTime()/*$HabitatRequest->input('date_create_habitat')*/,
+          new \DateTime()/*$HabitatRequest->input('date_valide_habitat')*/,
           1/*$IdProprietaire*//*$HabitatRequest->input('proprietaire_id')*/,
           $idCategrorie
         );
 
-        return response()->json(['success'=>'Record is successfully added']);
+        /*return response()->json(['success'=>'Record is successfully added']);*/
+
+        return view("activite");
   }
 
   /**

@@ -45,7 +45,7 @@
 
 	<h1>Créer un habitat</h1>
   
-  <div class="alert alert-danger" style="display:none"></div>
+  <!-- <div class="alert alert-danger" style="display:none"></div> -->
 
   {!! Form::open(array('route' => 'store', 'method' => 'POST', 'class' => 'form-horizontal')) !!}	
   		<div class="form-group">
@@ -130,14 +130,13 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
-            $(".btnCreerHabitat").click(function(e){
+            /*$(".btnCreerHabitat").click(function(e){
                 jQuery('.alert-danger').hide();
                 jQuery('.alert-error').remove();
                 e.preventDefault();
 
                 var url = route('postHabitat');
-
-                
+  
                 var nom_habitat = $('#nom_habitat').val();
                 var categorie = $('#categorie').val();
                 var nombre_habitat = $('#nombre_habitat').val();
@@ -150,30 +149,30 @@
                 var photo_habitat = $('#photo_habitat').val();
 
                 var inputs = [nom_habitat, categorie, nombre_habitat, prix_habitat, adresse_habitat, cp_habitat, ville_habitat, pays_habitat, num_habitat, photo_habitat];
-
+              
                 $.ajax({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    type:'POST',
+                    contentType: "application/json; charset=utf-8",
                     url: url,
                     data: {inputs: inputs},
-
-                    success:function(data){
-
+                    dataType: "json",                 
+                })
+                .done(function(data){
+                        alert(data);console.log(data); 
                         jQuery.each(data.errors, function(key, value){
                             jQuery('.alert-danger').show();
                             jQuery('.alert-danger').append('<p class="alert-error">'+value+'</p>');
                         });
-
                         if(data.success){
                             $("#modal").modal();
                         }
-                        
-                    }
-                });
-            });
-
+                })
+                .fail(function(data) {
+                    alert(data);
+                });                
+            });*/
         });
     </script>
 @stop
