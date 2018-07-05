@@ -15,10 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 Route::any("/habitat/creer", "HabitatController@create");
+
 Route::any("/habitat/store", "HabitatController@store")->name("storeHabitat");
 
-Route::any("/activite/store", "ActiviteController@store")->name("storActivite");
+Route::any("/activite/store", "ActiviteController@store")->name("storeActivite");
+
+Route::any("/habitat/{idHabitat}", "HabitatController@show");
+
 
 
 Route::resource('habitat', 'HabitatController');
