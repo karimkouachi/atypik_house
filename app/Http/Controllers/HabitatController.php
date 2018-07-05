@@ -28,7 +28,7 @@ class HabitatController extends Controller
    */
   public function create()
   {
-    return view("habitat");
+    return view("creer_habitat");
   }
 
   /**
@@ -72,9 +72,12 @@ class HabitatController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function show($id)
+  public function show($id, HabitatRepository $habitatRepository)
   {
-    
+
+    $habitat = $habitatRepository->getHabitat($id);
+
+    return view("habitat", compact("habitat"));
   }
 
   /**

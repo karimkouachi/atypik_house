@@ -36,4 +36,9 @@ class HabitatRepository implements HabitatRepositoryInterface
         $this->habitat->save();
 	}
 
+    public function getHabitat($id){
+        $habitat = $this->habitat->findOrFail($id);
+        return $habitat;
+    }
+
 }

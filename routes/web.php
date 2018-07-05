@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Route::any("/habitat/creer", "HabitatController@create");
 Route::any("/habitat/store", "HabitatController@store")->name("store");
+Route::any("/habitat/{idHabitat}", "HabitatController@show");
 
 
 Route::resource('habitat', 'HabitatController');
