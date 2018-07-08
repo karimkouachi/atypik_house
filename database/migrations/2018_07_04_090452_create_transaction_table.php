@@ -8,7 +8,7 @@ class CreateTransactionTable extends Migration {
 	public function up()
 	{
 		Schema::create('transaction', function(Blueprint $table) {
-			$table->increments('id_transaction');
+			$table->increments('id');
 			$table->decimal('montant_transaction', 6,2);
 			$table->datetime('date_transaction');
 			$table->decimal('tx_remboursement_transaction', 3,2)->nullable();

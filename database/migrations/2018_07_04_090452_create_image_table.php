@@ -8,7 +8,7 @@ class CreateImageTable extends Migration {
 	public function up()
 	{
 		Schema::create('image', function(Blueprint $table) {
-			$table->increments('id_image');
+			$table->increments('id');
 			$table->string('url_image', 255);
 			$table->date('date_image');
 			$table->integer('habitat_id')->unsigned();

@@ -8,7 +8,7 @@ class CreateTypeTransactionTable extends Migration {
 	public function up()
 	{
 		Schema::create('type_transaction', function(Blueprint $table) {
-			$table->increments('id_type');
+			$table->increments('id');
 			$table->string('libelle_type', 100);
 		});
 	}

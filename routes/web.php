@@ -41,3 +41,7 @@ Route::resource('etatreservation', 'EtatReservationController');
 Route::resource('transaction', 'TransactionController');
 Route::resource('typetransaction', 'TypeTransactionController');
 Route::resource('habitatactivite', 'HabitatActiviteController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

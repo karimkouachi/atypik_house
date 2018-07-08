@@ -8,7 +8,7 @@ class CreateMembreTable extends Migration {
 	public function up()
 	{
 		Schema::create('membre', function(Blueprint $table) {
-			$table->increments('id_membre');
+			$table->increments('id');
 			$table->string('mail_membre', 100)->unique();
 			$table->string('nom_membre', 30);
 			$table->string('prenom_membre', 50);

@@ -8,7 +8,7 @@ class CreateHabitatTable extends Migration {
 	public function up()
 	{
 		Schema::create('habitat', function(Blueprint $table) {
-			$table->increments('id_habitat');
+			$table->increments('id');
 			$table->string('nom_habitat', 100);
 			$table->integer('capacite_habitat');
 			$table->decimal('prix_habitat', 6,2);

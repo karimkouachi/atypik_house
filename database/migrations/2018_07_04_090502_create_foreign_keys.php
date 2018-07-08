@@ -9,82 +9,82 @@ class CreateForeignKeys extends Migration {
 	public function up()
 	{
 		Schema::table('habitat', function(Blueprint $table) {
-			$table->foreign('proprietaire_id')->references('id_membre')->on('membre')
+			$table->foreign('proprietaire_id')->references('id')->on('membre')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('habitat', function(Blueprint $table) {
-			$table->foreign('categorie_id')->references('id_categorie')->on('categorie')
+			$table->foreign('categorie_id')->references('id')->on('categorie')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('facture', function(Blueprint $table) {
-			$table->foreign('habitat_id')->references('id_habitat')->on('habitat')
+			$table->foreign('habitat_id')->references('id')->on('habitat')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('facture', function(Blueprint $table) {
-			$table->foreign('locataire_id')->references('id_membre')->on('membre')
+			$table->foreign('locataire_id')->references('id')->on('membre')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('message', function(Blueprint $table) {
-			$table->foreign('expediteur_id')->references('id_membre')->on('membre')
+			$table->foreign('expediteur_id')->references('id')->on('membre')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('message', function(Blueprint $table) {
-			$table->foreign('destinataire_id')->references('id_membre')->on('membre')
+			$table->foreign('destinataire_id')->references('id')->on('membre')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('reservation', function(Blueprint $table) {
-			$table->foreign('habitat_id')->references('id_habitat')->on('habitat')
+			$table->foreign('habitat_id')->references('id')->on('habitat')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('reservation', function(Blueprint $table) {
-			$table->foreign('locataire_id')->references('id_membre')->on('membre')
+			$table->foreign('locataire_id')->references('id')->on('membre')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('image', function(Blueprint $table) {
-			$table->foreign('habitat_id')->references('id_habitat')->on('habitat')
+			$table->foreign('habitat_id')->references('id')->on('habitat')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('image', function(Blueprint $table) {
-			$table->foreign('membre_id')->references('id_membre')->on('membre')
+			$table->foreign('membre_id')->references('id')->on('membre')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('transaction', function(Blueprint $table) {
-			$table->foreign('locataire_id')->references('id_membre')->on('membre')
+			$table->foreign('locataire_id')->references('id')->on('membre')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('transaction', function(Blueprint $table) {
-			$table->foreign('type_id')->references('id_type')->on('type_transaction')
+			$table->foreign('type_id')->references('id')->on('type_transaction')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('transaction', function(Blueprint $table) {
-			$table->foreign('proprietaire_id')->references('id_membre')->on('membre')
+			$table->foreign('proprietaire_id')->references('id')->on('membre')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('transaction', function(Blueprint $table) {
-			$table->foreign('reservation_id')->references('id_reservation')->on('reservation')
+			$table->foreign('reservation_id')->references('id')->on('reservation')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('habitat_activite', function(Blueprint $table) {
-			$table->foreign('habitat_id')->references('id_habitat')->on('habitat')
+			$table->foreign('habitat_id')->references('id')->on('habitat')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('habitat_activite', function(Blueprint $table) {
-			$table->foreign('activite_id')->references('id_activite')->on('activite')
+			$table->foreign('activite_id')->references('id')->on('activite')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
