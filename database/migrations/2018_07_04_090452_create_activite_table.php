@@ -8,7 +8,7 @@ class CreateActiviteTable extends Migration {
 	public function up()
 	{
 		Schema::create('activite', function(Blueprint $table) {
-			$table->increments('id_activite');
+			$table->increments('id');
 			$table->string('libelle_activite', 100);
 			$table->string('adresse_activite', 100);
 			$table->string('cp_activite', 15);

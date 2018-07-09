@@ -8,7 +8,7 @@ class CreateFactureTable extends Migration {
 	public function up()
 	{
 		Schema::create('facture', function(Blueprint $table) {
-			$table->increments('id_facture');
+			$table->increments('id');
 			$table->string('adrCli_facture', 100);
 			$table->string('cpVilleCli_facture', 75)->nullable();
 			$table->string('paysCli_facture', 50)->nullable();

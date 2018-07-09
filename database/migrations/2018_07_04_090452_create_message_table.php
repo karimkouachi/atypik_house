@@ -8,7 +8,7 @@ class CreateMessageTable extends Migration {
 	public function up()
 	{
 		Schema::create('message', function(Blueprint $table) {
-			$table->increments('id_message');
+			$table->increments('id');
 			$table->string('contenu_message', 255);
 			$table->datetime('date_message');
 			$table->integer('expediteur_id')->unsigned();
