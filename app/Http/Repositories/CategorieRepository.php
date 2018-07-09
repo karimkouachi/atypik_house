@@ -14,6 +14,12 @@ class CategorieRepository implements CategorieRepositoryInterface
 		$this->categorie = $categorie;
 	}
 
+	public function getAll(){
+		$categories = $this->categorie->all();
+
+		return $categories;
+	}
+
 	public function getIdCategorie($libelleCategorie)
 	{
         $categrorie = Categorie::where('libelle_categorie', $libelleCategorie)->first();

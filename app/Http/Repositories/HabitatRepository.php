@@ -14,7 +14,12 @@ class HabitatRepository implements HabitatRepositoryInterface
 		$this->habitat = $habitat;
 	}
 
-    public function getHabitats(){
+    public function getRechercheHabitats($conditions){
+        $habitats = Habitat::where($conditions)->get();
+        return $habitats;
+    }
+
+    public function getAllHabitats(){
         $habitats = $this->habitat->all();
         return $habitats;
     }

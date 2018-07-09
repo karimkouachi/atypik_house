@@ -9,6 +9,7 @@ use App\Http\Repositories\CategorieRepository;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
 use Session;
+use App\Models\Habitat;
 
 class HabitatController extends Controller 
 {
@@ -18,11 +19,30 @@ class HabitatController extends Controller
    *
    * @return Response
    */
-  public function index(HabitatRepository $habitatRepository)
+  public function index(HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
   {
-    $habitats = $habitatRepository->getHabitats();
+    if($_POST){
+      $conditions = [];
+      
+      if(isset($_POST["categorie"])){
+        $categorie = $_POST["categorie"];
+        $idCategrorie = $categorieRepository->getIdCategorie($_POST["categorie"]); 
+        $conditions["categorie_id"] = $idCategrorie;
+      } 
 
-    return view("habitats")->with("habitats", $habitats);
+      if(isset($_POST["ville_habitat"]) && $_POST["ville_habitat"] != ""){
+        $ville = $_POST['ville_habitat'];
+        $conditions["ville_habitat"] = $ville;  
+      }
+
+      $habitats = $habitatRepository->getRechercheHabitats($conditions);
+    }else{
+      $habitats = $habitatRepository->getAllHabitats();
+    }
+    
+    $categories = $categorieRepository->getAll();
+
+    return view("habitats")->with(array("habitats" => $habitats, "categories" => $categories));
   }
 
   /**
@@ -30,9 +50,10 @@ class HabitatController extends Controller
    *
    * @return Response
    */
-  public function create()
+  public function create(CategorieRepository $categorieRepository)
   {
-    return view("create_habitat");
+    $categories = $categorieRepository->getAll();
+    return view("create_habitat")->with("categories", $categories);
   }
 
   /**
@@ -146,12 +167,15 @@ class HabitatController extends Controller
    */
   public function destroy($id)
   {
-    $habitat = $habitatRepository->find($id);
-    $habitat->delete();
+    /*$habitat = $habitatRepository->find($id);
 
-    // redirect
+    if(){
+      $habitat->actif = true;
+    }
+
+    
     Session::flash('message', "Habitat supprimé avec succès!");
-    return Redirect::to('habitats');
+    return Redirect::to('habitats');*/
   }
   
 }

@@ -6,6 +6,34 @@
     <div class="alert alert-success">{{ Session::get('message') }}</div>
   @endif
 
+  {!! Form::open(array('route' => 'searchHabitat', 'method' => 'POST', 'class' => 'form-horizontal')) !!}  
+      <div class="form-group">
+        {!! Form::label('categorie', 'Categorie : ', ['class' => 'col-lg-2 control-label']) !!}
+        <div class="col-lg-10">
+          <select id="categorie" name="categorie" class="form-control">
+            @foreach($categories as $categorie)
+            <option value="<?php echo htmlspecialchars($categorie['libelle_categorie']); ?>">
+                {{ $categorie['libelle_categorie'] }}
+            </option>
+            @endforeach
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        {!! Form::label('ville_habitat', 'Ville:', ['class' => 'col-lg-2 control-label']) !!}
+        <div class="col-lg-10">
+          {!! Form::text('ville_habitat', null, ['class' => 'form-control', 'placeholder' => 'Paris']) !!}
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2">
+          {!! Form::submit('Rechercher', array('class' => 'btn btn-lg btn-success pull-right')) !!}
+        </div>
+      </div>
+  {!! Form::close() !!}
+
   @foreach ($habitats as $habitat)      
     <div class="jumbotron">
   		<h1>{{$habitat->nom_habitat}}</h1>
