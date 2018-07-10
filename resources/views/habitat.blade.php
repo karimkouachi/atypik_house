@@ -18,7 +18,7 @@
 		</div>
     {{ Form::open(array('url' => 'habitat/' . $habitat->id . '/delete', 'class' => 'pull-right')) }}
         {{ Form::hidden('_method', 'DELETE') }}
-        {{ Form::submit('Supprimer', array('class' => 'btn btn-danger')) }}
+        {{ Form::submit('Masquer l\'habitat', array('class' => 'btn btn-danger')) }}
     {{ Form::close() }}
   </div>
 @endsection

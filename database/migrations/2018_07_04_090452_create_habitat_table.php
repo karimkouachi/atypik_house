@@ -18,10 +18,10 @@ class CreateHabitatTable extends Migration {
 			$table->string('pays_habitat', 50)->nullable();
 			$table->string('num_habitat', 20);
 			$table->string('photo_habitat', 255)->nullable();
-			$table->boolean('actif_habitat');
-			$table->boolean('dispo_habitat');
-			$table->boolean('en_attente_habitat');
-			$table->datetime('date_create_habitat');
+			$table->tinyInteger('actif_habitat')->default(0);
+			$table->tinyInteger('dispo_habitat')->default(0);
+			$table->tinyInteger('en_attente_habitat')->default(1);
+			$table->datetime('date_create_habitat')->default(\Carbon\Carbon::now());
 			$table->datetime('date_valide_habitat')->nullable();
 			$table->integer('proprietaire_id')->unsigned();
 			$table->integer('categorie_id')->unsigned();

@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('cp_membre', 15)->nullable();
             $table->string('ville_membre', 50)->nullable();
             $table->string('pays_membre', 50)->nullable();
-            $table->boolean('actif_membre')->nullable();
+            $table->tinyInteger('actif_membre')->nullable()->default(1);
             $table->string('photo_membre', 255)->nullable();
             $table->rememberToken();
             $table->timestamps();

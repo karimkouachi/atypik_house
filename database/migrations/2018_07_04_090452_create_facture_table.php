@@ -15,7 +15,7 @@ class CreateFactureTable extends Migration {
 			$table->decimal('montantHT_facture', 6,2);
 			$table->decimal('montantTVA_facture', 6,2);
 			$table->decimal('montantTTC_facture', 6,2);
-			$table->boolean('etat_facture');
+			$table->tinyInteger('etat_facture')->default(0);
 			$table->integer('habitat_id')->unsigned();
 			$table->integer('locataire_id')->unsigned();
 		});

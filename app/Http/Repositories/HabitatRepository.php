@@ -20,7 +20,7 @@ class HabitatRepository implements HabitatRepositoryInterface
     }
 
     public function getAllHabitats(){
-        $habitats = $this->habitat->all();
+        $habitats = $this->habitat->where('actif_habitat', 1)->get();
         return $habitats;
     }
 
@@ -29,7 +29,7 @@ class HabitatRepository implements HabitatRepositoryInterface
         return $habitat;
     }
 
-	public function save($nom_habitat, $capacite_habitat, $prix_habitat, $adresse_habitat, $cp_habitat, $ville_habitat, $pays_habitat, $num_habitat, $photo_habitat, $actif_habitat, $dispo_habitat, $en_attente_habitat, $date_create_habitat, $date_valide_habitat, $proprietaire_id, $categorie_id)
+	public function save($nom_habitat, $capacite_habitat, $prix_habitat, $adresse_habitat, $cp_habitat, $ville_habitat, $pays_habitat, $num_habitat, $photo_habitat, $proprietaire_id, $categorie_id)
 	{
         $this->habitat->nom_habitat = $nom_habitat;
         $this->habitat->capacite_habitat = $capacite_habitat;
@@ -40,15 +40,15 @@ class HabitatRepository implements HabitatRepositoryInterface
         $this->habitat->pays_habitat = $pays_habitat;
         $this->habitat->num_habitat = $num_habitat;
         $this->habitat->photo_habitat = $photo_habitat;
-        $this->habitat->actif_habitat = $actif_habitat;
-        $this->habitat->dispo_habitat = $dispo_habitat;
-        $this->habitat->en_attente_habitat = $en_attente_habitat;
-        $this->habitat->date_create_habitat = $date_create_habitat;
-        $this->habitat->date_valide_habitat = $date_valide_habitat;
         $this->habitat->proprietaire_id = $proprietaire_id;
         $this->habitat->categorie_id = $categorie_id;
 
         $this->habitat->save();
 	}
+
+    public function hideHabitat($idHabitat){
+        $habitat = $this->habitat->where('id', $idHabitat)->update(['actif_habitat' => 0]);
+        return $habitat;
+    }
 
 }

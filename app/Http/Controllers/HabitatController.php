@@ -9,6 +9,7 @@ use App\Http\Repositories\CategorieRepository;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
 use Session;
+use Auth;
 use App\Models\Habitat;
 
 class HabitatController extends Controller 
@@ -40,7 +41,7 @@ class HabitatController extends Controller
       $habitats = $habitatRepository->getAllHabitats();
     }
     
-    $categories = $categorieRepository->getAllCategories();
+    $categories = $categorieRepository->getLibelleCategories();
 
     return view("habitats")->with(array("habitats" => $habitats, "categories" => $categories));
   }
@@ -52,7 +53,7 @@ class HabitatController extends Controller
    */
   public function create(CategorieRepository $categorieRepository)
   {
-    $categories = $categorieRepository->getAllCategories();
+    $categories = $categorieRepository->getLibelleCategories();
     return view("create_habitat")->with("categories", $categories);
   }
 
@@ -63,12 +64,11 @@ class HabitatController extends Controller
    */
   public function store(HabitatRequest $habitatRequest, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
   {
-      /*$idUtilisateur = \Auth::user()->id;
+      /*$IdProprietaire = Auth::user()->id;
       var_dump($idUtilisateur);die;*/
 
       $validated = $habitatRequest->validated();
-
-      $idCategrorie = $categorieRepository->getIdCategorie($_POST["categorie"]);
+      $idProprietaire = Auth::user()->id;
     
       $habitatRepository->save(
       $_POST["nom_habitat"],
@@ -80,13 +80,8 @@ class HabitatController extends Controller
       $_POST["pays_habitat"],
       $_POST["num_habitat"],
       $_POST["photo_habitat"],
-      false/*$HabitatRequest->input('actif_habitat')*/,
-      true/*$HabitatRequest->input('dispo_habitat')*/,
-      true/*$HabitatRequest->input('en_attente_habitat')*/,
-      new \DateTime()/*$HabitatRequest->input('date_create_habitat')*/,
-      new \DateTime()/*$HabitatRequest->input('date_valide_habitat')*/,
-      1/*$IdProprietaire*//*$HabitatRequest->input('proprietaire_id')*/,
-      $idCategrorie
+      $idProprietaire,
+      $_POST["categorie"]
     );
 
     Session::flash('message', 'Habitat crée avec succès!');
@@ -165,17 +160,13 @@ class HabitatController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function destroy($id)
+  public function delete($id, HabitatRepository $habitatRepository)
   {
-    /*$habitat = $habitatRepository->find($id);
-
-    if(){
-      $habitat->actif = true;
-    }
+    $habitat = $habitatRepository->hideHabitat($id);
 
     
-    Session::flash('message', "Habitat supprimé avec succès!");
-    return Redirect::to('habitats');*/
+    Session::flash('message', "Habitat masqué avec succès!");
+    return Redirect::to('habitats');
   }
 
   /**

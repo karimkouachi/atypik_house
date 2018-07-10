@@ -64,14 +64,7 @@
       <div class="form-group">
         {!! Form::label('categorie', 'Categorie : ', ['class' => 'col-lg-2 control-label']) !!}
         <div class="col-lg-10">
-          <select id="categorie" name="categorie" class="form-control">
-            @foreach($categories as $categorie)
-            <option value="<?php echo htmlspecialchars($categorie['libelle_categorie']); ?>">
-                {{ $categorie['libelle_categorie'] }}
-            </option>
-            @endforeach
-          </select>
-          <!-- {!! Form::select('categorie', $categories,  'tipi', ['class' => 'form-control' ]) !!} -->
+          {!! Form::select('categorie', $categories, ['class' => 'form-control' ]) !!}
         </div>
       </div>
 
