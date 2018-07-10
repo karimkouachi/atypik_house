@@ -40,7 +40,7 @@ class HabitatController extends Controller
       $habitats = $habitatRepository->getAllHabitats();
     }
     
-    $categories = $categorieRepository->getAll();
+    $categories = $categorieRepository->getAllCategories();
 
     return view("habitats")->with(array("habitats" => $habitats, "categories" => $categories));
   }
@@ -52,7 +52,7 @@ class HabitatController extends Controller
    */
   public function create(CategorieRepository $categorieRepository)
   {
-    $categories = $categorieRepository->getAll();
+    $categories = $categorieRepository->getAllCategories();
     return view("create_habitat")->with("categories", $categories);
   }
 
@@ -176,6 +176,32 @@ class HabitatController extends Controller
     
     Session::flash('message', "Habitat supprimé avec succès!");
     return Redirect::to('habitats');*/
+  }
+
+  /**
+   * Edit habitats gerant.
+   *
+   * @param
+   * @return Response
+   */
+  public function edit_habitats_gerant(CategorieRepository $categorieRepository)
+  {
+    $categories = $categorieRepository->getAllCategories();
+
+    return view("edit_habitats_gerant")->with("categories", $categories);
+  }
+
+  /**
+   * Update habitats gerant.
+   *
+   * @param
+   * @return Response
+   */
+  public function update_habitats_gerant()
+  {
+    Session::flash('message', 'Habitats modifier avec succès!');    
+
+    return Redirect::to("habitats/");
   }
   
 }

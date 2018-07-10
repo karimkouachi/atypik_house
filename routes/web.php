@@ -27,6 +27,8 @@ Route::any("/habitat/{idHabitat}/delete", "HabitatController@delete");
 Route::any("/activite/store", "ActiviteController@store")->name("storeActivite");
 Route::any("/activite/create", "ActiviteController@create")->name("creerActivite");
 
+Route::any("/habitats/edit", "HabitatController@edit_habitats_gerant")->name("editHabitatsGerant");
+Route::any("/habitats/update", "HabitatController@update_habitats_gerant")->name("updateHabitatsGerant");
 
 
 Route::resource('habitat', 'HabitatController');

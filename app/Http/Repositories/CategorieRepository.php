@@ -14,7 +14,7 @@ class CategorieRepository implements CategorieRepositoryInterface
 		$this->categorie = $categorie;
 	}
 
-	public function getAll(){
+	public function getAllCategories(){
 		$categories = $this->categorie->all();
 
 		return $categories;
