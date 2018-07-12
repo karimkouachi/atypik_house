@@ -12,12 +12,12 @@ class Message extends Model
 
     public function expediteur()
     {
-        return $this->belongsTo('Membre');
+        return $this->belongsTo(\App\User::class);
     }
 
     public function destinataire()
     {
-        return $this->belongsTo('Membre');
+        return $this->belongsTo(\App\User::class);
     }
 
 }

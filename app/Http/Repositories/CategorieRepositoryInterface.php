@@ -5,5 +5,6 @@ namespace App\Http\Repositories;
 interface CategorieRepositoryInterface
 {
 
-    public function getIdCategorie($libelleCategorie);
+	public function getLibelleCategories();
+    public function getIdCategorie($idCategorie);
 }

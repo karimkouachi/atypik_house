@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\HabitatRequest;
+use App\Http\Requests\MessageRequest;
 use App\Http\Repositories\HabitatRepository;
 use App\Http\Repositories\CategorieRepository;
+use App\Http\Repositories\MessageRepository;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
 use Session;
@@ -97,10 +99,8 @@ class HabitatController extends Controller
    */
   public function show($id, HabitatRepository $habitatRepository)
   {
-
     $habitat = $habitatRepository->getHabitat($id);
 
-    /*return view("habitat", compact("habitat"));*/
     return view('habitat')->with('habitat', $habitat);
   }
 
@@ -194,6 +194,32 @@ class HabitatController extends Controller
 
     return Redirect::to("habitats/");
   }
+
+  public function send_message($id, HabitatRepository $habitatRepository, MessageRepository $messageRepository, MessageRequest $messageRequest)
+  {
+    $habitat = $habitatRepository->getHabitat($id);
+    $idDestinaire = $habitat->proprietaire->id;
+    $idExpe = Auth::user()->id;
+
+    $validated = $messageRequest->validated();
+    
+    $messageRepository->sendMessage(
+      $_POST["contenu_message"],
+      $idExpe,
+      $idDestinaire
+    );
+
+    return Redirect::to('habitat/'.$id);
+  }
+
+  public function checkHabitat($id, HabitatRepository $habitatRepository){
+
+    $habitat = $habitatRepository->checkHabitat($id);
+
+    Session::flash('message', "Cet habitat a été validé avec succès!");
+    return Redirect::to('habitat/'.$id);
+  }
+
   
 }
 

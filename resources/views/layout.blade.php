@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Atypik house</title>
+        <title>Atypik House</title>
 
         
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -18,7 +18,7 @@
         
         <nav class="navbar navbar-inverse">
             <div class="navbar-header">
-                <a class="navbar-brand" href="{{ URL::to('habitats') }}">Atypik house</a>
+                <a class="navbar-brand" href="{{ URL::to('habitats') }}">Atypik House</a>
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="{{ URL::to('habitats') }}">Liste d'habitats</a></li>

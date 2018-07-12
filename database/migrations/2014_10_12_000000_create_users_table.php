@@ -18,8 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('mail_membre', 100)->unique();
             $table->string('password');
             $table->string('pseudo_membre', 50)->unique();
-            $table->string('nom_membre', 30)->nullable();
-            $table->string('prenom_membre', 50)->nullable();
+            $table->string('nom_membre', 30);
+            $table->string('prenom_membre', 50);
             $table->date('naissance_membre')->nullable();
             $table->string('adresse_membre', 100)->nullable();
             $table->string('cp_membre', 15)->nullable();
@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('pays_membre', 50)->nullable();
             $table->tinyInteger('actif_membre')->nullable()->default(1);
             $table->string('photo_membre', 255)->nullable();
+            $table->string('role_membre', 50)->default('visiteur');
             $table->rememberToken();
             $table->timestamps();
         });

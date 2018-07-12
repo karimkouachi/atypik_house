@@ -9,7 +9,7 @@ class CreateForeignKeys extends Migration {
 	public function up()
 	{
 		Schema::table('habitat', function(Blueprint $table) {
-			$table->foreign('proprietaire_id')->references('id')->on('membre')
+			$table->foreign('proprietaire_id')->references('id')->on('users')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
@@ -24,17 +24,17 @@ class CreateForeignKeys extends Migration {
 						->onUpdate('restrict');
 		});
 		Schema::table('facture', function(Blueprint $table) {
-			$table->foreign('locataire_id')->references('id')->on('membre')
+			$table->foreign('locataire_id')->references('id')->on('users')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('message', function(Blueprint $table) {
-			$table->foreign('expediteur_id')->references('id')->on('membre')
+			$table->foreign('expediteur_id')->references('id')->on('users')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('message', function(Blueprint $table) {
-			$table->foreign('destinataire_id')->references('id')->on('membre')
+			$table->foreign('destinataire_id')->references('id')->on('users')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
@@ -44,7 +44,7 @@ class CreateForeignKeys extends Migration {
 						->onUpdate('restrict');
 		});
 		Schema::table('reservation', function(Blueprint $table) {
-			$table->foreign('locataire_id')->references('id')->on('membre')
+			$table->foreign('locataire_id')->references('id')->on('users')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
@@ -54,12 +54,12 @@ class CreateForeignKeys extends Migration {
 						->onUpdate('restrict');
 		});
 		Schema::table('image', function(Blueprint $table) {
-			$table->foreign('membre_id')->references('id')->on('membre')
+			$table->foreign('membre_id')->references('id')->on('users')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
 		Schema::table('transaction', function(Blueprint $table) {
-			$table->foreign('locataire_id')->references('id')->on('membre')
+			$table->foreign('locataire_id')->references('id')->on('users')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
@@ -69,7 +69,7 @@ class CreateForeignKeys extends Migration {
 						->onUpdate('restrict');
 		});
 		Schema::table('transaction', function(Blueprint $table) {
-			$table->foreign('proprietaire_id')->references('id')->on('membre')
+			$table->foreign('proprietaire_id')->references('id')->on('users')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});

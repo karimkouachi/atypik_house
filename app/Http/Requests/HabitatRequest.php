@@ -24,7 +24,7 @@ class HabitatRequest extends FormRequest
     public function rules()
     {
         return [
-            'nom_habitat' => 'required',
+              'nom_habitat' => 'required',
               'capacite_habitat' => 'required',
               'prix_habitat' => 'required',
               'adresse_habitat' => 'required',

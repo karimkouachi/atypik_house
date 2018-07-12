@@ -12,7 +12,7 @@ class Reservation extends Model
 
     public function locataire()
     {
-        return $this->belongsTo('Membre');
+        return $this->belongsTo(\App\User::class);
     }
 
     public function bookingStatut()

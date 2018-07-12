@@ -9,6 +9,9 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    protected $table = 'users';
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -26,4 +29,44 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function envoie_message()
+    {
+        return $this->hasMany('Message');
+    }
+
+    public function recoit_message()
+    {
+        return $this->hasMany('Message');
+    }
+
+    public function facture()
+    {
+        return $this->hasMany('Facture');
+    }
+
+    public function effectue_transaction()
+    {
+        return $this->hasMany('Transaction');
+    }
+
+    public function recoit_transaction()
+    {
+        return $this->hasMany('Transaction');
+    }
+
+    public function possede_habitat()
+    {
+        return $this->hasMany('Habitat');
+    }
+
+    public function realise_reservation()
+    {
+        return $this->hasMany('Reservation');
+    }
+
+    public function photos()
+    {
+        return $this->hasMany('Image');
+    }
 }

@@ -17,7 +17,7 @@ class Image extends Model
 
     public function membre()
     {
-        return $this->belongsTo('Membre');
+        return $this->belongsTo(\App\User::class);
     }
 
 }

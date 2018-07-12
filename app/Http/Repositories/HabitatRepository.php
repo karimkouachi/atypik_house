@@ -3,6 +3,7 @@
 namespace App\Http\Repositories;
 
 use App\Models\Habitat;
+use Carbon\Carbon;
 
 class HabitatRepository implements HabitatRepositoryInterface
 {
@@ -31,6 +32,9 @@ class HabitatRepository implements HabitatRepositoryInterface
 
 	public function save($nom_habitat, $capacite_habitat, $prix_habitat, $adresse_habitat, $cp_habitat, $ville_habitat, $pays_habitat, $num_habitat, $photo_habitat, $proprietaire_id, $categorie_id)
 	{
+
+        $date_create_habitat = Carbon::now('Europe/Paris');
+
         $this->habitat->nom_habitat = $nom_habitat;
         $this->habitat->capacite_habitat = $capacite_habitat;
         $this->habitat->prix_habitat = $prix_habitat;
@@ -40,6 +44,7 @@ class HabitatRepository implements HabitatRepositoryInterface
         $this->habitat->pays_habitat = $pays_habitat;
         $this->habitat->num_habitat = $num_habitat;
         $this->habitat->photo_habitat = $photo_habitat;
+        $this->habitat->date_create_habitat = $date_create_habitat;
         $this->habitat->proprietaire_id = $proprietaire_id;
         $this->habitat->categorie_id = $categorie_id;
 
@@ -48,6 +53,12 @@ class HabitatRepository implements HabitatRepositoryInterface
 
     public function hideHabitat($idHabitat){
         $habitat = $this->habitat->where('id', $idHabitat)->update(['actif_habitat' => 0]);
+        return $habitat;
+    }
+
+    public function checkHabitat($idHabitat){
+        $habitat = $this->habitat->where('id', $idHabitat)->update(['actif_habitat' => 1, 'dispo_habitat' => 1, 'en_attente_habitat' => 0, 'date_valide_habitat' => Carbon::now('Europe/Paris')]);
+
         return $habitat;
     }
 

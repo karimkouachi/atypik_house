@@ -12,7 +12,7 @@ class Habitat extends Model
 
     public function proprietaire()
     {
-        return $this->belongsTo('Membre');
+        return $this->belongsTo(\App\User::class, 'proprietaire_id');
     }
 
     public function categorie()

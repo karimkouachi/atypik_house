@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+                <div class="panel-heading">Bienvenue!</div>
 
                 <div class="panel-body">
                     @if (session('status'))
@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    Bienveneu sur Atypik House {{ Auth::user()->pseudo_membre }} !
                 </div>
             </div>
         </div>

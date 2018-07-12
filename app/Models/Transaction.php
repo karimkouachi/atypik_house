@@ -12,12 +12,12 @@ class Transaction extends Model
 
     public function membre()
     {
-        return $this->belongsTo('Membre');
+        return $this->belongsTo(\App\User::class);
     }
 
     public function beneficiaire()
     {
-        return $this->belongsTo('Membre');
+        return $this->belongsTo(\App\User::class);
     }
 
     public function type_transaction()

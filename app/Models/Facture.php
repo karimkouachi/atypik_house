@@ -12,7 +12,7 @@ class Facture extends Model
 
     public function correspond()
     {
-        return $this->belongsTo('Membre');
+        return $this->belongsTo(\App\User::class);
     }
 
     public function concerne()
