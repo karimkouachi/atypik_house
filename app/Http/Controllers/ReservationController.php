@@ -3,6 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ReservationRequest;
+use App\Http\Repositories\HabitatRepository;
+use App\Http\Repositories\ReservationRepository;
+use Illuminate\Support\Facades\Redirect;
+
+use Auth;
+use Session;
 
 class ReservationController extends Controller 
 {
@@ -22,9 +29,12 @@ class ReservationController extends Controller
    *
    * @return Response
    */
-  public function create()
+  public function make($id, HabitatRepository $habitatRepository)
   {
-    
+
+    $habitat = $habitatRepository->getHabitat($id);
+
+    return view("create_reservation")->with("habitat", $habitat);
   }
 
   /**
@@ -32,9 +42,23 @@ class ReservationController extends Controller
    *
    * @return Response
    */
-  public function store(Request $request)
+  public function store(ReservationRequest $reservationRequest, ReservationRepository $reservationRepository)
   {
-    
+    $validated = $reservationRequest->validated();
+    $idHabitat = $_POST["habitat_id"];
+    $idLocataire = Auth::user()->id;
+
+    $reservationRepository->makeReservation(
+      $_POST["date_debut_reservation"],
+      $_POST["date_fin_reservation"],
+      $_POST["participants_reservation"],
+      $_POST["commentaire_reservation"],
+      $idHabitat,
+      $idLocataire
+    );
+
+    Session::flash('message', 'Réservation faite avec succès');
+    return Redirect::to('reservation/'.$idHabitat.'/makeReservation');
   }
 
   /**

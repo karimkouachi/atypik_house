@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Repositories\CategorieRepository;
+use App\Http\Repositories\HabitatRepository;
+use App\Http\Repositories\MessageRepository;
+use App\Http\Repositories\ReservationRepository;
 use App\Http\Requests\HabitatRequest;
 use App\Http\Requests\MessageRequest;
-use App\Http\Repositories\HabitatRepository;
-use App\Http\Repositories\CategorieRepository;
-use App\Http\Repositories\MessageRepository;
-use Illuminate\Support\Facades\Redirect;
-use Validator;
-use Session;
-use Auth;
+
 use App\Models\Habitat;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+
+use Auth;
+use Session;
+use Validator;
 
 class HabitatController extends Controller 
 {
@@ -73,18 +77,18 @@ class HabitatController extends Controller
       $idProprietaire = Auth::user()->id;
     
       $habitatRepository->save(
-      $_POST["nom_habitat"],
-      $_POST["capacite_habitat"],
-      $_POST["prix_habitat"],
-      $_POST["adresse_habitat"],
-      $_POST["cp_habitat"],
-      $_POST["ville_habitat"],
-      $_POST["pays_habitat"],
-      $_POST["num_habitat"],
-      $_POST["photo_habitat"],
-      $idProprietaire,
-      $_POST["categorie"]
-    );
+        $_POST["nom_habitat"],
+        $_POST["capacite_habitat"],
+        $_POST["prix_habitat"],
+        $_POST["adresse_habitat"],
+        $_POST["cp_habitat"],
+        $_POST["ville_habitat"],
+        $_POST["pays_habitat"],
+        $_POST["num_habitat"],
+        $_POST["photo_habitat"],
+        $idProprietaire,
+        $_POST["categorie"]
+      );
 
     Session::flash('message', 'Habitat crée avec succès!');
 
@@ -220,6 +224,13 @@ class HabitatController extends Controller
     return Redirect::to('habitat/'.$id);
   }
 
+  public function seeReservations($id, ReservationRepository $reservationRepository){
+    $reservationsParHabitat = $reservationRepository->getReservationsByHabitat($id);
+
+    var_dump($reservationsParHabitat);die;
+
+    return view('reservations_by_habitat')->with('reservations', $reservationsParHabitat);
+  }
   
 }
 

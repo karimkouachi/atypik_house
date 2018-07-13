@@ -10,7 +10,7 @@ class CreateEtatReservationTable extends Migration {
 		Schema::create('etat_reservation', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('libelle_etat', 50);
-			$table->integer('valeur_etat');
+			$table->integer('valeur_etat')->default(1);
 		});
 	}
 

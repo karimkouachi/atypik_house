@@ -22,6 +22,7 @@ Route::any("/habitat/store", "HabitatController@store")->name("storeHabitat");
 
 Route::any("/habitat/{idHabitat}", "HabitatController@show")->name("showHabitat");
 
+Route::any("/habitat/{idHabitat}/allReservations", "HabitatController@seeReservations")->name("allReservations");
 Route::any("/habitat/{idHabitat}/checkHabitat", "HabitatController@checkHabitat")->name("checkHabitat");
 Route::any("/habitat/{idHabitat}/delete", "HabitatController@delete");
 Route::any("/habitat/{idHabitat}/edit", "HabitatController@edit");
@@ -29,10 +30,13 @@ Route::any("/habitat/{idHabitat}/sendMessage", "HabitatController@send_message")
 Route::any("/habitat/{idHabitat}/update", "HabitatController@update")->name("updateHabitat");
 
 Route::any("/activite/store", "ActiviteController@store")->name("storeActivite");
-Route::any("/activite/create", "ActiviteController@create")->name("creerActivite");
+Route::any("/activite/{idHabitat}/create", "ActiviteController@create")->name("creerActivite");
 
 Route::any("/habitats/edit", "HabitatController@edit_habitats_gerant")->name("editHabitatsGerant");
 Route::any("/habitats/update", "HabitatController@update_habitats_gerant")->name("updateHabitatsGerant");
+
+Route::any("/reservation/{idHabitat}/makeReservation", "ReservationController@make")->name("makeReservation");
+Route::any("/reservation/{idHabitat}/storeReservation", "ReservationController@store")->name("storeReservation");
 
 
 

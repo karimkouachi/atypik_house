@@ -48,6 +48,11 @@ class CreateForeignKeys extends Migration {
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
+		Schema::table('reservation', function(Blueprint $table){
+			$table->foreign('etat_reservation_id')->references('id')->on('etat_reservation')
+						->onDelete('restrict')
+						->onUpdate('restrict');
+		});
 		Schema::table('image', function(Blueprint $table) {
 			$table->foreign('habitat_id')->references('id')->on('habitat')
 						->onDelete('restrict')
@@ -115,6 +120,9 @@ class CreateForeignKeys extends Migration {
 		});
 		Schema::table('reservation', function(Blueprint $table) {
 			$table->dropForeign('reservation_locataire_id_foreign');
+		});
+		Schema::table('reservation', function(Blueprint $table) {
+			$table->dropForeign('reservation_etat_reservation_id_foreign');
 		});
 		Schema::table('image', function(Blueprint $table) {
 			$table->dropForeign('image_habitat_id_foreign');

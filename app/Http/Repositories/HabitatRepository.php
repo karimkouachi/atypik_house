@@ -62,4 +62,10 @@ class HabitatRepository implements HabitatRepositoryInterface
         return $habitat;
     }
 
+    public function getLastCreatedHabitat(){
+        $habitat = $this->habitat->orderBy('id', 'desc')->first();
+
+        return $habitat;
+    }
+
 }

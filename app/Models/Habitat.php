@@ -35,4 +35,8 @@ class Habitat extends Model
         return $this->belongsToMany('Activite');
     }
 
+    public function reservations(){
+        return $this->hasMany('Reservation');
+    }
+
 }
