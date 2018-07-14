@@ -17,46 +17,45 @@
 	  @endif
 
 	{!! Form::open(array('route' => 'storeActivite', 'method' => 'POST', 'class' => 'form-horizontal')) !!}
-		
 				<div class="form-group">
-					{!! Form::label('libelle_activite', 'Nom:', ['class' => 'col-lg-2 control-label']) !!}
+					{!! Form::label('libelle_activite', 'Nom :', ['class' => 'col-lg-2 control-label']) !!}
 					<div class="col-lg-10">
 						{!! Form::text('libelle_activite', null, ['class' => 'form-control', 'placeholder' => 'Restaurant']) !!}
 					</div>
 		  		</div>
 			
 				<div class="form-group">
-					{!! Form::label('adresse_activite', 'Adresse:', ['class' => 'col-lg-2 control-label']) !!}
+					{!! Form::label('adresse_activite', 'Adresse :', ['class' => 'col-lg-2 control-label']) !!}
 					<div class="col-lg-10">
-						{!! Form::text('adresse_activite', null, ['class' => 'form-control', 'placeholder' => '1 rue du resto']) !!}
+						{!! Form::text('adresse_activite', null, ['class' => 'form-control', 'placeholder' => 'Oxford St']) !!}
 					</div>
 		  		</div>
 
-				<!-- <div class="form-group">
-					{!! Form::label('cp_activite', 'Cp_activite:', ['class' => 'col-lg-2 control-label']) !!}
+				<div class="form-group">
+					{!! Form::label('cp_activite', 'Code postal :', ['class' => 'col-lg-2 control-label']) !!}
 					<div class="col-lg-10">
-						{!! Form::text('cp_activite', null, ['class' => 'form-control', 'placeholder' => 'Cabane dans un arbre']) !!}
+						{!! Form::text('cp_activite', null, ['class' => 'form-control', 'placeholder' => 'WR11 4']) !!}
 					</div>
-						  		</div>	 -->
-				
-				<!-- <div class="form-group">
-					{!! Form::label('ville_activite', 'Ville_activite:', ['class' => 'col-lg-2 control-label']) !!}
+				</div>
+			
+				<div class="form-group">
+					{!! Form::label('ville_activite', 'Ville :', ['class' => 'col-lg-2 control-label']) !!}
 					<div class="col-lg-10">
-						{!! Form::text('ville_activite') !!}
+						{!! Form::text('ville_activite', null, ['class' => 'form-control', 'placeholder' => 'London']) !!}
 					</div>
-						  		</div> -->
-
-				<!-- <div class="form-group">
-					{!! Form::label('pays_activite', 'Pays_activite:', ['class' => 'col-lg-2 control-label']) !!}
-					<div class="col-lg-10">
-						{!! Form::text('pays_activite') !!}
-					</div>
-						  		</div> -->
+				</div>
 
 				<div class="form-group">
-					{!! Form::label('descriptif_activite', 'Descriptif:', ['class' => 'col-lg-2 control-label']) !!}
+					{!! Form::label('pays_activite', 'Pays :', ['class' => 'col-lg-2 control-label']) !!}
 					<div class="col-lg-10">
-						{!! Form::text('descriptif_activite', null, ['class' => 'form-control', 'placeholder' => 'Restaurant 5 étoiles']) !!}
+						{!! Form::text('pays_activite', null, ['class' => 'form-control', 'placeholder' => 'United Kingdom']) !!}
+					</div>
+				</div>
+
+				<div class="form-group">
+					{!! Form::label('descriptif_activite', 'Descriptif :', ['class' => 'col-lg-2 control-label']) !!}
+					<div class="col-lg-10">
+						{!! Form::textarea('descriptif_activite', null, ['class' => 'form-control', 'placeholder' => 'Restaurant 5 étoiles']) !!}
 					</div>
 		  		</div>
 

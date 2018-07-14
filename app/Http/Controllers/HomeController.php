@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Repositories\ReservationRepository;
+
+use Auth;
 
 class HomeController extends Controller
 {
@@ -21,8 +24,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ReservationRepository $reservationRepository)
     {
-        return view('home');
+
+        $locataireId = Auth::user()->id;
+
+        $mesReservations = $reservationRepository->getReservationsByTenantId($locataireId);
+
+        var_dump($mesReservations);die;
+
+        return view('home')->with("reservations", $mesReservations);
     }
 }

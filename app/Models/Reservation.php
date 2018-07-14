@@ -20,6 +20,11 @@ class Reservation extends Model
         return $this->belongsTo('EtatReservation');
     }
 
+    public function habitat()
+    {
+        return $this->belongsTo('Habitat');
+    }
+
     public function gotTransactions()
     {
         return $this->hasMany('Transaction');

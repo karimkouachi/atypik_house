@@ -15,6 +15,7 @@ class CreateReservationTable extends Migration {
 			$table->string('commentaire_reservation', 255)->nullable();
 			$table->integer('habitat_id')->unsigned();
 			$table->integer('locataire_id')->unsigned();
+			$table->integer('etat_reservation_id')->unsigned();
 		});
 	}
 

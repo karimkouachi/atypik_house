@@ -17,13 +17,17 @@
 			<p>Pays: {{$habitat->pays_habitat}}</p>
 		</div>
     <div class="btn-group" role="group" aria-label="...">
+      @if ($habitat->dispo_habitat == 1)
+        <a href="{{ URL::to('reservation/'.$habitat->id.'/makeReservation') }}" class="btn btn-info">Réserver cet habitat</a>
+      @endif
+      <a href="{{ URL::to('habitat/'.$habitat->id.'/allReservations') }}" class="btn btn-info">Voir réservations de cet habitat</a>
       @if ($habitat->actif_habitat == 0)
         {!! Form::open(array('url' => 'habitat/'. $habitat->id . '/checkHabitat')) !!}
           {{ Form::hidden('_method', 'POST') }}
           {{ Form::submit('Valider cet habitat', array('class' => 'btn')) }}
         {{ Form::close() }}
       @endif
-      <button type="button" class="btn" data-toggle="modal" data-target="#modalMessageProprietaire">Discuter avec le propriétaire</button>
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalMessageProprietaire">Discuter avec le propriétaire</button>
       {{ Form::open(array('url' => 'habitat/' . $habitat->id . '/delete', 'class' => 'pull-right')) }}
           {{ Form::hidden('_method', 'DELETE') }}
           {{ Form::submit('Masquer l\'habitat', array('class' => 'btn btn-danger')) }}

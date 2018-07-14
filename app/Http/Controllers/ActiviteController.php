@@ -2,7 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Repositories\ActiviteRepository;
+use App\Http\Requests\ActiviteRequest;
+
+use App\Models\Activite;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+
+use Session;
+use Validator;
 
 class ActiviteController extends Controller 
 {
@@ -32,9 +41,22 @@ class ActiviteController extends Controller
    *
    * @return Response
    */
-  public function store(Request $request)
+  public function store(ActiviteRequest $activiteRequest, ActiviteRepository $activiteRepository)
   {
-    
+    $validated = $activiteRequest->validated();
+
+    $activiteRepository->save(
+      $_POST["libelle_activite"],
+      $_POST["adresse_activite"],
+      $_POST["cp_activite"],
+      $_POST["ville_activite"],
+      $_POST["pays_activite"],
+      $_POST["descriptif_activite"]
+    );
+
+    Session::flash('message', 'Activité créée avec succès!');
+
+    return Redirect::to('habitats');
   }
 
   /**
