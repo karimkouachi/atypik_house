@@ -21,16 +21,34 @@ class CategorieRepository implements CategorieRepositoryInterface
 	}*/
 
 	public function getLibelleCategories(){
-		$categories = $this->categorie->pluck('libelle_categorie', 'id');
+		$categories = $this->categorie->pluck('libelle_categorie', 'id')->toArray();
+		
+		asort($categories);
+
 		return $categories;
 	}
 
 	public function getIdCategorie($idCategorie)
 	{
-        $categrorie = Categorie::where('id', $idCategorie)->first();
-        $idCategorie = $categrorie->id;
+        $categorie = Categorie::where('id', $idCategorie)->first();
+        $idCategorie = $categorie->id;
 
         return $idCategorie;
 	}
 
+	public function getEnums($idCategorie)
+	{
+        $categorie = Categorie::where('id', $idCategorie)->first();
+        $enums = $categorie->enum_categorie;
+
+        return $enums;
+	}
+
+	public function deleteEnum($idCategorie, $champ)
+	{
+        $categorie = Categorie::where('id', $idCategorie)->first();
+        $enums = $this->getEnums($idCategorie);
+
+        return $enums;
+	}
 }

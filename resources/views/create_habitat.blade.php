@@ -64,7 +64,7 @@
       <div class="form-group">
         {!! Form::label('categorie', 'Categorie : ', ['class' => 'col-lg-2 control-label']) !!}
         <div class="col-lg-10">
-          {!! Form::select('categorie', $categories, ['class' => 'form-control' ]) !!}
+          {!! Form::select('categorie', $categories, null, ['class' => 'form-control' ]) !!}
         </div>
       </div>
 
@@ -123,6 +123,8 @@
   				{!! Form::text('photo_habitat', null, ['class' => 'form-control', 'placeholder' => 'photo.jpg']) !!}
   			</div>
   		</div>
+
+      <!-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> -->
   		
 			<div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
@@ -134,51 +136,57 @@
 
 @section('scripts')
     <script type="text/javascript">
-        $(document).ready(function() {
+      /*$.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+      });*/
 
-            /*$(".btnCreerHabitat").click(function(e){
-                jQuery('.alert-danger').hide();
-                jQuery('.alert-error').remove();
-                e.preventDefault();
+      $(document).ready(function() {
 
-                var url = route('postHabitat');
-  
-                var nom_habitat = $('#nom_habitat').val();
-                var categorie = $('#categorie').val();
-                var nombre_habitat = $('#nombre_habitat').val();
-                var prix_habitat = $('#prix_habitat').val();
-                var adresse_habitat = $('#adresse_habitat').val();
-                var cp_habitat = $('#cp_habitat').val();
-                var ville_habitat = $('#ville_habitat').val();
-                var pays_habitat = $('#pays_habitat').val();
-                var num_habitat = $('#num_habitat').val();
-                var photo_habitat = $('#photo_habitat').val();
+          /*$(".btnCreerHabitat").click(function(e){
+              jQuery('.alert-danger').hide();
+              jQuery('.alert-error').remove();
+              e.preventDefault();
 
-                var inputs = [nom_habitat, categorie, nombre_habitat, prix_habitat, adresse_habitat, cp_habitat, ville_habitat, pays_habitat, num_habitat, photo_habitat];
-              
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    contentType: "application/json; charset=utf-8",
-                    url: url,
-                    data: {inputs: inputs},
-                    dataType: "json",                 
-                })
-                .done(function(data){
-                        alert(data);console.log(data); 
-                        jQuery.each(data.errors, function(key, value){
-                            jQuery('.alert-danger').show();
-                            jQuery('.alert-danger').append('<p class="alert-error">'+value+'</p>');
-                        });
-                        if(data.success){
-                            $("#modal").modal();
-                        }
-                })
-                .fail(function(data) {
-                    alert(data);
-                });                
-            });*/
-        });
+              var url = route('postHabitat');
+
+              var nom_habitat = $('#nom_habitat').val();
+              var categorie = $('#categorie').val();
+              var nombre_habitat = $('#nombre_habitat').val();
+              var prix_habitat = $('#prix_habitat').val();
+              var adresse_habitat = $('#adresse_habitat').val();
+              var cp_habitat = $('#cp_habitat').val();
+              var ville_habitat = $('#ville_habitat').val();
+              var pays_habitat = $('#pays_habitat').val();
+              var num_habitat = $('#num_habitat').val();
+              var photo_habitat = $('#photo_habitat').val();
+
+              var inputs = [nom_habitat, categorie, nombre_habitat, prix_habitat, adresse_habitat, cp_habitat, ville_habitat, pays_habitat, num_habitat, photo_habitat];
+            
+              $.ajax({
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  },
+                  contentType: "application/json; charset=utf-8",
+                  url: url,
+                  data: {inputs: inputs},
+                  dataType: "json",                 
+              })
+              .done(function(data){
+                      alert(data);console.log(data); 
+                      jQuery.each(data.errors, function(key, value){
+                          jQuery('.alert-danger').show();
+                          jQuery('.alert-danger').append('<p class="alert-error">'+value+'</p>');
+                      });
+                      if(data.success){
+                          $("#modal").modal();
+                      }
+              })
+              .fail(function(data) {
+                  alert(data);
+              });                
+          });*/
+      });
     </script>
 @endsection

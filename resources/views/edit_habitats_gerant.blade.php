@@ -4,49 +4,207 @@
 
 	<h1>Modifier les habitats</h1>
 
+  @if (Session::has('message'))
+    <div class="alert alert-success">{{ Session::get('message') }}</div>
+  @endif
+
 	@if ($errors->any())
-      <div>
-        @foreach ($errors->all() as $error)
-            <p class="alert alert-danger">{{ $error }}</p>
-        @endforeach
+    <div>
+      @foreach ($errors->all() as $error)
+          <p class="alert alert-danger">{{ $error }}</p>
+      @endforeach
+    </div>
+	@endif
+
+  <div id="modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Supprimer une colone</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Attention, vous allez supprimer définitivement cette colone de la table Habitat.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-danger">Confirmer</button>
+        </div>
       </div>
-  	@endif
+    </div>
+  </div>
 
-		
-	{{ Form::model(null, array('route' => array('updateHabitatsGerant'), 'method' => 'PUT', 'class' => 'form-horizontal')) }}
+	{{ Form::open(array('route' => array('updateHabitatsGerant'), 'method' => 'PUT', 'class' => 'form-horizontal')) }}
 		<div class="form-group">
-  			{!! Form::label('categorie', "Catégorie:", ['class' => 'col-lg-2 control-label']) !!}
-  			<div class="col-lg-10">
-  				<select id="categorie" name="categorie" class="form-control">
-		            @foreach($categories as $categorie)
-		            <option value="<?php echo htmlspecialchars($categorie['libelle_categorie']); ?>">
-		                {{ $categorie['libelle_categorie'] }}
-		            </option>
-		            @endforeach
-		          </select>
-  				<!-- {!! Form::select('categorie', ['text' => 'Text', 'bollean' => 'Boolean'], null, ['class' => 'form-control']) !!} -->
-  			</div>
-  		</div>
+			{!! Form::label('categorie', "Catégorie:", ['class' => 'col-lg-2 control-label']) !!}
+			<div class="col-lg-10">
+				{!! Form::select('categorie', $categories, null, ['class' => 'form-control' ]) !!}
+			</div>
+		</div>
+
+    
+      <div class="table-responsive col-lg-10 col-lg-offset-2">
+        <table class="table table-hover table-condensed table-striped">
+          <thead>
+            <tr>
+              <th class="col-lg-5">Libelle</th>
+              <th class="col-lg-5">Type</th>
+              <th class="col-lg-2">Supprimer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <tr>
+              <th scope="row">1</th>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+            </tr>
+            -->
+          </tbody>
+        </table>
+      </div>
+      
 
 		<div class="form-group">
-  			{!! Form::label('nom', "Nom:", ['class' => 'col-lg-2 control-label']) !!}
-  			<div class="col-lg-10">
-  				{!! Form::text('nom', null, ['class' => 'form-control', 'placeholder' => 'nom_habitat']) !!}
-  			</div>
-  		</div>
+			{!! Form::label('nom', "Nom:", ['class' => 'col-lg-2 control-label']) !!}
+			<div class="col-lg-10">
+				{!! Form::text('nom', null, ['class' => 'form-control', 'placeholder' => 'nom_habitat']) !!}
+			</div>
+		</div>
 
-  		<div class="form-group">
-  			{!! Form::label('type', "Type:", ['class' => 'col-lg-2 control-label']) !!}
-  			<div class="col-lg-10">
-  				{!! Form::select('type', ['text' => 'Text', 'bollean' => 'Boolean'], null, ['class' => 'form-control']) !!}
-  			</div>
-  		</div>
+		<div class="form-group">
+			{!! Form::label('type', "Type:", ['class' => 'col-lg-2 control-label']) !!}
+			<div class="col-lg-10">
+				{!! Form::select('type', ['boolean' => 'BOOLEAN', 'datetime' => 'DATETIME' , 'decimal' => 'DECIMAL', 'integer' => 'INTEGER', 'text' => 'TEXT', 'tinyint' => 'TINYINT', 'varchar' => 'VARCHAR'], null, ['class' => 'form-control']) !!}
+			</div>
+		</div>
 
-  		<div class="form-group">
-	        <div class="col-lg-10 col-lg-offset-2">
-	          {!! Form::submit('Modifier', array('class' => 'btn btn-lg btn-success pull-right')) !!}
-	        </div>
-	    </div>
+    <div id="divLongueurTotal" class="form-group none">
+      {!! Form::label('longueurTotal', "Longueur total:", ['class' => 'col-lg-2 control-label']) !!}
+      <div class="col-lg-10">
+        {!! Form::text('longueurTotal', null, ['class' => 'form-control', 'placeholder' => '5']) !!}
+      </div>
+    </div>
+
+    <div id="divLongueurDecimal" class="form-group none">
+      {!! Form::label('longueurDecimal', "Longueur décimal:", ['class' => 'col-lg-2 control-label']) !!}
+      <div class="col-lg-10">
+        {!! Form::text('longueurDecimal', null, ['class' => 'form-control', 'placeholder' => '2']) !!}
+      </div>
+    </div>
+
+    <div id="divLongueurVarchar" class="form-group none">
+      {!! Form::label('longueur', "Longueur:", ['class' => 'col-lg-2 control-label']) !!}
+      <div class="col-lg-10">
+        {!! Form::text('longueur', null, ['class' => 'form-control', 'placeholder' => '255']) !!}
+      </div>
+    </div>
+
+		<div class="form-group">
+      <div class="col-lg-10 col-lg-offset-2">
+        {!! Form::submit('Ajouter', array('class' => 'btn btn-lg btn-success pull-right')) !!}
+      </div>
+    </div>
 	{!! Form::close() !!}
 
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+          var colonnesTable = {!! json_encode($colonnesTable) !!};
+
+          $.each(colonnesTable, function(key, value){console.log(key); console.log(value); 
+              $('tbody').append('<tr><td>'+value.nom+'</td><td>'+value.type+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true" data-toggle="modal" data-target="#modal"></span></tr>'
+                /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
+                /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/
+              );
+          });
+
+          $(".alert-success").delay(2000).fadeOut();
+
+          $('#type').change(function(){
+            if($(this).val() == "varchar"){
+              $('#divLongueurVarchar').toggleClass('none');
+            }else{
+              $('#longueur').parent().parent().addClass('none');
+            }
+
+            if($(this).val() == "decimal"){
+              $('#divLongueurTotal').toggleClass('none');
+              $('#divLongueurDecimal').toggleClass('none');
+            }else{
+              $('#longueurTotal').parent().parent().addClass('none');
+              $('#longueurDecimal').parent().parent().addClass('none');
+            }
+          });
+
+          //select toutes les valeurs enums de la colonne enum de la categorie selectionnée dans la table categorie
+          $('#categorie').change(function(){
+
+            /*$.get("/atypik_house_website/public/habitats/get_enums", function(data){
+              alert(data);
+            });*/
+
+            var url = '/atypik_house_website/public/habitats/get_enums';
+            var idCategorie = $('#categorie').val();
+
+            $.ajax({
+                url: url,
+                data: {'idCategorie': idCategorie},
+                dataType: "json",                 
+            })
+            .done(function(data){
+              alert(data);console.log(data); 
+
+              /*for(var i = 0; i < data.length; i++){
+
+              }*/
+
+
+              $.each(data, function(key, value){console.log(key); console.log(value); 
+
+                  $('tbody').append('<tr><td>'+value.nom+'</td><td>'+value.type+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
+                    /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
+                    /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/
+                  );
+              });
+            })
+            .fail(function(data) {
+              alert("FAIL");console.log("FAIL"); 
+            });  
+          });
+
+          $('body').on("click", ".btnSupChamp", function(){alert("supression");
+
+            var url = "/atypik_house_website/public/habitats/delete_enum";
+            var idCategorie = $('#categorie').val();
+            var champ = $(this).attr('data-enum');
+
+            $.ajax({
+              url: url,
+              data: {'idCategorie': idCategorie, 'champ': champ},
+              dataType: "json",                 
+            })
+            .done(function(data){
+              alert(data);console.log(data); 
+
+              $('.containerChamp,.containerBtn').remove();
+
+              $.each(data, function(key, value){
+                $('hr').before(
+                    '<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'
+                  );
+              });
+            })
+            .fail(function(data) {
+              alert("FAIL");console.log("FAIL"); 
+            });  
+          });
+
+        });
+    </script>
 @endsection

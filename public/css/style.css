@@ -1,0 +1,8 @@
+.none{
+	display: none;
+}
+
+.glyphicon-trash:hover{
+	cursor:pointer;
+	color:red;
+}

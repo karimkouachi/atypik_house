@@ -21,11 +21,11 @@
 		</div>
 
     	<div class="form-group">
-        {!! Form::label('categorie', 'Categorie : ', ['class' => 'col-lg-2 control-label']) !!}
-        <div class="col-lg-10">
-          {!! Form::select('categorie', ['tipi' => 'Tipi', 'yourte' => 'Yourte', 'cabane' => 'Cabane', 'igloo' => 'Igloo'],  'tipi', ['class' => 'form-control' ]) !!}
-        </div>
-     </div>
+        	{!! Form::label('categorie', 'Categorie : ', ['class' => 'col-lg-2 control-label']) !!}
+        	<div class="col-lg-10">
+          		{!! Form::select('categorie', $categories, $habitat->categorie_id, ['class' => 'form-control' ]) !!}
+        	</div>
+     	</div>
 
 		<div class="form-group">
 			{!! Form::label('capacite_habitat', "Capacite de l'habitat:", ['class' => 'col-lg-2 control-label']) !!}

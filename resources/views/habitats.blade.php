@@ -10,7 +10,7 @@
       <div class="form-group">
         {!! Form::label('categorie', 'Categorie : ', ['class' => 'col-lg-2 control-label']) !!}
         <div class="col-lg-10">
-          {!! Form::select('categorie', $categories, ['class' => 'form-control' ]) !!}
+          {!! Form::select('categorie', $categories, null, ['class' => 'form-control' ]) !!}
         </div>
       </div>
 
@@ -47,7 +47,7 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-      $(".alert-success").delay(2000).fadeOut();
+          $(".alert-success").delay(2000).fadeOut();
         });
     </script>
 @endsection

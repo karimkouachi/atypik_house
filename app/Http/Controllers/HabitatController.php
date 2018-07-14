@@ -8,11 +8,15 @@ use App\Http\Requests\MessageRequest;
 use App\Http\Repositories\HabitatRepository;
 use App\Http\Repositories\CategorieRepository;
 use App\Http\Repositories\MessageRepository;
+use App\Http\Repositories\ReservationRepository;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
 use Session;
 use Auth;
+use Illuminate\Support\Facades\Schema;
 use App\Models\Habitat;
+use Response;
+use DB;
 
 class HabitatController extends Controller 
 {
@@ -66,9 +70,6 @@ class HabitatController extends Controller
    */
   public function store(HabitatRequest $habitatRequest, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
   {
-      /*$IdProprietaire = Auth::user()->id;
-      var_dump($idUtilisateur);die;*/
-
       $validated = $habitatRequest->validated();
       $idProprietaire = Auth::user()->id;
     
@@ -110,11 +111,12 @@ class HabitatController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function edit($id, HabitatRepository $habitatRepository)
+  public function edit($id, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
   {
     $habitat = $habitatRepository->getHabitat($id);
+    $categories = $categorieRepository->getLibelleCategories();
 
-    return view("edit_habitat")->with("habitat", $habitat);
+    return view("edit_habitat")->with(array("habitat" => $habitat, "categories" => $categories));
   }
 
   /**
@@ -177,10 +179,65 @@ class HabitatController extends Controller
    */
   public function edit_habitats_gerant(CategorieRepository $categorieRepository)
   {
-    $categories = $categorieRepository->getAllCategories();
+    $categories = $categorieRepository->getLibelleCategories();
+    /*$colonnes = Schema::getColumnListing("habitat");*/
 
-    return view("edit_habitats_gerant")->with("categories", $categories);
+    $sm = DB::getDoctrineSchemaManager();
+    $bdds = $sm->listDatabases();
+    $columns = $sm->listTableColumns('habitat');
+
+    $colonnesTable = [];
+
+    foreach ($columns as $column) {
+      array_push($colonnesTable, array(
+        'nom' => $column->getName(),
+        'type' => $column->getType()->getName()
+        )
+      );
+    }
+
+    return view("edit_habitats_gerant")->with(array("categories" => $categories, "colonnesTable" => $colonnesTable));
   }
+
+  public function get_enums_categorie(CategorieRepository $categorieRepository){
+
+    $idCategorie = $_GET['idCategorie'];
+
+    /*$enums = $categorieRepository->getEnums($idCategorie);*/
+    /*$enums = Schema::getColumnListing("habitat");*/
+    /*$enums = DB::connection()->getDoctrineColumn('habitat', 'nom_habitat')->getType();*/
+    /*$enums = ['superficie'];*/
+
+    $sm = DB::getDoctrineSchemaManager();
+    $bdds = $sm->listDatabases();
+    $columns = $sm->listTableColumns('habitat');
+
+    $colonnesTable = [];
+
+    foreach ($columns as $column) {
+      array_push($colonnesTable, array(
+        'nom' => $column->getName(),
+        'type' => $column->getType()->getName()
+        )
+      );
+    }
+
+    return Response::json( $colonnesTable );
+  }
+
+  public function delete_enum(CategorieRepository $categorieRepository){
+
+    $idCategorie = $_GET['idCategorie'];
+    $champ = $_GET['champ'];
+
+    /*$enums = $categorieRepository->deleteEnum($idCategorie, $champ);*/
+    /*$enums = Schema::getColumnListing("habitat");*/
+    $enums = ['superficie supprimé'];
+
+    Session::flash('message', 'Champ supprimé avec succès!');  
+
+    return Response::json( $enums );
+  }  
 
   /**
    * Update habitats gerant.
@@ -188,11 +245,30 @@ class HabitatController extends Controller
    * @param
    * @return Response
    */
-  public function update_habitats_gerant()
+  public function update_habitats_gerant(Request $request, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository, ReservationRepository $reservationRepository)
   {
+    $categorie = $_POST['categorie'];
+    $nom = $_POST['nom'];
+    $type = $_POST['type'];
+    $longueur = $_POST['longueur'];
+
+    if($type == "varchar"){
+      $validated = $request->validate([
+        'nom' => 'required',
+        'longueur' => 'required'
+      ]);
+    }else{
+      $validated = $request->validate([
+        'nom' => 'required'
+      ]);
+    }
+
+    $idCategrorie = $categorieRepository->getIdCategorie($categorie);
+    $habitat = $habitatRepository->addField($idCategrorie, $nom, $type, $longueur, $reservationRepository);
+
     Session::flash('message', 'Habitats modifier avec succès!');    
 
-    return Redirect::to("habitats/");
+    return Redirect::to("habitats/edit");
   }
 
   public function send_message($id, HabitatRepository $habitatRepository, MessageRepository $messageRepository, MessageRequest $messageRequest)

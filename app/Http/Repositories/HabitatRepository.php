@@ -4,6 +4,7 @@ namespace App\Http\Repositories;
 
 use App\Models\Habitat;
 use Carbon\Carbon;
+use DB;
 
 class HabitatRepository implements HabitatRepositoryInterface
 {
@@ -28,6 +29,48 @@ class HabitatRepository implements HabitatRepositoryInterface
     public function getHabitat($id){
         $habitat = $this->habitat->findOrFail($id);
         return $habitat;
+    }
+
+    public function addField($idCategorie, $nom, $type, $longueur, $reservationRepository){
+        /*$alterTableFile = fopen(app_path()."/../database/migrations/2018_07_12_230245_add_field_to_habitat.php", "r+");
+*/
+        /*while (!feof($alterTableFile))
+        {
+            if (($ligne = fgets($alterTableFile)) !== false)
+            {
+                echo $ligne;*/
+                /*'Schema::table("habitat", function (Blueprint $table) {'
+                fwrite($alterTableFile, "table->string(name, 100);");*/
+            /*}
+       }die;*/
+
+        /*while ( ($ligne = fgets($alterTableFile) ) !== "Schema::table('habitat', function (Blueprint") {
+            
+            fputs($alterTableFile, "table->string(name, 100);");
+        }   */     
+
+        /*fclose($alterTableFile);*/
+
+        if(!empty($longueur)){
+            DB::statement("ALTER TABLE habitat ADD ".$nom." ".$type."(".$longueur.")");
+        }else{
+            DB::statement("ALTER TABLE habitat ADD ".$nom." ".$type);
+        }
+
+        $habitats = Habitat::where('categorie_id', $idCategorie)->get();
+
+        foreach ($habitats as $key => $habitat) {
+
+            $reservations = $reservationRepository->getHabitat($habitat->id);
+
+            if(count($reservations) > 0){
+                $this->habitat->where('categorie_id', $_POST['categorie'])->update(['dispo_habitat' => 0]);
+            }else{
+                $this->habitat->where('categorie_id', $_POST['categorie'])->update(['actif_habitat' => 0]);   
+            }   
+        }
+
+        return "envoi demande de re-saisie des nouveaux champs de l'habitat par son proprietaire";
     }
 
 	public function save($nom_habitat, $capacite_habitat, $prix_habitat, $adresse_habitat, $cp_habitat, $ville_habitat, $pays_habitat, $num_habitat, $photo_habitat, $proprietaire_id, $categorie_id)
