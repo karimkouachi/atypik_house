@@ -31,12 +31,6 @@
         {!! Form::number('participants_reservation', 2, ['class' => 'form-control']) !!}
       </div>
     </div>
-    <div class="form-group">
-      {!! Form::label('commentaire_reservation', "Un petit commentaire ... (facultatif)", ['class' => 'col-lg-2 control-label']) !!}
-      <div class="col-lg-10">
-        {!! Form::textarea('commentaire_reservation', null, ['class' => 'form-control', 'id' => 'contenu_message', 'rows' => 4, 'cols' => 54]) !!}
-      </div>
-    </div>
     {!! Form::hidden('habitat_id', $habitat->id) !!}
     
 		

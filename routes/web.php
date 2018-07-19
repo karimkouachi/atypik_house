@@ -35,7 +35,10 @@ Route::any("/activite/{idHabitat}/create", "ActiviteController@create")->name("c
 Route::any("/habitats/edit", "HabitatController@edit_habitats_gerant")->name("editHabitatsGerant");
 Route::any("/habitats/update", "HabitatController@update_habitats_gerant")->name("updateHabitatsGerant");
 
+Route::any("/reservation/{idReservation}/commentStay", "ReservationController@comment_stay")->name("commentStay");
+Route::any("/reservation/{idReservation}/deleteComment", "ReservationController@delete_comment")->name("deleteComment");
 Route::any("/reservation/{idHabitat}/makeReservation", "ReservationController@make")->name("makeReservation");
+Route::any("/reservation/{idReservation}", "ReservationController@show")->name("showReservation");
 Route::any("/reservation/{idHabitat}/storeReservation", "ReservationController@store")->name("storeReservation");
 
 
@@ -56,3 +59,4 @@ Route::resource('habitatactivite', 'HabitatActiviteController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::any('/home/{idUser}/disableAccount', 'HomeController@disable_account')->name('disableAccount');

@@ -10,12 +10,7 @@ class CreateHabitatTable extends Migration {
 		Schema::create('habitat', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('nom_habitat', 100);
-			$table->integer('capacite_habitat');
 			$table->decimal('prix_habitat', 6,2);
-			$table->string('adresse_habitat', 100);
-			$table->string('cp_habitat', 15);
-			$table->string('ville_habitat', 50);
-			$table->string('pays_habitat', 50)->nullable();
 			$table->string('num_habitat', 20);
 			$table->string('photo_habitat', 255)->nullable();
 			$table->tinyInteger('actif_habitat')->default(0);

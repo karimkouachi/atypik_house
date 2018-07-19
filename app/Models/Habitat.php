@@ -39,4 +39,8 @@ class Habitat extends Model
         return $this->hasMany('Reservation');
     }
 
+    public function champsHabitat(){
+        return $this->hasMany('ChampHabitat');
+    }
+
 }

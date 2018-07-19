@@ -69,44 +69,9 @@
       </div>
 
   		<div class="form-group">
-  			{!! Form::label('capacite_habitat', "Capacite de l'habitat:", ['class' => 'col-lg-2 control-label']) !!}
-  			<div class="col-lg-10">
-  				{!! Form::text('capacite_habitat', null, ['class' => 'form-control', 'placeholder' => '2']) !!}
-  			</div>
-  		</div>
-
-  		<div class="form-group">
   			{!! Form::label('prix_habitat', "Prix de habitat:", ['class' => 'col-lg-2 control-label']) !!}
   			<div class="col-lg-10">
   				{!! Form::text('prix_habitat', null, ['class' => 'form-control', 'placeholder' => '100,00']) !!}
-  			</div>
-  		</div>
-
-  		<div class="form-group">
-  			{!! Form::label('adresse_habitat', "Adresse de habitat:", ['class' => 'col-lg-2 control-label']) !!}
-  			<div class="col-lg-10">
-  				{!! Form::text('adresse_habitat', null, ['class' => 'form-control', 'placeholder' => '1 rue de paris']) !!}
-  			</div>
-  		</div>
-
-  		<div class="form-group">
-  			{!! Form::label('cp_habitat', 'Code postal:', ['class' => 'col-lg-2 control-label']) !!}
-  			<div class="col-lg-10">
-  				{!! Form::text('cp_habitat', null, ['class' => 'form-control', 'placeholder' => '75000']) !!}
-  			</div>
-  		</div>
-
-  		<div class="form-group">
-  			{!! Form::label('ville_habitat', 'Ville:', ['class' => 'col-lg-2 control-label']) !!}
-  			<div class="col-lg-10">
-  				{!! Form::text('ville_habitat', null, ['class' => 'form-control', 'placeholder' => 'Paris']) !!}
-  			</div>
-  		</div>
-
-  		<div class="form-group">
-  			{!! Form::label('pays_habitat', 'Pays:', ['class' => 'col-lg-2 control-label']) !!}
-  			<div class="col-lg-10">
-  				{!! Form::text('pays_habitat', null, ['class' => 'form-control', 'placeholder' => 'France']) !!}
   			</div>
   		</div>
 

@@ -17,6 +17,8 @@
 	  @endif
 
 	{!! Form::open(array('route' => 'storeActivite', 'method' => 'POST', 'class' => 'form-horizontal')) !!}
+				{!! Form::hidden('idCurrentHabitat', $idCurrentHabitat) !!}
+
 				<div class="form-group">
 					{!! Form::label('libelle_activite', 'Nom :', ['class' => 'col-lg-2 control-label']) !!}
 					<div class="col-lg-10">
