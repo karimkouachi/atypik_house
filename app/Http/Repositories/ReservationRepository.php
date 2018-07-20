@@ -5,6 +5,7 @@ namespace App\Http\Repositories;
 use App\Http\Repositories\EtatReservationRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\Reservation;
 
 class ReservationRepository implements ReservationRepositoryInterface
 {    
@@ -44,7 +45,7 @@ class ReservationRepository implements ReservationRepositoryInterface
 
 		return $reservationsByHabitat;
 	}
-	
+
 	public function getHabitat($id)
 	{
         $reservations = Reservation::where('habitat_id', $id)->get();

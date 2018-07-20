@@ -9,4 +9,6 @@ interface ReservationRepositoryInterface
 	public function getReservationsByTenantId($locataire_id);
 
 	public function getReservationsByHabitat($habitat_id);
+
+	public function getHabitat($id);
 }

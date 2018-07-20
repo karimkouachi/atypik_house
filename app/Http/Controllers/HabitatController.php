@@ -31,11 +31,9 @@ class HabitatController extends Controller
   {
     if($_POST){
       $conditions = [];
-      
+
       if(isset($_POST["categorie"])){
-        $categorie = $_POST["categorie"];
-        $idCategrorie = $categorieRepository->getIdCategorie($_POST["categorie"]); 
-        $conditions["categorie_id"] = $idCategrorie;
+        $conditions["categorie_id"] = $_POST["categorie"];
       } 
 
       if(isset($_POST["ville_habitat"]) && $_POST["ville_habitat"] != ""){
@@ -43,7 +41,14 @@ class HabitatController extends Controller
         $conditions["ville_habitat"] = $ville;  
       }
 
-      $habitats = $habitatRepository->getRechercheHabitats($conditions);
+      $habitats = $habitatRepository->getHabitats($conditions);
+
+    }elseif($_GET){
+      $phrase = $_GET['phrase'];
+      $habitats = $habitatRepository->getHabitats($phrase);
+
+      return Response::json($habitats);
+
     }else{
       $habitats = $habitatRepository->getAllHabitats();
     }
@@ -51,6 +56,33 @@ class HabitatController extends Controller
     $categories = $categorieRepository->getLibelleCategories();
 
     return view("habitats")->with(array("habitats" => $habitats, "categories" => $categories));
+  }
+
+  /**
+   * Get champs categorie.
+   *
+   * @return Response
+   */
+  public function get_champs_categorie(CategorieRepository $categorieRepository)
+  {
+    $idCategorie = $_GET['idCategorie'];
+
+    /*$sm = DB::getDoctrineSchemaManager();
+    $bdds = $sm->listDatabases();
+    $columns = $sm->listTableColumns('habitat');
+
+    $champsTableHabitat = [];
+
+    foreach ($columns as $column) {
+      array_push($champsTableHabitat, array(
+        'nom' => $column->getName()
+        )
+      );
+    }*/
+
+    /*$champs = $categorieRepository->getChampsCategorie($idCategorie);*/
+    
+    return Response::json("champsTableHabitat");
   }
 
   /**
@@ -131,7 +163,7 @@ class HabitatController extends Controller
     $validated = $habitatRequest->validated();
 
     $habitat = $habitatRepository->getHabitat($id);
-    $idCategrorie = $categorieRepository->getIdCategorie($_POST["categorie"]);
+    /*$idCategrorie = $categorieRepository->getIdCategorie($_POST["categorie"]);*/
 
     $habitat->nom_habitat = $_POST["nom_habitat"];
     $habitat->capacite_habitat = $_POST["capacite_habitat"];
@@ -148,7 +180,7 @@ class HabitatController extends Controller
     $habitat->date_create_habitat = new \DateTime()/*$HabitatRequest->input('date_create_habitat')*/;
     $habitat->date_valide_habitat = new \DateTime()/*$HabitatRequest->input('date_valide_habitat')*/;
     $habitat->proprietaire_id = 1/*$IdProprietaire*//*$HabitatRequest->input('proprietaire_id')*/;
-    $habitat->categorie_id = $idCategrorie;
+    $habitat->categorie_id = $_POST["categorie"];
 
     $habitat->save();
 
@@ -248,7 +280,6 @@ class HabitatController extends Controller
    */
   public function update_habitats_gerant(Request $request, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository, ReservationRepository $reservationRepository)
   {
-    $categorie = $_POST['categorie'];
     $nom = $_POST['nom'];
     $type = $_POST['type'];
     $longueur = $_POST['longueur'];
@@ -264,7 +295,7 @@ class HabitatController extends Controller
       ]);
     }
 
-    $idCategrorie = $categorieRepository->getIdCategorie($categorie);
+    $idCategrorie = $categorieRepository->getIdCategorie($_POST['categorie']);
     $habitat = $habitatRepository->addField($idCategrorie, $nom, $type, $longueur, $reservationRepository);
 
     Session::flash('message', 'Habitats modifier avec succès!');    
@@ -299,8 +330,6 @@ class HabitatController extends Controller
 
   public function seeReservations($id, ReservationRepository $reservationRepository){
     $reservationsParHabitat = $reservationRepository->getReservationsByHabitat($id);
-
-    var_dump($reservationsParHabitat);die;
 
     return view('reservations_by_habitat')->with('reservations', $reservationsParHabitat);
   }

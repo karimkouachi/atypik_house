@@ -5,7 +5,7 @@ namespace App\Http\Repositories;
 interface HabitatRepositoryInterface
 {
 
-	public function getRechercheHabitats($conditions);
+	public function getHabitats($recherche);
 
 	public function getAllHabitats();
 

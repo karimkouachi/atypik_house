@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 //HABITAT TOUS
 Route::any("/habitats", "HabitatController@index")->name("searchHabitat");
+Route::any("/habitat/get_champs_categorie", "HabitatController@get_champs_categorie");
 Route::any("/habitat/create", "HabitatController@create");
 Route::any("/habitat/store", "HabitatController@store")->name("storeHabitat");
 Route::any("/habitat/{idHabitat}", "HabitatController@show")->name("showHabitat");

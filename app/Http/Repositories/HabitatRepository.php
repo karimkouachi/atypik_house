@@ -3,6 +3,7 @@
 namespace App\Http\Repositories;
 
 use App\Models\Habitat;
+use App\Models\Categorie;
 use Carbon\Carbon;
 use DB;
 
@@ -16,9 +17,61 @@ class HabitatRepository implements HabitatRepositoryInterface
 		$this->habitat = $habitat;
 	}
 
-    public function getRechercheHabitats($conditions){
-        $habitats = Habitat::where($conditions)->get();
-        return $habitats;
+    public function getHabitats($recherche){
+        if(is_array($recherche)){
+            return $habitats = Habitat::where($recherche)->get();   
+        }else{
+            $phrase = explode(" ", $recherche);
+
+            $categories = [];
+            $list_habitats = [];
+
+            foreach($phrase as $mot){
+                $categorie = Categorie::where('libelle_categorie', $mot)->get();
+                if(count($categorie) > 0){
+
+                    $habitats = Habitat::where('categorie_id', $categorie[0]['id'])->get();
+                    if(count($habitats) > 0){
+                        foreach($habitats as $key => $habitat){
+                            $exist = false;
+                            foreach($list_habitats as $list_habitat){
+                                if($habitat['id'] == $list_habitat['id']){
+                                    $exist = true;
+                                    break;
+                                }
+                            }
+                            if(!$exist){
+                                array_push($list_habitats, $habitat);
+                            }
+                        }
+                        
+                    } 
+                }
+
+                if(strlen($mot) > 4){
+                    $habitats = Habitat::where('ville_habitat', 'like', '%' . $mot . '%')
+                                    ->orWhere('nom_habitat', 'like', '%' . $mot . '%')
+                                    ->orWhere('pays_habitat', 'like', '%' . $mot . '%')
+                                    ->get(); 
+
+                    if(count($habitats) > 0){
+                        foreach($habitats as $key => $habitat){
+                            $exist = false;
+                            foreach($list_habitats as $list_habitat){
+                                if($habitat['id'] == $list_habitat['id']){
+                                    $exist = true;
+                                    break;
+                                }
+                            }
+                            if(!$exist){
+                                array_push($list_habitats, $habitat);
+                            }
+                        }
+                    }
+                }
+            }
+            return $list_habitats;
+        }
     }
 
     public function getAllHabitats(){

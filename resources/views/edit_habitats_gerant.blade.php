@@ -26,11 +26,11 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>Attention, vous allez supprimer définitivement cette colone de la table Habitat.</p>
+          <p>Attention, cette action supprimera définitivement le champ pour tout les habitats de catégorie.</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-          <button type="button" class="btn btn-danger">Confirmer</button>
+          <button id="btnConfirmer" type="button" class="btn btn-danger">Confirmer</button>
         </div>
       </div>
     </div>
@@ -115,6 +115,16 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
+          $('body').on("click", ".glyphicon-trash", function(){
+
+            $(this).closest('tr').addClass('select');
+            var nomc = $('.select').find(":first-child").text();
+            $('.modal-title').text('Supprimer la colonne '+nomc);
+            /*var nom_colone = $(this).parent().parent().find(":first-child").text();
+            console.log(nom_colone);
+            $('#modal').data('nom_colone', nom_colone).modal();*/
+          });
+
           var colonnesTable = {!! json_encode($colonnesTable) !!};
 
           $.each(colonnesTable, function(key, value){console.log(key); console.log(value); 
@@ -122,6 +132,10 @@
                 /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
                 /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/
               );
+          });
+
+          $('#btnConfirmer').click(function(){
+            alert($('.select > td').text);
           });
 
           $(".alert-success").delay(2000).fadeOut();
@@ -144,11 +158,9 @@
 
           //select toutes les valeurs enums de la colonne enum de la categorie selectionnée dans la table categorie
           $('#categorie').change(function(){
-
             /*$.get("/atypik_house_website/public/habitats/get_enums", function(data){
               alert(data);
             });*/
-
             var url = '/atypik_house_website/public/habitats/get_enums';
             var idCategorie = $('#categorie').val();
 
@@ -158,15 +170,7 @@
                 dataType: "json",                 
             })
             .done(function(data){
-              alert(data);console.log(data); 
-
-              /*for(var i = 0; i < data.length; i++){
-
-              }*/
-
-
               $.each(data, function(key, value){console.log(key); console.log(value); 
-
                   $('tbody').append('<tr><td>'+value.nom+'</td><td>'+value.type+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
                     /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
                     /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/

@@ -6,5 +6,5 @@ interface CategorieRepositoryInterface
 {
 
 	public function getLibelleCategories();
-    public function getIdCategorie($idCategorie);
+    public function getIdCategorie($libelle);
 }

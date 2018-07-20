@@ -20,6 +20,13 @@ class CategorieRepository implements CategorieRepositoryInterface
 		return $categories;
 	}*/
 
+	/*public function getChampsCategorie($idCategorie){
+		
+		
+
+		return $champs;
+	}*/
+
 	public function getLibelleCategories(){
 		$categories = $this->categorie->pluck('libelle_categorie', 'id')->toArray();
 		
@@ -28,9 +35,9 @@ class CategorieRepository implements CategorieRepositoryInterface
 		return $categories;
 	}
 
-	public function getIdCategorie($idCategorie)
+	public function getIdCategorie($libelle)
 	{
-        $categorie = Categorie::where('id', $idCategorie)->first();
+        $categorie = Categorie::where('libelle_categorie', $libelle)->first();
         $idCategorie = $categorie->id;
 
         return $idCategorie;

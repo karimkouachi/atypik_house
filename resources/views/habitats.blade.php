@@ -28,6 +28,17 @@
       </div>
   {!! Form::close() !!}
 
+  <div class="row">
+    <div class="form-group  col-lg-8 col-lg-offset-2">
+      <div class="input-group input-group-lg">
+        <input id="recherche" type="text" class="form-control" placeholder="Recherche...">
+        <span class="input-group-btn">
+          <button id="btnRecherche" class="btn btn-default" type="button">Go!</button>
+        </span>
+      </div>
+    </div>
+  </div>
+
   @foreach ($habitats as $habitat)      
     <div class="jumbotron">
   		<h1>{{$habitat->nom_habitat}}</h1>
@@ -48,6 +59,33 @@
     <script type="text/javascript">
         $(document).ready(function() {
           $(".alert-success").delay(2000).fadeOut();
+
+          $('#btnRecherche').click(function(){
+
+            var url = "/atypik_house_website/public/habitats";
+            var phrase = $('#recherche').val();
+
+            $.ajax({
+              url: url,
+              data: {'phrase': phrase},
+              dataType: "json",                 
+            })
+            .done(function(data){
+              console.log(data); 
+
+              /*window.location="{{URL::to('/habitats/edit')}}";*/
+
+              /*$.each(data, function(key, value){
+                $('hr').before(
+                    '<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'
+                  );
+              });*/
+            })
+            .fail(function(data) {
+              alert("FAIL"); 
+            });  
+          });
+
         });
     </script>
 @endsection
