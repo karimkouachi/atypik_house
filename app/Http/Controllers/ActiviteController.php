@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\ActiviteRepository;
+use App\Http\Repositories\HabitatActiviteRepository;
+use App\Http\Repositories\HabitatRepository;
 use App\Http\Requests\ActiviteRequest;
 
 use App\Models\Activite;
@@ -31,9 +33,13 @@ class ActiviteController extends Controller
    *
    * @return Response
    */
-  public function create()
+  public function create($id, HabitatRepository $habitatRepository)
   {
-    return view("create_activite");
+    $habitat = $habitatRepository->getHabitat($id);
+
+    $idCurrentHabitat = $habitat->id;
+
+    return view("create_activite")->with('idCurrentHabitat', $idCurrentHabitat);
   }
 
   /**
@@ -41,9 +47,11 @@ class ActiviteController extends Controller
    *
    * @return Response
    */
-  public function store(ActiviteRequest $activiteRequest, ActiviteRepository $activiteRepository)
+  public function store(ActiviteRepository $activiteRepository, ActiviteRequest $activiteRequest, HabitatActiviteRepository $habitatActiviteRepository)
   {
     $validated = $activiteRequest->validated();
+
+    $idCurrentHabitat = $_POST['idCurrentHabitat'];
 
     $activiteRepository->save(
       $_POST["libelle_activite"],
@@ -52,6 +60,14 @@ class ActiviteController extends Controller
       $_POST["ville_activite"],
       $_POST["pays_activite"],
       $_POST["descriptif_activite"]
+    );
+
+    $currentActivite = $activiteRepository->getLastCreatedActivite();
+    $idCurrentActivite = $currentActivite->id;
+
+    $habitatActiviteRepository->save(
+      $idCurrentHabitat,
+      $idCurrentActivite
     );
 
     Session::flash('message', 'Activité créée avec succès!');

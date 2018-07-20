@@ -108,21 +108,20 @@ class HabitatController extends Controller
     
       $habitatRepository->save(
         $_POST["nom_habitat"],
-        $_POST["capacite_habitat"],
         $_POST["prix_habitat"],
-        $_POST["adresse_habitat"],
-        $_POST["cp_habitat"],
-        $_POST["ville_habitat"],
-        $_POST["pays_habitat"],
         $_POST["num_habitat"],
         $_POST["photo_habitat"],
         $idProprietaire,
         $_POST["categorie"]
       );
 
+      $currentHabitat = $habitatRepository->getLastCreatedHabitat();
+
+      $idCurrentHabitat = $currentHabitat->id;
+
     Session::flash('message', 'Habitat crée avec succès!');
 
-    return Redirect::to('activite/create');
+    return view('create_activite')->with('idCurrentHabitat', $idCurrentHabitat);
   }
 
   /**
@@ -331,7 +330,11 @@ class HabitatController extends Controller
   public function seeReservations($id, ReservationRepository $reservationRepository){
     $reservationsParHabitat = $reservationRepository->getReservationsByHabitat($id);
 
+<<<<<<< HEAD
     return view('reservations_by_habitat')->with('reservations', $reservationsParHabitat);
+=======
+    return view('reservations')->with('reservations', $reservationsParHabitat);
+>>>>>>> 9229d05730b85287986b14b43d5fcafcb8463f48
   }
   
 }

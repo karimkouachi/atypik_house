@@ -25,12 +25,6 @@ class HabitatRequest extends FormRequest
     {
         return [
               'nom_habitat' => 'required',
-              'capacite_habitat' => 'required',
-              'prix_habitat' => 'required',
-              'adresse_habitat' => 'required',
-              'cp_habitat' => 'required',
-              'ville_habitat' => 'required',
-              'pays_habitat' => 'required',
               'num_habitat' => 'required',
               'photo_habitat' => 'required'
         ];

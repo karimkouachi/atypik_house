@@ -20,6 +20,9 @@
       @if ($habitat->dispo_habitat == 1)
         <a href="{{ URL::to('reservation/'.$habitat->id.'/makeReservation') }}" class="btn btn-info">Réserver cet habitat</a>
       @endif
+      @if ($habitat->dispo_habitat == 1)
+        <a href="{{ URL::to('activite/'.$habitat->id.'/create') }}" class="btn btn-info">Renseigner une activité</a>
+      @endif
       <a href="{{ URL::to('habitat/'.$habitat->id.'/allReservations') }}" class="btn btn-info">Voir réservations de cet habitat</a>
       @if ($habitat->actif_habitat == 0)
         {!! Form::open(array('url' => 'habitat/'. $habitat->id . '/checkHabitat')) !!}

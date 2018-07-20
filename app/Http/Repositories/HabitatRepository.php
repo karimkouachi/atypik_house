@@ -84,6 +84,7 @@ class HabitatRepository implements HabitatRepositoryInterface
         return $habitat;
     }
 
+
     public function addField($idCategorie, $nom, $type, $longueur, $reservationRepository){
         /*$alterTableFile = fopen(app_path()."/../database/migrations/2018_07_12_230245_add_field_to_habitat.php", "r+");
 */
@@ -126,18 +127,13 @@ class HabitatRepository implements HabitatRepositoryInterface
         return "envoi demande de re-saisie des nouveaux champs de l'habitat par son proprietaire";
     }
 
-	public function save($nom_habitat, $capacite_habitat, $prix_habitat, $adresse_habitat, $cp_habitat, $ville_habitat, $pays_habitat, $num_habitat, $photo_habitat, $proprietaire_id, $categorie_id)
+	public function save($nom_habitat, $prix_habitat, $num_habitat, $photo_habitat, $proprietaire_id, $categorie_id)
 	{
 
         $date_create_habitat = Carbon::now('Europe/Paris');
 
         $this->habitat->nom_habitat = $nom_habitat;
-        $this->habitat->capacite_habitat = $capacite_habitat;
         $this->habitat->prix_habitat = $prix_habitat;
-        $this->habitat->adresse_habitat = $adresse_habitat;
-        $this->habitat->cp_habitat = $cp_habitat;
-        $this->habitat->ville_habitat = $ville_habitat;
-        $this->habitat->pays_habitat = $pays_habitat;
         $this->habitat->num_habitat = $num_habitat;
         $this->habitat->photo_habitat = $photo_habitat;
         $this->habitat->date_create_habitat = $date_create_habitat;

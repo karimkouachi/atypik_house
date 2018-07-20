@@ -19,9 +19,11 @@ class ReservationController extends Controller
    *
    * @return Response
    */
-  public function index()
+  public function index($id, HabitatRepository $habitatRepository)
   {
-    
+    $reservationsByHabitat = $habitatRepository->getReservationsByHabitat($id);
+
+    return view('reservations')->with('reservations', $reservationsByHabitat);
   }
 
   /**
@@ -52,7 +54,6 @@ class ReservationController extends Controller
       $_POST["date_debut_reservation"],
       $_POST["date_fin_reservation"],
       $_POST["participants_reservation"],
-      $_POST["commentaire_reservation"],
       $idHabitat,
       $idLocataire
     );
@@ -67,9 +68,11 @@ class ReservationController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function show($id)
+  public function show($id, ReservationRepository $reservationRepository)
   {
-    
+    $reservation = $reservationRepository->getReservationById($id);
+
+    return view('reservation')->with('reservation', $reservation);
   }
 
   /**
@@ -103,6 +106,27 @@ class ReservationController extends Controller
   public function destroy($id)
   {
     
+  }
+
+  public function comment_stay($id, ReservationRepository $reservationRepository)
+  {
+
+    $reservationRepository->commentStay(
+      $id,
+      $_POST['commentaire_reservation']
+    );
+
+    Session::flash('message', 'Commentaire envoyé avec succès!');
+
+    return Redirect::to('reservation/'.$id);
+  }
+  
+  public function delete_comment($id, ReservationRepository $reservationRepository){
+    $reservationRepository->deleteComment($id);
+
+    Session::flash('message', 'Commentaire supprimé avec succès!');
+
+    return Redirect::to('reservation/'.$id);
   }
   
 }

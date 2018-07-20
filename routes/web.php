@@ -39,8 +39,12 @@ Route::any("/habitats/update", "HabitatController@update_habitats_gerant")->name
 Route::any("/habitats/get_enums", "HabitatController@get_enums_categorie")->name("getEnumsCategorie");
 Route::any("/habitats/delete_enum", "HabitatController@delete_enum")->name("deleteEnum");
 
+
 //RESERVATION
+Route::any("/reservation/{idReservation}/commentStay", "ReservationController@comment_stay")->name("commentStay");
+Route::any("/reservation/{idReservation}/deleteComment", "ReservationController@delete_comment")->name("deleteComment");
 Route::any("/reservation/{idHabitat}/makeReservation", "ReservationController@make")->name("makeReservation");
+Route::any("/reservation/{idReservation}", "ReservationController@show")->name("showReservation");
 Route::any("/reservation/{idHabitat}/storeReservation", "ReservationController@store")->name("storeReservation");
 
 Route::resource('habitat', 'HabitatController');
@@ -59,3 +63,4 @@ Route::resource('habitatactivite', 'HabitatActiviteController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::any('/home/{idUser}/disableAccount', 'HomeController@disable_account')->name('disableAccount');

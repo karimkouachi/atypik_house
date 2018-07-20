@@ -19,12 +19,11 @@ class ReservationRepository implements ReservationRepositoryInterface
 		$this->idEtat = $etatReservationRepository->getEtatReservation('En attente');
 	}
 
-	public function makeReservation($date_debut_reservation, $date_fin_reservation, $participants_reservation, $commentaire_reservation, $habitat_id, $locataire_id)
+	public function makeReservation($date_debut_reservation, $date_fin_reservation, $participants_reservation, $habitat_id, $locataire_id)
 	{
         $this->reservation->date_debut_reservation = $date_debut_reservation;
         $this->reservation->date_fin_reservation = $date_fin_reservation;
         $this->reservation->participants_reservation = $participants_reservation;
-        $this->reservation->commentaire_reservation = $commentaire_reservation;
         $this->reservation->habitat_id = $habitat_id;
         $this->reservation->locataire_id = $locataire_id;
         $this->reservation->etat_reservation_id = $this->idEtat;
@@ -46,10 +45,28 @@ class ReservationRepository implements ReservationRepositoryInterface
 		return $reservationsByHabitat;
 	}
 
+
 	public function getHabitat($id)
 	{
         $reservations = Reservation::where('habitat_id', $id)->get();
 
         return $reservations;
+
+	public function getReservationById($id){
+    	$reservation = $this->reservation->findOrFail($id);
+
+        return $reservation;
+	}
+
+	public function commentStay($idReservation, $commentaire_reservation){
+		$reservation = $this->reservation->where('id', $idReservation)->update(['commentaire_reservation' => $commentaire_reservation]);
+
+        return $reservation;
+	}
+
+	public function deleteComment($idReservation){
+		$reservation = $this->reservation->where('id', $idReservation)->update(['commentaire_reservation' => ""]);
+
+		return $reservation;
 	}
 }

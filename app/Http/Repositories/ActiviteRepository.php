@@ -27,4 +27,9 @@ class ActiviteRepository implements ActiviteRepositoryInterface
         $this->activite->save();
     }
 
+        public function getLastCreatedActivite(){
+        $activiteCurrent = $this->activite->orderBy('id', 'desc')->first();
+
+        return $activiteCurrent;
+    }
 }

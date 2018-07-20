@@ -125,6 +125,27 @@
       </div> -->
 
       <!-- <input type="hidden" name="_token" value="{{ csrf_token() }}"> -->
+
+  		<div class="form-group">
+  			{!! Form::label('prix_habitat', "Prix de habitat:", ['class' => 'col-lg-2 control-label']) !!}
+  			<div class="col-lg-10">
+  				{!! Form::text('prix_habitat', null, ['class' => 'form-control', 'placeholder' => '100,00']) !!}
+  			</div>
+  		</div>
+
+  		<div class="form-group">
+  			{!! Form::label('num_habitat', 'Téléphone:', ['class' => 'col-lg-2 control-label']) !!}
+  			<div class="col-lg-10">
+  				{!! Form::text('num_habitat', null, ['class' => 'form-control', 'placeholder' => '01 00 00 00 00']) !!}
+  			</div>
+  		</div>
+
+  		<div class="form-group">
+  			{!! Form::label('photo_habitat', 'Photo:', ['class' => 'col-lg-2 control-label']) !!}
+  			<div class="col-lg-10">
+  				{!! Form::text('photo_habitat', null, ['class' => 'form-control', 'placeholder' => 'photo.jpg']) !!}
+  			</div>
+  		</div>
   		
 			<div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
