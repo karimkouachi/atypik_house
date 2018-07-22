@@ -46,11 +46,12 @@ class ReservationRepository implements ReservationRepositoryInterface
 	}
 
 
-	public function getHabitat($id)
+	public function getHabitatReserve($id)
 	{
         $reservations = Reservation::where('habitat_id', $id)->get();
 
         return $reservations;
+    }
 
 	public function getReservationById($id){
     	$reservation = $this->reservation->findOrFail($id);

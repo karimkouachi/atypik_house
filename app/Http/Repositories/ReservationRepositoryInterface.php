@@ -10,7 +10,9 @@ interface ReservationRepositoryInterface
 
 	public function getReservationsByHabitat($habitat_id);
 
-	public function getHabitat($id);
+	public function getHabitatReserve($id);
+
+	public function getReservationById($id);
 
 	public function commentStay($idReservation, $commentaire_reservation);
 

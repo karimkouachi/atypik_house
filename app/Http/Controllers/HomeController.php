@@ -36,11 +36,8 @@ class HomeController extends Controller
 
         $mesReservations = $reservationRepository->getReservationsByTenantId($locataireId);
 
-<<<<<<< HEAD
         /*var_dump($mesReservations);die;*/
 
-=======
->>>>>>> 9229d05730b85287986b14b43d5fcafcb8463f48
         return view('home')->with("reservations", $mesReservations);
     }
 

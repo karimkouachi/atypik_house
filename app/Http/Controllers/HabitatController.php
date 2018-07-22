@@ -6,6 +6,9 @@ use App\Http\Repositories\CategorieRepository;
 use App\Http\Repositories\HabitatRepository;
 use App\Http\Repositories\MessageRepository;
 use App\Http\Repositories\ReservationRepository;
+use App\Http\Repositories\CreationChampRepository;
+use App\Http\Repositories\TypeChampRepository;
+use App\Http\Repositories\ChampHabitatRepository;
 use App\Http\Requests\HabitatRequest;
 use App\Http\Requests\MessageRequest;
 use App\Models\Habitat;
@@ -63,9 +66,24 @@ class HabitatController extends Controller
    *
    * @return Response
    */
-  public function get_champs_categorie(CategorieRepository $categorieRepository)
+  public function get_champs_categorie(CategorieRepository $categorieRepository, CreationChampRepository $creationChampRepository, TypeChampRepository $typeChampRepository)
   {
     $idCategorie = $_GET['idCategorie'];
+
+    //Recup valeurs enums pour id categorie
+    $libelleEnums = $categorieRepository->getEnumsOneCategorie($idCategorie);
+
+    if(count($libelleEnums)>0){
+      $champs = $creationChampRepository->getField($libelleEnums);
+
+      foreach ($champs as $key => $champ) {
+        $libelleType = $typeChampRepository->getLibelleTypeById($champ->type_champ_id);
+        $champ->type_champ_id = $libelleType;
+      }
+
+    }else{
+      $champs = "";
+    }
 
     /*$sm = DB::getDoctrineSchemaManager();
     $bdds = $sm->listDatabases();
@@ -82,7 +100,7 @@ class HabitatController extends Controller
 
     /*$champs = $categorieRepository->getChampsCategorie($idCategorie);*/
     
-    return Response::json("champsTableHabitat");
+    return Response::json($champs);
   }
 
   /**
@@ -209,12 +227,15 @@ class HabitatController extends Controller
    * @param
    * @return Response
    */
-  public function edit_habitats_gerant(CategorieRepository $categorieRepository)
+  public function edit_habitats_gerant(CategorieRepository $categorieRepository, TypeChampRepository $typeChampRepository)
   {
     $categories = $categorieRepository->getLibelleCategories();
+
+    $types = $typeChampRepository->getTypes();
+
     /*$colonnes = Schema::getColumnListing("habitat");*/
 
-    $sm = DB::getDoctrineSchemaManager();
+    /*$sm = DB::getDoctrineSchemaManager();
     $bdds = $sm->listDatabases();
     $columns = $sm->listTableColumns('habitat');
 
@@ -226,49 +247,53 @@ class HabitatController extends Controller
         'type' => $column->getType()->getName()
         )
       );
-    }
+    }*/
 
-    return view("edit_habitats_gerant")->with(array("categories" => $categories, "colonnesTable" => $colonnesTable));
+    return view("edit_habitats_gerant")->with(array("categories" => $categories, "types" => $types));
   }
 
-  public function get_enums_categorie(CategorieRepository $categorieRepository){
+  public function get_enums_categorie(CategorieRepository $categorieRepository, CreationChampRepository $creationChampRepository){
 
-    $idCategorie = $_GET['idCategorie'];
+    $idsCategorie = $_GET['idsCategorie'];
 
-    /*$enums = $categorieRepository->getEnums($idCategorie);*/
-    /*$enums = Schema::getColumnListing("habitat");*/
-    /*$enums = DB::connection()->getDoctrineColumn('habitat', 'nom_habitat')->getType();*/
-    /*$enums = ['superficie'];*/
+    $enums = $categorieRepository->getEnumsAllCategories($idsCategorie);
 
-    $sm = DB::getDoctrineSchemaManager();
-    $bdds = $sm->listDatabases();
-    $columns = $sm->listTableColumns('habitat');
+    $tabChampsCategories = $creationChampRepository->getFieldsAllCategories($enums);
 
-    $colonnesTable = [];
-
-    foreach ($columns as $column) {
-      array_push($colonnesTable, array(
-        'nom' => $column->getName(),
-        'type' => $column->getType()->getName()
-        )
-      );
-    }
-
-    return Response::json( $colonnesTable );
+    return Response::json( $tabChampsCategories );
   }
 
-  public function delete_enum(CategorieRepository $categorieRepository){
+  public function delete_enum(HabitatRepository $habitatRepository, CategorieRepository $categorieRepository, CreationChampRepository $creationChampRepository, ChampHabitatRepository $champHabitatRepository){
 
-    $idCategorie = $_GET['idCategorie'];
-    $champ = $_GET['champ'];
+    $categorie = $_GET['categorie'];
+    $libelleChamp = $_GET['libelleChamp'];
 
-    /*$enums = $categorieRepository->deleteEnum($idCategorie, $champ);*/
-    /*$enums = Schema::getColumnListing("habitat");*/
-    $enums = ['superficie supprimé'];
+    $idCategorie = $categorieRepository->getIdCategorie($categorie);
 
-    Session::flash('message', 'Champ supprimé avec succès!');  
+    $enums = $categorieRepository->deleteEnum($categorie, $libelleChamp);
 
-    return Response::json( $enums );
+    $champ = $creationChampRepository->getField($libelleChamp);
+    $idChamp = $champ[0]->id;
+
+    $habitats = $habitatRepository->getHabitatsByOneCategorie($idCategorie);
+
+    $idHabitats = [];
+
+    foreach ($habitats as $key => $habitat) {
+      array_push($idHabitats, $habitat->id);
+    }
+
+    /*$idHabitats = $champHabitatRepository->getIdHabitatsByIdChamp($idChamp);*/
+
+    $nbChampHabitat = $champHabitatRepository->deleteField($idHabitats, $idChamp);
+
+    if(count($nbChampHabitat) == 0){
+      $creationChampRepository->deleteField($libelleChamp);
+    }
+
+    $message = 'Champ supprimé avec succès!';  
+
+    return Response::json( $message );
   }  
 
   /**
@@ -277,13 +302,15 @@ class HabitatController extends Controller
    * @param
    * @return Response
    */
-  public function update_habitats_gerant(Request $request, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository, ReservationRepository $reservationRepository)
+  public function update_habitats_gerant(Request $request, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository,
+    ReservationRepository $reservationRepository, CreationChampRepository $creationChampRepository, ChampHabitatRepository $champHabitatRepository)
   {
+    $idsCategorie = $_POST['categories'];
     $nom = $_POST['nom'];
-    $type = $_POST['type'];
-    $longueur = $_POST['longueur'];
+    $type = $_POST['type'];    
+    $nullable = $_POST['nullable'];
 
-    if($type == "varchar"){
+    if($type == "7"){
       $validated = $request->validate([
         'nom' => 'required',
         'longueur' => 'required'
@@ -294,8 +321,19 @@ class HabitatController extends Controller
       ]);
     }
 
-    $idCategrorie = $categorieRepository->getIdCategorie($_POST['categorie']);
-    $habitat = $habitatRepository->addField($idCategrorie, $nom, $type, $longueur, $reservationRepository);
+    if($_POST['longueur'] == ""){
+      $longueur = null;
+    }else{
+      $longueur = $_POST['longueur'];  
+    }
+
+    $idNouveauChamp = $creationChampRepository->createField($nom, $type, $longueur, $nullable);
+
+    $habitats = $habitatRepository->getHabitatsByCategorie($idsCategorie);
+
+    $habitatRepository->addField($habitats, $idNouveauChamp, $reservationRepository, $champHabitatRepository);
+
+    $categorieRepository->addEnum($idsCategorie, $nom);
 
     Session::flash('message', 'Habitats modifier avec succès!');    
 
@@ -330,11 +368,9 @@ class HabitatController extends Controller
   public function seeReservations($id, ReservationRepository $reservationRepository){
     $reservationsParHabitat = $reservationRepository->getReservationsByHabitat($id);
 
-<<<<<<< HEAD
-    return view('reservations_by_habitat')->with('reservations', $reservationsParHabitat);
-=======
+    /*return view('reservations_by_habitat')->with('reservations', $reservationsParHabitat);*/
+
     return view('reservations')->with('reservations', $reservationsParHabitat);
->>>>>>> 9229d05730b85287986b14b43d5fcafcb8463f48
   }
   
 }

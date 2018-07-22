@@ -61,14 +61,14 @@
         </div>
       </div>
 
-  		<!-- <div class="form-group">
+  		<div class="form-group">
         {!! Form::label('nom_habitat', "Nom de l'habitat:", ['class' => 'col-lg-2 control-label']) !!}
         <div class="col-lg-10">
           {!! Form::text('nom_habitat', null, ['class' => 'form-control', 'placeholder' => 'Cabane dans un arbre']) !!}
         </div>
       </div>
       
-      <div class="form-group">
+      <!-- <div class="form-group">
         {!! Form::label('capacite_habitat', "Capacite de l'habitat:", ['class' => 'col-lg-2 control-label']) !!}
         <div class="col-lg-10">
           {!! Form::text('capacite_habitat', null, ['class' => 'form-control', 'placeholder' => '2']) !!}
@@ -178,11 +178,13 @@
                 dataType: "json",                 
             })
             .done(function(data){console.log(data);
-              /*$.each(data, function(key, value){console.log(key); console.log(value); 
-                  $('tbody').append('<tr><td>'+value.nom+'</td><td>'+value.type+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
-                    
-                  );
-              });*/
+              $('.champ_sup').remove();
+              $.each(data, function(key, value){console.log(value); 
+                  /*$('tbody').append('<tr><td>'+value.nom+'</td><td>'+value.type+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
+                    */
+                  $('form').append('<div class="form-group champ_sup"><label for="'+value.libelle_champ+'_habitat" class="col-lg-2 control-label">'+value.libelle_champ+':</label><div class="col-lg-10"><input class="form-control" name="'+value.libelle_champ+'_habitat" type="'+value.type_champ_id+'" id="'+value.libelle_champ+'_habitat"></div></div>');
+                  
+              });
             })
             .fail(function(data) {
               alert("FAIL");console.log("FAIL"); 

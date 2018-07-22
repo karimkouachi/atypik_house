@@ -11,6 +11,8 @@ interface HabitatRepositoryInterface
 
 	public function getHabitat($id);
 
+	public function getHabitatsByCategorie($idsCategorie);
+
     public function save($nom_habitat, $prix_habitat, $num_habitat, $photo_habitat, $proprietaire_id, $categorie_id);
 
     public function hideHabitat($idHabitat);

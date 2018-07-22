@@ -10,7 +10,7 @@ class CreateCategorieTable extends Migration {
 		Schema::create('categorie', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('libelle_categorie', 100);
-			$table->enum('enum_categorie', array(''));
+			$table->longText('enum_categorie')->nullable();
 		});
 	}
 

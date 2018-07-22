@@ -84,43 +84,34 @@ class HabitatRepository implements HabitatRepositoryInterface
         return $habitat;
     }
 
+    public function getHabitatsByCategorie($idsCategorie){
+        $habitats = $this->habitat->whereIn('categorie_id', $idsCategorie)->get();
 
-    public function addField($idCategorie, $nom, $type, $longueur, $reservationRepository){
-        /*$alterTableFile = fopen(app_path()."/../database/migrations/2018_07_12_230245_add_field_to_habitat.php", "r+");
-*/
-        /*while (!feof($alterTableFile))
-        {
-            if (($ligne = fgets($alterTableFile)) !== false)
-            {
-                echo $ligne;*/
-                /*'Schema::table("habitat", function (Blueprint $table) {'
-                fwrite($alterTableFile, "table->string(name, 100);");*/
-            /*}
-       }die;*/
+        return $habitats;
+    }
 
-        /*while ( ($ligne = fgets($alterTableFile) ) !== "Schema::table('habitat', function (Blueprint") {
-            
-            fputs($alterTableFile, "table->string(name, 100);");
-        }   */     
+    public function getHabitatsByOneCategorie($idCategorie){
+        $habitats = $this->habitat->where('categorie_id', $idCategorie)->get();
 
-        /*fclose($alterTableFile);*/
+        return $habitats;
+    }
 
-        if(!empty($longueur)){
+    public function addField($habitats, $idNouveauChamp, $reservationRepository, $champHabitatRepository){
+        /*if(!empty($longueur)){
             DB::statement("ALTER TABLE habitat ADD ".$nom." ".$type."(".$longueur.")");
         }else{
             DB::statement("ALTER TABLE habitat ADD ".$nom." ".$type);
-        }
+        }*/
 
-        $habitats = Habitat::where('categorie_id', $idCategorie)->get();
+        foreach ($habitats as $habitat) {
+            $champHabitatRepository->addFieldHabitat($habitat, $idNouveauChamp);
 
-        foreach ($habitats as $key => $habitat) {
-
-            $reservations = $reservationRepository->getHabitat($habitat->id);
+            $reservations = $reservationRepository->getHabitatReserve($habitat->id);
 
             if(count($reservations) > 0){
-                $this->habitat->where('categorie_id', $_POST['categorie'])->update(['dispo_habitat' => 0]);
+                $this->habitat->where('categorie_id', $_POST['categories'])->update(['dispo_habitat' => 0]);
             }else{
-                $this->habitat->where('categorie_id', $_POST['categorie'])->update(['actif_habitat' => 0]);   
+                $this->habitat->where('categorie_id', $_POST['categories'])->update(['actif_habitat' => 0]);   
             }   
         }
 

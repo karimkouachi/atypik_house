@@ -17,7 +17,7 @@ class CreateChampHabitatTable extends Migration
             $table->increments('id');
             $table->integer('habitat_id')->unsigned();
             $table->integer('champ_id')->unsigned();
-            $table->string('valeur_champ_habitat');
+            $table->string('valeur_champ_habitat')->nullable();
         });
     }
 

@@ -43,18 +43,55 @@ class CategorieRepository implements CategorieRepositoryInterface
         return $idCategorie;
 	}
 
-	public function getEnums($idCategorie)
+	public function getEnumsOneCategorie($idCategorie)
 	{
         $categorie = Categorie::where('id', $idCategorie)->first();
         $enums = $categorie->enum_categorie;
+        $enums = explode(";", $enums);
 
         return $enums;
 	}
 
-	public function deleteEnum($idCategorie, $champ)
+	public function getEnumsAllCategories($idsCategorie)
 	{
-        $categorie = Categorie::where('id', $idCategorie)->first();
-        $enums = $this->getEnums($idCategorie);
+        $categories = $this->categorie->whereIn('id', $idsCategorie)->get();
+
+        $tabEnumsCategories = [];
+
+        foreach ($categories as $categorie) {
+        	$enums = $categorie->enum_categorie;
+        	$enums = explode(";", $enums);
+        	array_pop($enums);
+      		array_push($tabEnumsCategories, array($categorie->libelle_categorie => $enums));
+        }
+
+        return $tabEnumsCategories;
+	}	
+
+	public function addEnum($idsCategorie, $nom)
+	{        
+        $categories = $this->categorie->whereIn('id', $idsCategorie)->get();
+        foreach ($categories as $categorie) {
+        	$enums = $categorie->enum_categorie;
+
+        	$tabEnums = explode(";", $enums);
+        	if(!in_array($nom, $tabEnums)){
+        		$this->categorie->where('id', $categorie->id)->update(['enum_categorie' => $nom.";".$enums]);
+        	}
+        }
+
+        return $categories;
+	}	
+
+	public function deleteEnum($categorie, $libelleChamp)
+	{
+        $categorie = Categorie::where('libelle_categorie', $categorie)->first();
+
+        $enums = $categorie->enum_categorie;
+
+        $enums = str_replace($libelleChamp.";", "", $enums);
+
+   		$this->categorie->where('id', $categorie->id)->update(['enum_categorie' => $enums]);
 
         return $enums;
 	}
