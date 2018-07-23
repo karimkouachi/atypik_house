@@ -57,7 +57,7 @@
       <div class="form-group">
         {!! Form::label('categorie', 'Categorie : ', ['class' => 'col-lg-2 control-label']) !!}
         <div class="col-lg-10">
-          {!! Form::select('categorie', $categories, null, ['class' => 'form-control' ]) !!}
+          {!! Form::select('categorie', $categories, null, ['class' => 'form-control', 'placeholder' => 'Choisissez une catégorie']) !!}
         </div>
       </div>
 
@@ -149,7 +149,7 @@
   		
 			<div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
-          {!! Form::submit('Créer', array('class' => 'btn btn-lg btn-success pull-right')) !!}
+          {!! Form::submit('Créer', array('class' => 'btn btn-lg btn-success pull-right', 'id' => 'btnSubmit')) !!}
         </div>
       </div>
   {!! Form::close() !!}
@@ -180,9 +180,22 @@
             .done(function(data){console.log(data);
               $('.champ_sup').remove();
               $.each(data, function(key, value){console.log(value); 
-                  /*$('tbody').append('<tr><td>'+value.nom+'</td><td>'+value.type+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
-                    */
-                  $('form').append('<div class="form-group champ_sup"><label for="'+value.libelle_champ+'_habitat" class="col-lg-2 control-label">'+value.libelle_champ+':</label><div class="col-lg-10"><input class="form-control" name="'+value.libelle_champ+'_habitat" type="'+value.type_champ_id+'" id="'+value.libelle_champ+'_habitat"></div></div>');
+                  
+                  var containerSubmit = $('#btnSubmit').parent().parent();
+
+                  if(value.null_champ) {
+                    var required = "";
+                  }else{
+                    var required = "required";
+                  }
+
+                  if(value.longueur_champ != null){
+                    var longueurMax = 'maxlength="'+value.longueur_champ+'"';
+                  }else{
+                    var longueurMax = "";
+                  }
+
+                  $('<div class="form-group champ_sup"><label for="'+value.libelle_champ+'_habitat" class="col-lg-2 control-label">'+value.libelle_champ+':</label><div class="col-lg-10"><input class="form-control" placeholder="'+value.placeholder_champ+'" name="'+value.libelle_champ+'_habitat" type="'+value.type_champ_id+'" id="'+value.libelle_champ+'_habitat" '+longueurMax+' '+required+'></div></div>').insertBefore(containerSubmit);
                   
               });
             })

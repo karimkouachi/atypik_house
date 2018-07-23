@@ -30,13 +30,13 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 		return $champs;
 	}
 
-	public function getFieldsAllCategories($tabEnumsCategories)
+	public function getFieldsAllCategories($tabIdEnumsCategories)
 	{	
 		$tabChampsCategories = [];
 
-		foreach ($tabEnumsCategories as $key => $categories) {
-			foreach ($categories as $keyLibelleChamps => $libelleChamps) {
-				$champs = $this->creationChamp->whereIn('libelle_champ', $libelleChamps)->get();
+		foreach ($tabIdEnumsCategories as $key => $categories) {
+			foreach ($categories as $keyIdChamps => $idChamps) {
+				$champs = $this->creationChamp->whereIn('id', $idChamps)->get();
 
 				foreach ($champs as $key => $champ) {
 					$type = TypeChamp::where('id', $champ->type_champ_id)->first();
@@ -44,13 +44,13 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 					$champ->type_champ_id = $libelleType;
 				}
 
-				array_push($tabChampsCategories, array($keyLibelleChamps => $champs));				
+				array_push($tabChampsCategories, array($keyIdChamps => $champs));				
 			}
 		}
 		return $tabChampsCategories;
 	}
 
-	public function CreateField($nom, $type, $longueur, $nullable)
+	public function CreateField($nom, $type, $longueur, $nullable, $placeholder)
 	{	
 		$champ = $this->creationChamp->where('libelle_champ', $nom)->get();
 
@@ -63,6 +63,7 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 			$this->creationChamp->type_champ_id = $type;
 			$this->creationChamp->longueur_champ = $longueur;
 			$this->creationChamp->null_champ = $nullable;
+			$this->creationChamp->placeholder_champ = $placeholder;
 
 			$this->creationChamp->save();
 
