@@ -95,6 +95,20 @@
       </div>
     </div>
 
+    <!-- <div class="form-group">
+      {!! Form::label('choix', "Choix:", ['class' => 'col-lg-2 control-label']) !!}
+      <div class="col-lg-10">
+        <div class="radio">
+          {!! Form::label('radio1', 'This is option 1.') !!}
+          {!! Form::radio('radio', 'option1', true, ['id' => 'radio1']) !!}
+        </div>
+        <div class="radio">
+          {!! Form::label('radio2', 'This is option 2.') !!}
+          {!! Form::radio('radio', 'option2', true, ['id' => 'radio2']) !!}
+        </div>
+      </div>
+    </div> -->
+
 		<div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
         {!! Form::submit('Ajouter', array('class' => 'btn btn-lg btn-success pull-right')) !!}
