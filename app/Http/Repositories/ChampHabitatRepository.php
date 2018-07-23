@@ -14,21 +14,35 @@ class ChampHabitatRepository implements ChampHabitatRepositoryInterface
 		$this->champHabitat = $champHabitat;
 	}
 
-    public function addFieldHabitat($habitat, $idNouveauChamp)
+    public function addFieldHabitat($habitats, $idNouveauChamp)
     {
-        $champs = $this->champHabitat->where('habitat_id', $habitat->id)->where('champ_id', $idNouveauChamp)->get();
+        foreach ($habitats as $key => $habitat) {
+            $champs = $this->champHabitat->where('habitat_id', $habitat->id)->where('champ_id', $idNouveauChamp)->get();
 
-        if(count($champs)==0){
-            $champHabitat = new ChampHabitat;
+            if(count($champs)==0){
+                $champHabitat = new ChampHabitat;
 
-            $champHabitat->habitat_id = $habitat->id;
-            $champHabitat->champ_id = $idNouveauChamp;
+                $champHabitat->habitat_id = $habitat->id;
+                $champHabitat->champ_id = $idNouveauChamp;
+        /*            $champHabitat->valeur_champ_habitat = null;*/
 
-            $champHabitat->save();           
+                $champHabitat->save();           
+            }
         }
 
-
        return $idNouveauChamp;
+    }
+
+    public function addFieldOneHabitat($idHabitat, $idChamps, $valeurChamp){
+        foreach ($idChamps as $key => $idChamp) {
+            $champHabitat = new ChampHabitat;
+
+            $champHabitat->habitat_id = $idHabitat;
+            $champHabitat->champ_id = $idChamp;
+            $champHabitat->valeur_champ_habitat = $valeurChamp;
+
+            $champHabitat->save();   
+        }
     }
 
     /*public function getIdHabitatsByIdChamp($idChamp){

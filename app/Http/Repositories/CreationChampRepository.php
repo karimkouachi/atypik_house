@@ -68,4 +68,10 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 	public function deleteField($libelleChamp){
 		$this->creationChamp->where('libelle_champ', $libelleChamp)->delete();
 	}
+
+	public function getIdByLibelleEnums($libelleEnums){
+		$idChamps = $this->creationChamp->where('libelle_champ', $libelleEnums)->pluck('id')->toArray();
+
+		return $idChamps;
+	}
 }

@@ -119,23 +119,32 @@ class HabitatController extends Controller
    *
    * @return Response
    */
-  public function store(HabitatRequest $habitatRequest, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
+  public function store(CreationChampRepository $creationChampRepository, ChampHabitatRepository $champHabitatRepository, HabitatRequest $habitatRequest, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
   {
-      $validated = $habitatRequest->validated();
-      $idProprietaire = Auth::user()->id;
-    
-      $habitatRepository->save(
-        $_POST["nom_habitat"],
-        $_POST["prix_habitat"],
-        $_POST["num_habitat"],
-        $_POST["photo_habitat"],
-        $idProprietaire,
-        $_POST["categorie"]
-      );
+    $validated = $habitatRequest->validated();
+    $idProprietaire = Auth::user()->id;
 
-      $currentHabitat = $habitatRepository->getLastCreatedHabitat();
+    $habitatRepository->save(
+      $_POST["nom_habitat"],
+      $_POST["prix_habitat"],
+      $_POST["num_habitat"],
+      $_POST["photo_habitat"],
+      $idProprietaire,
+      $_POST["categorie"]
+    );
 
-      $idCurrentHabitat = $currentHabitat->id;
+    $currentHabitat = $habitatRepository->getLastCreatedHabitat();
+
+    $idCurrentHabitat = $currentHabitat->id;
+
+    $libelleEnums = $categorieRepository->getEnumsOneCategorie($_POST["categorie"]);
+
+    $idChamps = $creationChampRepository->getIdByLibelleEnums($libelleEnums);
+
+    foreach ($libelleEnums as $key => $libelleEnum) {
+      $valeurChamp = $_POST[$libelleEnum.'_habitat'];
+      $champHabitatRepository->addFieldOneHabitat($idCurrentHabitat, $idChamps, $valeurChamp);
+    }
 
     Session::flash('message', 'Habitat crée avec succès!');
 
@@ -331,7 +340,9 @@ class HabitatController extends Controller
 
     $habitats = $habitatRepository->getHabitatsByCategorie($idsCategorie);
 
-    $habitatRepository->addField($habitats, $idNouveauChamp, $reservationRepository, $champHabitatRepository);
+    $champHabitatRepository->addFieldHabitat($habitats, $idNouveauChamp);
+
+    $habitatRepository->addField($habitats, $idNouveauChamp, $reservationRepository);
 
     $categorieRepository->addEnum($idsCategorie, $nom);
 

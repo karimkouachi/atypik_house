@@ -48,6 +48,7 @@ class CategorieRepository implements CategorieRepositoryInterface
         $categorie = Categorie::where('id', $idCategorie)->first();
         $enums = $categorie->enum_categorie;
         $enums = explode(";", $enums);
+        array_pop($enums);
 
         return $enums;
 	}

@@ -96,7 +96,7 @@ class HabitatRepository implements HabitatRepositoryInterface
         return $habitats;
     }
 
-    public function addField($habitats, $idNouveauChamp, $reservationRepository, $champHabitatRepository){
+    public function addField($habitats, $idNouveauChamp, $reservationRepository){
         /*if(!empty($longueur)){
             DB::statement("ALTER TABLE habitat ADD ".$nom." ".$type."(".$longueur.")");
         }else{
@@ -104,7 +104,7 @@ class HabitatRepository implements HabitatRepositoryInterface
         }*/
 
         foreach ($habitats as $habitat) {
-            $champHabitatRepository->addFieldHabitat($habitat, $idNouveauChamp);
+            /*$champHabitatRepository->addFieldHabitat($habitat, $idNouveauChamp);*/
 
             $reservations = $reservationRepository->getHabitatReserve($habitat->id);
 
