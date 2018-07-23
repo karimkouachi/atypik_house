@@ -71,10 +71,10 @@ class HabitatController extends Controller
     $idCategorie = $_GET['idCategorie'];
 
     //Recup valeurs enums pour id categorie
-    $libelleEnums = $categorieRepository->getEnumsOneCategorie($idCategorie);
+    $idEnums = $categorieRepository->getEnumsOneCategorie($idCategorie);
 
-    if(count($libelleEnums)>0){
-      $champs = $creationChampRepository->getField($libelleEnums);
+    if(count($idEnums)>0){
+      $champs = $creationChampRepository->getFieldById($idEnums);
 
       foreach ($champs as $key => $champ) {
         $libelleType = $typeChampRepository->getLibelleTypeById($champ->type_champ_id);
@@ -137,12 +137,14 @@ class HabitatController extends Controller
 
     $idCurrentHabitat = $currentHabitat->id;
 
-    $libelleEnums = $categorieRepository->getEnumsOneCategorie($_POST["categorie"]);
+    $idChamps = $categorieRepository->getEnumsOneCategorie($_POST["categorie"]);
 
-    $idChamps = $creationChampRepository->getIdByLibelleEnums($libelleEnums);
+    $champs = $creationChampRepository->getFieldById($idChamps);
 
-    foreach ($libelleEnums as $key => $libelleEnum) {
-      $valeurChamp = $_POST[$libelleEnum.'_habitat'];
+    /*$idChamps = $creationChampRepository->getIdByLibelleEnums($libelleEnums);*/
+
+    foreach ($champs as $key => $champ) {
+      $valeurChamp = $_POST[$champ->libelle_champ.'_habitat'];
       $champHabitatRepository->addFieldOneHabitat($idCurrentHabitat, $idChamps, $valeurChamp);
     }
 
@@ -344,7 +346,7 @@ class HabitatController extends Controller
 
     $habitatRepository->addField($habitats, $idNouveauChamp, $reservationRepository);
 
-    $categorieRepository->addEnum($idsCategorie, $nom);
+    $categorieRepository->addEnum($idsCategorie, $idNouveauChamp);
 
     Session::flash('message', 'Habitats modifier avec succès!');    
 

@@ -19,6 +19,7 @@ class CreateCreationChampTable extends Migration
             $table->integer('longueur_champ')->nullable();
             $table->tinyInteger('null_champ')->default(0);
             $table->integer('type_champ_id')->unsigned();
+            $table->string('placeholder_champ');
         });
     }
 

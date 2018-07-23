@@ -54,9 +54,16 @@
 		</div>
 
     <div class="form-group">
-      {!! Form::label('nullable', "Null:", ['class' => 'col-lg-2 control-label']) !!}
+      {!! Form::label('nullable', "Le propriétaire doit il renseigner cette valeur:", ['class' => 'col-lg-2 control-label']) !!}
       <div class="col-lg-10">
         {!! Form::select('nullable', ['1' => 'Oui', '0' => 'Non'], null, ['class' => 'form-control']) !!}
+      </div>
+    </div>
+
+    <div id="divValeurDefaut" class="form-group">
+      {!! Form::label('placeholder', "Placeholder:", ['class' => 'col-lg-2 control-label']) !!}
+      <div class="col-lg-10">
+        {!! Form::text('placeholder', null, ['class' => 'form-control', 'placeholder' => '']) !!}
       </div>
     </div>
 
@@ -176,7 +183,6 @@
               alert("FAIL");console.log("FAIL"); 
             });  
           });
-          
 
           $(".alert-success").delay(2000).fadeOut();
 

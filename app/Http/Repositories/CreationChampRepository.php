@@ -24,6 +24,12 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 		/*}*/
 	}
 
+	public function getFieldById($idEnums){
+		$champs = $this->creationChamp->whereIn('id', $idEnums)->get();
+
+		return $champs;
+	}
+
 	public function getFieldsAllCategories($tabEnumsCategories)
 	{	
 		$tabChampsCategories = [];

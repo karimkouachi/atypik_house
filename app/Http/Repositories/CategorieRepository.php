@@ -69,15 +69,15 @@ class CategorieRepository implements CategorieRepositoryInterface
         return $tabEnumsCategories;
 	}	
 
-	public function addEnum($idsCategorie, $nom)
+	public function addEnum($idsCategorie, $idNouveauChamp)
 	{        
         $categories = $this->categorie->whereIn('id', $idsCategorie)->get();
         foreach ($categories as $categorie) {
         	$enums = $categorie->enum_categorie;
 
         	$tabEnums = explode(";", $enums);
-        	if(!in_array($nom, $tabEnums)){
-        		$this->categorie->where('id', $categorie->id)->update(['enum_categorie' => $nom.";".$enums]);
+        	if(!in_array($idNouveauChamp, $tabEnums)){
+        		$this->categorie->where('id', $categorie->id)->update(['enum_categorie' => $idNouveauChamp.";".$enums]);
         	}
         }
 
