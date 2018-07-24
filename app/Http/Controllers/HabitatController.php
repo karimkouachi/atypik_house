@@ -121,8 +121,14 @@ class HabitatController extends Controller
    */
   public function store(CreationChampRepository $creationChampRepository, ChampHabitatRepository $champHabitatRepository, HabitatRequest $habitatRequest, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
   {
-    $validated = $habitatRequest->validated();
     $idProprietaire = Auth::user()->id;
+    
+    //Valider les champs dynamiques
+    /*$validated = $request->validate([
+        
+    ]);*/
+
+    $validated = $habitatRequest->validated();
 
     $habitatRepository->save(
       $_POST["nom_habitat"],
@@ -267,9 +273,9 @@ class HabitatController extends Controller
 
     $idsCategorie = $_GET['idsCategorie'];
 
-    $enums = $categorieRepository->getEnumsAllCategories($idsCategorie);
+    $idEnums = $categorieRepository->getEnumsAllCategories($idsCategorie);
 
-    $tabChampsCategories = $creationChampRepository->getFieldsAllCategories($enums);
+    $tabChampsCategories = $creationChampRepository->getFieldsAllCategories($idEnums);
 
     return Response::json( $tabChampsCategories );
   }
@@ -322,15 +328,16 @@ class HabitatController extends Controller
     $nullable = $_POST['nullable'];
     $placeholder = $_POST['placeholder'];
 
-
-    if($type == "7"){
+    if($type == "7" || $type == "4"){
       $validated = $request->validate([
         'nom' => 'required',
-        'longueur' => 'required'
+        'longueur' => 'required',
+        'placeholder' => 'required'
       ]);
     }else{
       $validated = $request->validate([
-        'nom' => 'required'
+        'nom' => 'required',
+        'placeholder' => 'required'
       ]);
     }
 

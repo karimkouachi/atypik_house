@@ -25,7 +25,8 @@ class HabitatRequest extends FormRequest
     {
         return [
               'nom_habitat' => 'required',
-              'num_habitat' => 'required',
+              'num_habitat' => 'required|max:15',
+              'prix_habitat' => 'required|max:5',
               'photo_habitat' => 'required'
         ];
     }

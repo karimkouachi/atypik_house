@@ -56,14 +56,14 @@
     <div class="form-group">
       {!! Form::label('nullable', "Le propriétaire doit il renseigner cette valeur:", ['class' => 'col-lg-2 control-label']) !!}
       <div class="col-lg-10">
-        {!! Form::select('nullable', ['1' => 'Oui', '0' => 'Non'], null, ['class' => 'form-control']) !!}
+        {!! Form::select('nullable', ['0' => 'Oui', '1' => 'Non'], null, ['class' => 'form-control']) !!}
       </div>
     </div>
 
     <div id="divValeurDefaut" class="form-group">
       {!! Form::label('placeholder', "Placeholder:", ['class' => 'col-lg-2 control-label']) !!}
       <div class="col-lg-10">
-        {!! Form::text('placeholder', null, ['class' => 'form-control', 'placeholder' => '']) !!}
+        {!! Form::text('placeholder', null, ['class' => 'form-control', 'placeholder' => 'Exemple...']) !!}
       </div>
     </div>
 
@@ -88,12 +88,26 @@
       </div>
     </div>
 
-    <div id="divLongueurVarchar" class="form-group none">
+    <div id="divLongueur" class="form-group none">
       {!! Form::label('longueur', "Longueur:", ['class' => 'col-lg-2 control-label']) !!}
       <div class="col-lg-10">
         {!! Form::text('longueur', null, ['class' => 'form-control', 'placeholder' => '255']) !!}
       </div>
     </div>
+
+    <!-- <div class="form-group">
+      {!! Form::label('choix', "Choix:", ['class' => 'col-lg-2 control-label']) !!}
+      <div class="col-lg-10">
+        <div class="radio">
+          {!! Form::label('radio1', 'This is option 1.') !!}
+          {!! Form::radio('radio', 'option1', true, ['id' => 'radio1']) !!}
+        </div>
+        <div class="radio">
+          {!! Form::label('radio2', 'This is option 2.') !!}
+          {!! Form::radio('radio', 'option2', true, ['id' => 'radio2']) !!}
+        </div>
+      </div>
+    </div> -->
 
 		<div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
@@ -187,8 +201,8 @@
           $(".alert-success").delay(2000).fadeOut();
 
           $('#type').change(function(){
-            if($(this).val() == "7"){
-              $('#divLongueurVarchar').toggleClass('none');
+            if($(this).val() == "7" || $(this).val() == "4"){
+              $('#divLongueur').toggleClass('none');
             }else{
               $('#longueur').parent().parent().addClass('none');
             }
