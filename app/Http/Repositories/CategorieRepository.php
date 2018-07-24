@@ -84,13 +84,13 @@ class CategorieRepository implements CategorieRepositoryInterface
         return $categories;
 	}	
 
-	public function deleteEnum($categorie, $libelleChamp)
+	public function deleteEnum($categorie, $idLibelleChamp)
 	{
         $categorie = Categorie::where('libelle_categorie', $categorie)->first();
 
         $enums = $categorie->enum_categorie;
 
-        $enums = str_replace($libelleChamp.";", "", $enums);
+        $enums = str_replace($idLibelleChamp.";", "", $enums);
 
    		$this->categorie->where('id', $categorie->id)->update(['enum_categorie' => $enums]);
 

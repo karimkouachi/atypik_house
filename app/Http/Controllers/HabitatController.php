@@ -285,11 +285,15 @@ class HabitatController extends Controller
     $categorie = $_GET['categorie'];
     $libelleChamp = $_GET['libelleChamp'];
 
-    $idCategorie = $categorieRepository->getIdCategorie($categorie);
+    /*$idCategorie = $categorieRepository->getIdCategorie($categorie);*/
 
-    $enums = $categorieRepository->deleteEnum($categorie, $libelleChamp);
+    $champ = $creationChampRepository->getIdByLibelleEnums($libelleChamp); 
 
-    $champ = $creationChampRepository->getField($libelleChamp);
+    $idChamp = $champ[0]->id;
+
+    $enums = $categorieRepository->deleteEnum($categorie, $idChamp); 
+
+    /*$champ = $creationChampRepository->getField($libelleChamp);
     $idChamp = $champ[0]->id;
 
     $habitats = $habitatRepository->getHabitatsByOneCategorie($idCategorie);
@@ -298,15 +302,15 @@ class HabitatController extends Controller
 
     foreach ($habitats as $key => $habitat) {
       array_push($idHabitats, $habitat->id);
-    }
+    }*/
 
     /*$idHabitats = $champHabitatRepository->getIdHabitatsByIdChamp($idChamp);*/
 
-    $nbChampHabitat = $champHabitatRepository->deleteField($idHabitats, $idChamp);
+    /*$nbChampHabitat = $champHabitatRepository->deleteField($idHabitats, $idChamp);
 
     if(count($nbChampHabitat) == 0){
       $creationChampRepository->deleteField($libelleChamp);
-    }
+    }*/
 
     $message = 'Champ supprimé avec succès!';  
 

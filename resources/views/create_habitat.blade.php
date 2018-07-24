@@ -166,66 +166,70 @@
       $(document).ready(function() {
 
           $('#categorie').change(function(){
-            /*$.get("/atypik_house_website/public/habitats/get_enums", function(data){
-              alert(data);
-            });*/
-            var url = '/atypik_house_website/public/habitat/get_champs_categorie';
-            var idCategorie = $('#categorie').val();
+            if($('#categorie').val() != ""){
+              /*$.get("/atypik_house_website/public/habitats/get_enums", function(data){
+                alert(data);
+              });*/
+              var url = '/atypik_house_website/public/habitat/get_champs_categorie';
+              var idCategorie = $('#categorie').val();
 
-            $.ajax({
-                url: url,
-                data: {'idCategorie': idCategorie},
-                dataType: "json",                 
-            })
-            .done(function(data){console.log(data);
+              $.ajax({
+                  url: url,
+                  data: {'idCategorie': idCategorie},
+                  dataType: "json",                 
+              })
+              .done(function(data){console.log(data);
+                $('.champ_sup').remove();
+                $.each(data, function(key, value){console.log(value); 
+                    
+                    var containerSubmit = $('#btnSubmit').parent().parent();
+
+                    if(value.null_champ) {
+                      var required = "";
+                    }else{
+                      var required = "required";
+                    }
+
+                    if(value.longueur_champ != null){
+                      var longueurMax = 'maxlength="'+value.longueur_champ+'"';
+                    }else{
+                      var longueurMax = "";
+                    }
+
+                    if(value.type_champ_id == "BOOLEAN"){
+                      var id1 = value.libelle_champ+"_1";
+                      var id2 = value.libelle_champ+"_2";
+
+                      $('<div class="form-group champ_sup"><label for="'+value.libelle_champ+'_habitat" class="col-lg-2 control-label">'+value.libelle_champ+':</label><div class="col-lg-10"><div class="radio"><label for="'+id1+'">This is option 1.</label><input id="'+id1+'" checked="checked" name="radio" type="radio" value="option1"></div><div class="radio"><label for="'+id2+'">This is option 2.</label><input id="'+id2+'" checked="checked" name="radio" type="radio" value="option2"></div></div></div>').insertBefore(containerSubmit);
+
+
+                      /*'<div class="form-group champ_sup">
+                        <label for="'+value.libelle_champ+'_habitat" class="col-lg-2 control-label">'+value.libelle_champ+':</label>
+                        <div class="col-lg-10">
+                          <div class="radio">
+                            <label for="'+id1+'">This is option 1.</label>
+                            <input id="'+id1+'" checked="checked" name="radio" type="radio" value="option1">
+                          </div>
+                          <div class="radio">
+                            <label for="'+id2+'">This is option 2.</label>
+                            <input id="'+id2+'" checked="checked" name="radio" type="radio" value="option2">
+                          </div>
+                        </div>
+                      </div>'*/
+
+
+                    }else{
+                      $('<div class="form-group champ_sup"><label for="'+value.libelle_champ+'_habitat" class="col-lg-2 control-label">'+value.libelle_champ+':</label><div class="col-lg-10"><input class="form-control" placeholder="'+value.placeholder_champ+'" name="'+value.libelle_champ+'_habitat" type="'+value.type_champ_id+'" id="'+value.libelle_champ+'_habitat" '+longueurMax+' '+required+'></div></div>').insertBefore(containerSubmit);  
+                    }
+
+                });
+              })
+              .fail(function(data) {
+                alert("FAIL");console.log("FAIL"); 
+              });  
+            }else{
               $('.champ_sup').remove();
-              $.each(data, function(key, value){console.log(value); 
-                  
-                  var containerSubmit = $('#btnSubmit').parent().parent();
-
-                  if(value.null_champ) {
-                    var required = "";
-                  }else{
-                    var required = "required";
-                  }
-
-                  if(value.longueur_champ != null){
-                    var longueurMax = 'maxlength="'+value.longueur_champ+'"';
-                  }else{
-                    var longueurMax = "";
-                  }
-
-                  if(value.type_champ_id == "BOOLEAN"){
-                    var id1 = value.libelle_champ+"_1";
-                    var id2 = value.libelle_champ+"_2";
-
-                    $('<div class="form-group champ_sup"><label for="'+value.libelle_champ+'_habitat" class="col-lg-2 control-label">'+value.libelle_champ+':</label><div class="col-lg-10"><div class="radio"><label for="'+id1+'">This is option 1.</label><input id="'+id1+'" checked="checked" name="radio" type="radio" value="option1"></div><div class="radio"><label for="'+id2+'">This is option 2.</label><input id="'+id2+'" checked="checked" name="radio" type="radio" value="option2"></div></div></div>').insertBefore(containerSubmit);
-
-
-                    /*'<div class="form-group champ_sup">
-                      <label for="'+value.libelle_champ+'_habitat" class="col-lg-2 control-label">'+value.libelle_champ+':</label>
-                      <div class="col-lg-10">
-                        <div class="radio">
-                          <label for="'+id1+'">This is option 1.</label>
-                          <input id="'+id1+'" checked="checked" name="radio" type="radio" value="option1">
-                        </div>
-                        <div class="radio">
-                          <label for="'+id2+'">This is option 2.</label>
-                          <input id="'+id2+'" checked="checked" name="radio" type="radio" value="option2">
-                        </div>
-                      </div>
-                    </div>'*/
-
-
-                  }else{
-                    $('<div class="form-group champ_sup"><label for="'+value.libelle_champ+'_habitat" class="col-lg-2 control-label">'+value.libelle_champ+':</label><div class="col-lg-10"><input class="form-control" placeholder="'+value.placeholder_champ+'" name="'+value.libelle_champ+'_habitat" type="'+value.type_champ_id+'" id="'+value.libelle_champ+'_habitat" '+longueurMax+' '+required+'></div></div>').insertBefore(containerSubmit);  
-                  }
-
-              });
-            })
-            .fail(function(data) {
-              alert("FAIL");console.log("FAIL"); 
-            });  
+            }
           });
 
           /*$(".btnCreerHabitat").click(function(e){

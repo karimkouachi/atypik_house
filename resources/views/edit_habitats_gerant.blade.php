@@ -116,28 +116,60 @@
     </div>
 	{!! Form::close() !!}
 
-  <div class="table-responsive col-lg-9 col-lg-offset-2">
-        <table class="table table-hover table-condensed table-striped">
-          <thead>
-            <tr>
-              <th class="col-lg-5">Catégorie</th>
-              <th class="col-lg-5">Champ</th>
-              <th class="col-lg-5">Type</th>
-              <th class="col-lg-2">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-            <!-- <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr> -->
-      
-          </tbody>
-        </table>
-      </div>
+  <div class="table-responsive col-lg-12">
+    <h2>Champs des catégories</h2>
+
+    <table class="table table-hover table-condensed table-striped">
+      <thead>
+        <tr>
+          <th class="col-lg-2">Catégorie</th>
+          <th class="col-lg-3">Champ</th>
+          <th class="col-lg-1">Longueur</th>
+          <th class="col-lg-1">Obligatoire</th>
+          <th class="col-lg-2">Type</th>
+          <th class="col-lg-2">Placeholder</th>
+          <th class="col-lg-1">Action</th>
+        </tr>
+      </thead>
+      <tbody id="tbody1">
+        
+        <!-- <tr>
+          <th scope="row">1</th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr> -->
+  
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-responsive col-lg-12">
+    <h2>Champs disponibles</h2>
+
+    <table class="table table-hover table-condensed table-striped">
+      <thead>
+        <tr>
+          <th class="col-lg-3">Champ</th>
+          <th class="col-lg-2">Longueur</th>
+          <th class="col-lg-1">Obligatoire</th>
+          <th class="col-lg-3">Type</th>
+          <th class="col-lg-2">Placeholder</th>
+          <th class="col-lg-1">Action</th>
+        </tr>
+      </thead>
+      <tbody id="tbody2">
+        
+        <!-- <tr>
+          <th scope="row">1</th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr> -->
+  
+      </tbody>
+    </table>
+  </div>
 
 @endsection
 
@@ -173,8 +205,6 @@
           });
 */
           $('#btnConfirmer').click(function(){
-            
-
             var url = "/atypik_house_website/public/habitats/delete_enum";
             var categorie = $('.select').find(":first-child").text();
             var libelleChamp = $('.select').find(":nth-child(2)").text();
@@ -185,7 +215,7 @@
               dataType: "json",                 
             })
             .done(function(reponse){
-              console.log(reponse); 
+              console.log(reponse);
 
               $('.select').remove();
               $('#modal').modal('toggle');
@@ -248,7 +278,12 @@
 
                     $.each(categorie, function(key, champ){
 
-                      $('tbody').append('<tr><td>'+libelleCategorie+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.type_champ_id+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
+                      $('#tbody1').append('<tr><td>'+libelleCategorie+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
+                        /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
+                        /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/
+                      );
+
+                      $('#tbody2').append('<tr><td>'+libelleCategorie+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.type_champ_id+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
                         /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
                         /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/
                       );

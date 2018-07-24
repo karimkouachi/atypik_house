@@ -77,7 +77,7 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 	}
 
 	public function getIdByLibelleEnums($libelleEnums){
-		$idChamps = $this->creationChamp->where('libelle_champ', $libelleEnums)->pluck('id')->toArray();
+		$idChamps = $this->creationChamp->where('libelle_champ', $libelleEnums)->get();
 
 		return $idChamps;
 	}
