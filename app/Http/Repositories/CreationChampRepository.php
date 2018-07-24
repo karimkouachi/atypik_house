@@ -50,7 +50,7 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 		return $tabChampsCategories;
 	}
 
-	public function CreateField($nom, $type, $longueur, $nullable)
+	public function CreateField($nom, $type, $longueur, $nullable, $placeholder)
 	{	
 		$champ = $this->creationChamp->where('libelle_champ', $nom)->get();
 
@@ -63,6 +63,7 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 			$this->creationChamp->type_champ_id = $type;
 			$this->creationChamp->longueur_champ = $longueur;
 			$this->creationChamp->null_champ = $nullable;
+			$this->creationChamp->placeholder_champ = $placeholder;
 
 			$this->creationChamp->save();
 

@@ -320,6 +320,8 @@ class HabitatController extends Controller
     $nom = $_POST['nom'];
     $type = $_POST['type'];    
     $nullable = $_POST['nullable'];
+    $placeholder = $_POST['placeholder'];
+
 
     if($type == "7"){
       $validated = $request->validate([
@@ -338,7 +340,7 @@ class HabitatController extends Controller
       $longueur = $_POST['longueur'];  
     }
 
-    $idNouveauChamp = $creationChampRepository->createField($nom, $type, $longueur, $nullable);
+    $idNouveauChamp = $creationChampRepository->createField($nom, $type, $longueur, $nullable, $placeholder);
 
     $habitats = $habitatRepository->getHabitatsByCategorie($idsCategorie);
 
