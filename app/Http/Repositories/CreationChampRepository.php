@@ -50,6 +50,26 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 		return $tabChampsCategories;
 	}
 
+	public function getFieldsNotAllCategories($tabIdEnumsNotCategories)
+	{	
+		$tabChampsDispo = [];
+
+		foreach ($tabIdEnumsNotCategories as $key => $idChamps) {
+			
+				$champs = $this->creationChamp->whereNotIn('id', $idChamps)->get();
+
+				foreach ($champs as $key => $champ) {
+					$type = TypeChamp::where('id', $champ->type_champ_id)->first();
+					$libelleType = $type->libelle_type_champ;
+					$champ->type_champ_id = $libelleType;
+				}
+
+				array_push($tabChampsDispo, $champs);				
+			
+		}
+		return $tabChampsDispo;
+	}
+
 	public function CreateField($nom, $type, $longueur, $nullable, $placeholder)
 	{	
 		$champ = $this->creationChamp->where('libelle_champ', $nom)->get();

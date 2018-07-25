@@ -35,14 +35,14 @@ class HabitatController extends Controller
     if($_POST){
       $conditions = [];
 
-      if(isset($_POST["categorie"])){
-        $conditions["categorie_id"] = $_POST["categorie"];
+      if(isset($_POST["categories"])){
+        $conditions["categories_id"] = $_POST["categories"];
       } 
 
-      if(isset($_POST["ville_habitat"]) && $_POST["ville_habitat"] != ""){
+      /*if(isset($_POST["ville_habitat"]) && $_POST["ville_habitat"] != ""){
         $ville = $_POST['ville_habitat'];
         $conditions["ville_habitat"] = $ville;  
-      }
+      }*/
 
       $habitats = $habitatRepository->getHabitats($conditions);
 
@@ -273,11 +273,24 @@ class HabitatController extends Controller
 
     $idsCategorie = $_GET['idsCategorie'];
 
-    $idEnums = $categorieRepository->getEnumsAllCategories($idsCategorie);
+    $tabs = [];
 
-    $tabChampsCategories = $creationChampRepository->getFieldsAllCategories($idEnums);
 
-    return Response::json( $tabChampsCategories );
+    $idEnumsCategories = $categorieRepository->getEnumsAllCategories($idsCategorie);
+
+    $idEnumsNotCategories = $categorieRepository->getEnumsNotAllCategories($idsCategorie); 
+
+
+    $tabChampsCategories = $creationChampRepository->getFieldsAllCategories($idEnumsCategories);
+
+    $tabChampsDispo = $creationChampRepository->getFieldsNotAllCategories($idEnumsNotCategories);
+
+
+    array_push($tabs, $tabChampsCategories);
+
+    array_push($tabs, $tabChampsDispo);
+
+    return Response::json( $tabs );
   }
 
   public function delete_enum(HabitatRepository $habitatRepository, CategorieRepository $categorieRepository, CreationChampRepository $creationChampRepository, ChampHabitatRepository $champHabitatRepository){

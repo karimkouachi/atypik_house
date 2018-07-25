@@ -6,3 +6,8 @@
 	cursor:pointer;
 	color:red;
 }
+
+.glyphicon-plus-sign:hover{
+	cursor:pointer;
+	color:chartreuse;
+}

@@ -8,18 +8,18 @@
 
   {!! Form::open(array('route' => 'searchHabitat', 'method' => 'POST', 'class' => 'form-horizontal')) !!}  
       <div class="form-group">
-        {!! Form::label('categorie', 'Categorie : ', ['class' => 'col-lg-2 control-label']) !!}
+        {!! Form::label('categories', "Catégorie :", ['class' => 'col-lg-2 control-label']) !!}
         <div class="col-lg-10">
-          {!! Form::select('categorie', $categories, null, ['class' => 'form-control' ]) !!}
+          {!! Form::select('categories[]', $categories, null, ['class' => 'form-control selectpicker', 'multiple', 'data-none-selected-text' => 'Catégories', 'id' => 'categories']) !!}
         </div>
-      </div>
+      </div> 
 
-      <div class="form-group">
+      <!-- <div class="form-group">
         {!! Form::label('ville_habitat', 'Ville:', ['class' => 'col-lg-2 control-label']) !!}
         <div class="col-lg-10">
           {!! Form::text('ville_habitat', null, ['class' => 'form-control', 'placeholder' => 'Paris']) !!}
         </div>
-      </div>
+      </div> -->
       
       <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">

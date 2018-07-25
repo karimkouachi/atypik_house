@@ -217,7 +217,10 @@
             .done(function(reponse){
               console.log(reponse);
 
-              $('.select').remove();
+              /*var trRemove = $('.select').remove();
+              $('#tbody2').append(trRemove);*/
+
+              console.log(trRemove);
               $('#modal').modal('toggle');
 
               $('.alert-success').text(reponse).toggleClass('none'); 
@@ -264,11 +267,11 @@
                   data: {'idsCategorie': idsCategorie},
                   dataType: "json",                 
               })
-              .done(function(tabCategories){
+              .done(function(tabs){
                 //tableau de toutes les categories
-                console.log(tabCategories);
+                console.log(tabs);
 
-                $.each(tabCategories, function(key, categories){
+                $.each(tabs[0], function(key, categories){
                   //tableau de tout les champs de la categorie
                   var libelleCategorie = Object.keys(categories)[0];
 
@@ -277,19 +280,26 @@
                     console.log(categorie); 
 
                     $.each(categorie, function(key, champ){
-
                       $('#tbody1').append('<tr><td>'+libelleCategorie+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
-                        /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
-                        /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/
-                      );
-
-                      $('#tbody2').append('<tr><td>'+libelleCategorie+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.type_champ_id+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
                         /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
                         /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/
                       );
                     });
                   });
                 });
+
+                $.each(tabs[1], function(key, categorie){
+                    //tableau de toutes les colonnes du champ
+                    console.log(categorie); 
+
+                    $.each(categorie, function(key, champ){
+                      $('#tbody2').append('<tr><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></tr>'
+                        /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
+                        /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/
+                      );
+                    });
+                });
+
               })
               .fail(function(data) {
                 alert("FAIL");console.log("FAIL"); 
