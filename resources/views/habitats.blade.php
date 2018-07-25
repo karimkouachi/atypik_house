@@ -8,9 +8,9 @@
 
   {!! Form::open(array('route' => 'searchHabitat', 'method' => 'POST', 'class' => 'form-horizontal')) !!}  
       <div class="form-group">
-        {!! Form::label('categories', "Catégorie :", ['class' => 'col-lg-2 control-label']) !!}
+        {!! Form::label('categorie', "Catégorie :", ['class' => 'col-lg-2 control-label']) !!}
         <div class="col-lg-10">
-          {!! Form::select('categories[]', $categories, null, ['class' => 'form-control selectpicker', 'multiple', 'data-none-selected-text' => 'Catégories', 'id' => 'categories']) !!}
+          {!! Form::select('categorie', $categories, null, ['class' => 'form-control selectpicker', 'id' => 'categorie']) !!}
         </div>
       </div> 
 
@@ -23,7 +23,7 @@
       
       <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
-          {!! Form::submit('Rechercher', array('class' => 'btn btn-lg btn-success pull-right')) !!}
+          {!! Form::submit('Rechercher', array('class' => 'btn btn-lg btn-success pull-right', 'id' => 'btnRechercheForm')) !!}
         </div>
       </div>
   {!! Form::close() !!}
@@ -33,7 +33,7 @@
       <div class="input-group input-group-lg">
         <input id="recherche" type="text" class="form-control" placeholder="Recherche...">
         <span class="input-group-btn">
-          <button id="btnRecherche" class="btn btn-default" type="button">Go!</button>
+          <button id="btnRecherchePhrase" class="btn btn-default" type="button">Rechercher</button>
         </span>
       </div>
     </div>
@@ -60,8 +60,50 @@
         $(document).ready(function() {
           $(".alert-success").delay(2000).fadeOut();
 
-          $('#btnRecherche').click(function(){
+          $('#categorie').change(function(e){
+            if($('#categorie').val() != ""){
+              /*$.get("/atypik_house_website/public/habitats/get_enums", function(data){
+                alert(data);
+              });*/
+              var url = '/atypik_house_website/public/habitat/get_champs_recherche';
+              var idCategorie = $('#categorie').val();
 
+              $.ajax({
+                  url: url,
+                  data: {'idCategorie': idCategorie},
+                  dataType: "json",                 
+              })
+              .done(function(data){console.log(data);
+                $('.champ_sup').remove();
+                $.each(data, function(key, value){console.log(value); 
+                    
+                    var containerSubmit = $('#btnRechercheForm').parent().parent();
+
+                    if(value.null_champ) {
+                      var required = "";
+                    }else{
+                      var required = "required";
+                    }
+
+                    if(value.longueur_champ != null){
+                      var longueurMax = 'maxlength="'+value.longueur_champ+'"';
+                    }else{
+                      var longueurMax = "";
+                    }
+
+                    $('<div class="form-group champ_sup"><label for="'+value.libelle_champ+'_habitat" class="col-lg-2 control-label">'+value.libelle_champ+':</label><div class="col-lg-10"><input class="form-control" placeholder="'+value.placeholder_champ+'" name="'+value.libelle_champ+'_habitat" type="'+value.type_champ_id+'" id="'+value.libelle_champ+'_habitat" '+longueurMax+' '+required+'></div></div>').insertBefore(containerSubmit);  
+
+                });
+              })
+              .fail(function(data) {
+                alert("FAIL");console.log("FAIL"); 
+              });  
+            }else{
+              $('.champ_sup').remove();
+            }
+          });
+
+          $('#btnRecherchePhrase').click(function(){
             var url = "/atypik_house_website/public/habitats";
             var phrase = $('#recherche').val();
 

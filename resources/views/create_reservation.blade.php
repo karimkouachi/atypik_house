@@ -54,7 +54,7 @@
         paypal.Button.render({
           env: 'sandbox',
           client: {
-            sandbox: 'demo_sandbox_client_id'
+            sandbox: 'AeYBnOxHQfQOaFR8Ii9le9yOXoEmHVyKu7wBaoeyHfHW78bFTz2iqifAyYaOaxc-MVjM8VaKP7OK1gMr'
           },
           style: {
             color: 'gold',   // 'gold, 'blue', 'silver', 'black'
@@ -66,7 +66,7 @@
               transactions: [{
                 amount: {
                   total: '0.01',
-                  currency: 'USD'/*,
+                  currency: 'EUR'/*,
                   details: {
                     subtotal: '30.00',
                     tax: '0.07',
@@ -119,7 +119,7 @@
             });
           },
           onAuthorize: function (data, actions) {
-            return actions.payment.execute('/atypik_house_website/public/habitat/get_champs_categorie')
+            return actions.payment.execute('/atypik_house_website/public/habitats')
               .then(function () {
                 window.alert('Thank you for your purchase!');
               });

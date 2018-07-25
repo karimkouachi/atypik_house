@@ -66,6 +66,22 @@ class HabitatController extends Controller
    *
    * @return Response
    */
+  public function get_champs_recherche(CategorieRepository $categorieRepository, CreationChampRepository $creationChampRepository, TypeChampRepository $typeChampRepository)
+  {
+    $idCategorie = $_GET['idCategorie'];
+
+    $tabIdEnums = $categorieRepository->getEnumsOneCategorie($idCategorie);
+
+    $champsText = $creationChampRepository->getFieldTextById($tabIdEnums);
+
+    return $champsText;
+  }
+
+  /**
+   * Get champs categorie.
+   *
+   * @return Response
+   */
   public function get_champs_categorie(CategorieRepository $categorieRepository, CreationChampRepository $creationChampRepository, TypeChampRepository $typeChampRepository)
   {
     $idCategorie = $_GET['idCategorie'];

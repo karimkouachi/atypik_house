@@ -56,7 +56,7 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 
 		foreach ($tabIdEnumsNotCategories as $key => $idChamps) {
 			
-				$champs = $this->creationChamp->whereNotIn('id', $idChamps)->get();
+				return $champs = $this->creationChamp->whereNotIn('id', $idChamps)->get();
 
 				foreach ($champs as $key => $champ) {
 					$type = TypeChamp::where('id', $champ->type_champ_id)->first();
@@ -100,5 +100,12 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 		$idChamps = $this->creationChamp->where('libelle_champ', $libelleEnums)->get();
 
 		return $idChamps;
+	}
+
+	public function getFieldTextById($tabIdEnums){		
+
+		$champsText = $this->creationChamp->whereIn('id', $tabIdEnums)->whereIn('type_champ_id', ['5', '7'])->get();
+
+		return $champsText;
 	}
 }
