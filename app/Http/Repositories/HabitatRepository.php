@@ -17,9 +17,13 @@ class HabitatRepository implements HabitatRepositoryInterface
 		$this->habitat = $habitat;
 	}
 
-    public function getHabitats($recherche){
+    public function getHabitatsById($idHabitats){
+        return Habitat::where('id', $idHabitats)->get();
+    }
+
+    public function getHabitatsRecherche($recherche){
         if(is_array($recherche)){
-            return $habitats = Habitat::where($recherche)->get();   
+            return Habitat::where('categorie_id', $recherche)->get(); 
         }else{
             $phrase = explode(" ", $recherche);
 

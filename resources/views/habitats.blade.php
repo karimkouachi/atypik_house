@@ -10,7 +10,7 @@
       <div class="form-group">
         {!! Form::label('categorie', "Catégorie :", ['class' => 'col-lg-2 control-label']) !!}
         <div class="col-lg-10">
-          {!! Form::select('categorie', $categories, null, ['class' => 'form-control selectpicker', 'id' => 'categorie']) !!}
+          {!! Form::select('categorie', $categories, null, ['class' => 'form-control selectpicker', 'id' => 'categorie', 'placeholder' => 'Choisissez une catégorie']) !!}
         </div>
       </div> 
 
@@ -28,7 +28,7 @@
       </div>
   {!! Form::close() !!}
 
-  <div class="row">
+  <div class="row" id="rowBtnRecherchePhrase">
     <div class="form-group  col-lg-8 col-lg-offset-2">
       <div class="input-group input-group-lg">
         <input id="recherche" type="text" class="form-control" placeholder="Recherche...">
@@ -39,20 +39,22 @@
     </div>
   </div>
 
-  @foreach ($habitats as $habitat)      
-    <div class="jumbotron">
-  		<h1>{{$habitat->nom_habitat}}</h1>
+  <div id="containerHabitats" class="container">
+    @foreach ($habitats as $habitat)      
+      <div class="jumbotron">
+    		<h1>{{$habitat->nom_habitat}}</h1>
 
-  		<div>
-  			<p>Capacité de l'habitat: {{$habitat->capacite_habitat}}</p>
-  			<p>Prix de l'habitat: {{$habitat->prix_habitat}}</p>
-  			<p>Code postal: {{$habitat->cp_habitat}}</p>
-  			<p>Ville: {{$habitat->ville_habitat}}</p>
-  			<p>Pays: {{$habitat->pays_habitat}}</p>
-  		</div>
-      <a href="{{ URL::to('habitat/'.$habitat->id) }}" class="btn btn-info pull-right">Voir</a>
-    </div>
-  @endforeach
+    		<div>
+    			<p>Capacité de l'habitat: {{$habitat->capacite_habitat}}</p>
+    			<p>Prix de l'habitat: {{$habitat->prix_habitat}}</p>
+    			<p>Code postal: {{$habitat->cp_habitat}}</p>
+    			<p>Ville: {{$habitat->ville_habitat}}</p>
+    			<p>Pays: {{$habitat->pays_habitat}}</p>
+    		</div>
+        <a href="{{ URL::to('habitat/'.$habitat->id) }}" class="btn btn-info pull-right">Voir</a>
+      </div>
+    @endforeach
+  </div>
 @endsection
 
 @section('scripts')
@@ -79,19 +81,13 @@
                     
                     var containerSubmit = $('#btnRechercheForm').parent().parent();
 
-                    if(value.null_champ) {
-                      var required = "";
-                    }else{
-                      var required = "required";
-                    }
-
                     if(value.longueur_champ != null){
                       var longueurMax = 'maxlength="'+value.longueur_champ+'"';
                     }else{
                       var longueurMax = "";
                     }
 
-                    $('<div class="form-group champ_sup"><label for="'+value.libelle_champ+'_habitat" class="col-lg-2 control-label">'+value.libelle_champ+':</label><div class="col-lg-10"><input class="form-control" placeholder="'+value.placeholder_champ+'" name="'+value.libelle_champ+'_habitat" type="'+value.type_champ_id+'" id="'+value.libelle_champ+'_habitat" '+longueurMax+' '+required+'></div></div>').insertBefore(containerSubmit);  
+                    $('<div class="form-group champ_sup"><label for="'+value.libelle_champ+'" class="col-lg-2 control-label">'+value.libelle_champ+':</label><div class="col-lg-10"><input class="form-control" placeholder="'+value.placeholder_champ+'" name="'+value.libelle_champ+'" type="'+value.type_champ_id+'" id="'+value.libelle_champ+'" '+longueurMax+'></div></div>').insertBefore(containerSubmit);  
 
                 });
               })
@@ -115,13 +111,17 @@
             .done(function(data){
               console.log(data); 
 
+              var containerHabitats = $('#containerHabitats');
+
+              containerHabitats.empty();
               /*window.location="{{URL::to('/habitats/edit')}}";*/
 
-              /*$.each(data, function(key, value){
-                $('hr').before(
+              $.each(data, function(key, value){
+                /*$('hr').before(
                     '<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'
-                  );
-              });*/
+                  );*/
+                $(containerHabitats).append('<div>hello</div>');
+              });
             })
             .fail(function(data) {
               alert("FAIL"); 

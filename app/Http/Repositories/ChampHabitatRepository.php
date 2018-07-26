@@ -58,4 +58,8 @@ class ChampHabitatRepository implements ChampHabitatRepositoryInterface
 
         return $nbChampHabitat;
     }
+
+    public function getIdHabitatsByConditions($conditions){
+        return $this->champHabitat->whereIn('valeur_champ_habitat', $conditions)->pluck('habitat_id')->toArray();
+    }
 }

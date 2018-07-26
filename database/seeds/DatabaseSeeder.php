@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorieTableSeeder::class);
         $this->call(EtatReservationTableSeeder::class);
         $this->call(TypeChampTableSeeder::class);
+        $this->call(CreationChampTableSeeder::class);
     }
 }

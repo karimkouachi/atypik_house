@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CreateChampTableSeeder extends Seeder
+class CreationChampTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +14,11 @@ class CreateChampTableSeeder extends Seeder
     {
     	DB::table('creation_champ')->insert([
     		[
-    			'libelle_etat' => 'Refusée',
-    			'valeur_etat' => 0
+    			'libelle_champ' => 'ville',
+    			'longueur_champ' => 255,
+                'null_champ' => 0,
+                'type_champ_id' => 7,
+                'placeholder_champ' => "Paris"
     		]
     	]);
     }

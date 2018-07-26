@@ -30,25 +30,38 @@ class HabitatController extends Controller
    *
    * @return Response
    */
-  public function index(HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
+  public function index(ChampHabitatRepository $champHabitatRepository, CreationChampRepository $creationChampRepository, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
   {
     if($_POST){
       $conditions = [];
+      $categorie = $_POST['categorie'];
 
-      if(isset($_POST["categories"])){
-        $conditions["categories_id"] = $_POST["categories"];
-      } 
+      if($categorie != ""){
+        $idEnums = $categorieRepository->getEnumsOneCategorie($categorie);
 
-      /*if(isset($_POST["ville_habitat"]) && $_POST["ville_habitat"] != ""){
-        $ville = $_POST['ville_habitat'];
-        $conditions["ville_habitat"] = $ville;  
-      }*/
+        $champs = $creationChampRepository->getFieldById($idEnums); 
 
-      $habitats = $habitatRepository->getHabitats($conditions);
+        foreach ($champs as $key => $champ) {
+          if($champ->type_champ_id == "5"){
+            $id_champ = $champ->libelle_champ;
+            array_push($conditions, $_POST[$id_champ]);
+          }
+        }
+        
+        $idHabitatsByConditions = $champHabitatRepository->getIdHabitatsByConditions($conditions);
+
+        if(count($idHabitatsByConditions) > 0){
+          $habitats = $habitatRepository->getHabitatsById($idHabitatsByConditions);
+        }else{
+          $habitats = $habitatRepository->getHabitatsByOneCategorie($categorie);
+        }
+      }else{
+        $habitats = $habitatRepository->getAllHabitats();
+      }
 
     }elseif($_GET){
       $phrase = $_GET['phrase'];
-      $habitats = $habitatRepository->getHabitats($phrase);
+      $habitats = $habitatRepository->getHabitatsRecherche($phrase);
 
       return Response::json($habitats);
 
@@ -166,7 +179,7 @@ class HabitatController extends Controller
     /*$idChamps = $creationChampRepository->getIdByLibelleEnums($libelleEnums);*/
 
     foreach ($champs as $key => $champ) {
-      $valeurChamp = $_POST[$champ->libelle_champ.'_habitat'];
+      $valeurChamp = $_POST[$champ->libelle_champ];
       $champHabitatRepository->addFieldOneHabitat($idCurrentHabitat, $idChamps, $valeurChamp);
     }
 
@@ -356,7 +369,7 @@ class HabitatController extends Controller
     ReservationRepository $reservationRepository, CreationChampRepository $creationChampRepository, ChampHabitatRepository $champHabitatRepository)
   {
     $idsCategorie = $_POST['categories'];
-    $nom = $_POST['nom'];
+    $nom = $_POST['nom']."_habitat";
     $type = $_POST['type'];    
     $nullable = $_POST['nullable'];
     $placeholder = $_POST['placeholder'];
