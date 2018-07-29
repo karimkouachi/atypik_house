@@ -120,11 +120,18 @@ class HabitatController extends Controller
       $tabChampsHabitatMerge = [];
       foreach ($tabChampsHabitat as $key => $champHabitat) {
         if($habitat->id == $champHabitat->habitat_id){
-          array_push($tabChampsHabitatMerge, $champHabitat->toArray());
-          $habitatMerge = array_merge($habitat->toArray(), array('champs_habitat' => $tabChampsHabitatMerge));
-          array_push($tabHabitatsMerge, $habitatMerge);
+
+          $creationChamp = $creationChampRepository->getFieldByOneId($champHabitat->champ_id);
+
+          $champBylabel = array_merge($champHabitat->toArray(), array('label' => $creationChamp['label_champ']));
+          array_push($tabChampsHabitatMerge, $champBylabel);
+
         }
       }
+
+      $habitatMerge = array_merge($habitat->toArray(), array('champs_habitat' => $tabChampsHabitatMerge));
+      array_push($tabHabitatsMerge, $habitatMerge);
+
     }
 
     return view("habitats")->with(array("habitats" => $tabHabitatsMerge, "categories" => $categories));

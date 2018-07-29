@@ -45,10 +45,29 @@
     		<h1>{{$habitat['nom_habitat']}}</h1>
 
     		<div>
-          @foreach ($habitat['champs_habitat'] as $champHabitat)
-            <p>{{$champHabitat['valeur_champ_habitat']}}: {{$champHabitat['valeur_champ_habitat']}}</p>  
+          @foreach ($habitat as $key => $champ)
+            @if($key != "id" && $key != "nom_habitat" && $key != "actif_habitat" && $key != "dispo_habitat" && $key != "en_attente_habitat" && $key != "date_create_habitat" && $key != "date_valide_habitat" && $key != "champs_habitat")
+              @if($key == "photo_habitat")
+                <img src="{{$champ}}"/>
+              @endif
+              @if($key == "proprietaire_habitat")
+                <p>Propriétaire: {{$champ}}</p>
+              @endif
+              @if($key == "categorie_habitat")
+                <p>Catégorie: {{$champ}}</p>
+              @endif
+              @if($key == "num_habitat")
+                
+              @endif
+              @if($key == "prix_habitat")
+                <p>Prix de l'habitat: {{$champ}}</p>
+              @endif
+            @endif
           @endforeach
-    			<p>Prix de l'habitat: {{$habitat['prix_habitat']}}</p>
+          
+          @foreach ($habitat['champs_habitat'] as $key => $labelChamp)
+            <p>{{$labelChamp['label']}}: {{$labelChamp['valeur_champ_habitat']}}</p>  
+          @endforeach
     		</div>
         
         <a href="{{ URL::to('habitat/'.$habitat['id']) }}" class="btn btn-info pull-right">Voir</a>
@@ -120,16 +139,8 @@
               /*window.location="{{URL::to('/habitats/edit')}}";*/
 
               $.each(data, function(key, value){
-                /*$('hr').before(
-                    '<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'
-                  );*/
-
-                
-
-
 
                       var carteHabitat = '<div class="jumbotron"><h1>'+value.nom_habitat+'</h1><div>';
-
 
                       $.each(value, function(key, champ){
 
@@ -158,34 +169,6 @@
 
                     $(containerHabitats).append(carteHabitat);
 
-
-                /*'<div class="jumbotron">
-                  <h1>'+value.nom_habitat+'</h1>
-
-                  <div>
-
-                    $.each(value, function(key, champ){
-                      if(champ == "nom_habitat"){
-                        <h1>'+champ+'</h1>
-                      }elseif(champ == "prix_habitat"){
-                        <p>Prix de l\'habitat: '+champ+'</p>
-                      }elseif(champ == "num_habitat"){
-
-                      }elseif(champ == "photo_habitat"){
-
-                      }else{
-                        <p>'+champ+': '+champ+'</p>
-                      }
-                    }
-
-                    <p>Nantes: Nantes</p>  
-                    <p>Prix de l\'habitat: '+value.prix_habitat+'</p>
-                  </div>
-                  
-                  <a href="http://localhost/atypik_house_website/public/habitat/'+value.id+'" class="btn btn-info pull-right">Voir</a>
-                </div>'*/
-
-                /*$(containerHabitats).append('<div>hello</div>');*/
               });
             })
             .fail(function(data) {
