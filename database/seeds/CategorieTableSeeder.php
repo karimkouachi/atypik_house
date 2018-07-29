@@ -14,25 +14,32 @@ class CategorieTableSeeder extends Seeder
     {
         DB::table('categorie')->insert([
             [
-            	'libelle_categorie' => 'Tipi'
+            	'libelle_categorie' => 'Tipi',
+                'enum_categorie' => '1;'
             ],
             [
-            	'libelle_categorie' => 'Yourte mongole'
+            	'libelle_categorie' => 'Yourte mongole',
+                'enum_categorie' => '1;'
             ],
             [
-            	'libelle_categorie' => 'Cabane'
+            	'libelle_categorie' => 'Cabane',
+                'enum_categorie' => '1;'
             ],
             [
-            	'libelle_categorie' => 'Igloo'
+            	'libelle_categorie' => 'Igloo',
+                'enum_categorie' => '1;'
             ],
             [
-            	'libelle_categorie' => 'Tente suspendue'
+            	'libelle_categorie' => 'Tente suspendue',
+                'enum_categorie' => '1;'
             ],
             [
-            	'libelle_categorie' => 'Chalet'
+            	'libelle_categorie' => 'Chalet',
+                'enum_categorie' => '1;'
             ],
             [
-            	'libelle_categorie' => 'Nid'
+            	'libelle_categorie' => 'Nid',
+                'enum_categorie' => '1;'
             ],
         ]);
     }

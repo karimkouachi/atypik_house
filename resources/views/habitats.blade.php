@@ -42,16 +42,16 @@
   <div id="containerHabitats" class="container">
     @foreach ($habitats as $habitat)      
       <div class="jumbotron">
-    		<h1>{{$habitat->nom_habitat}}</h1>
+    		<h1>{{$habitat['nom_habitat']}}</h1>
 
     		<div>
-    			<p>Capacité de l'habitat: {{$habitat->capacite_habitat}}</p>
-    			<p>Prix de l'habitat: {{$habitat->prix_habitat}}</p>
-    			<p>Code postal: {{$habitat->cp_habitat}}</p>
-    			<p>Ville: {{$habitat->ville_habitat}}</p>
-    			<p>Pays: {{$habitat->pays_habitat}}</p>
+          @foreach ($habitat['champs_habitat'] as $champHabitat)
+            <p>{{$champHabitat['valeur_champ_habitat']}}: {{$champHabitat['valeur_champ_habitat']}}</p>  
+          @endforeach
+    			<p>Prix de l'habitat: {{$habitat['prix_habitat']}}</p>
     		</div>
-        <a href="{{ URL::to('habitat/'.$habitat->id) }}" class="btn btn-info pull-right">Voir</a>
+        
+        <a href="{{ URL::to('habitat/'.$habitat['id']) }}" class="btn btn-info pull-right">Voir</a>
       </div>
     @endforeach
   </div>
@@ -60,7 +60,10 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
+
           $(".alert-success").delay(2000).fadeOut();
+
+          $("#categorie").val('').selectpicker('refresh');
 
           $('#categorie').change(function(e){
             if($('#categorie').val() != ""){
@@ -87,7 +90,7 @@
                       var longueurMax = "";
                     }
 
-                    $('<div class="form-group champ_sup"><label for="'+value.libelle_champ+'" class="col-lg-2 control-label">'+value.libelle_champ+':</label><div class="col-lg-10"><input class="form-control" placeholder="'+value.placeholder_champ+'" name="'+value.libelle_champ+'" type="'+value.type_champ_id+'" id="'+value.libelle_champ+'" '+longueurMax+'></div></div>').insertBefore(containerSubmit);  
+                    $('<div class="form-group champ_sup"><label for="'+value.libelle_champ+'" class="col-lg-2 control-label">'+value.label_champ+':</label><div class="col-lg-10"><input class="form-control" placeholder="'+value.placeholder_champ+'" name="'+value.libelle_champ+'" type="'+value.type_champ_id+'" id="'+value.libelle_champ+'" '+longueurMax+'></div></div>').insertBefore(containerSubmit);  
 
                 });
               })
@@ -120,7 +123,69 @@
                 /*$('hr').before(
                     '<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'
                   );*/
-                $(containerHabitats).append('<div>hello</div>');
+
+                
+
+
+
+                      var carteHabitat = '<div class="jumbotron"><h1>'+value.nom_habitat+'</h1><div>';
+
+
+                      $.each(value, function(key, champ){
+
+                        if(key != "id" && key != "actif_habitat" && key != "dispo_habitat" && key != "date_create_habitat" && key != "date_valide_habitat" && key != "nom_habitat" && key != "en_attente_habitat")
+                        {
+                          
+                          if(key == "prix_habitat"){
+                            carteHabitat += "<p>Prix de l'habitat: "+champ+"</p>";
+                          }else if(key == "num_habitat"){
+
+                          }else if(key == "photo_habitat"){
+                            carteHabitat += '<img src="'+champ+'"/>';
+                          }else if(key == "proprietaire_id"){
+                            carteHabitat += "<p>Propriétaire: "+champ+"</p>";
+                          }else if(key == "categorie_id"){
+                            carteHabitat += "<p>Catégorie: "+champ+"</p>";
+                          }else{
+                            carteHabitat += "<p>"+key+": "+champ+"</p>";
+                          }
+
+                        }
+
+                      });
+
+                      carteHabitat += '</div><a href="http://localhost/atypik_house_website/public/habitat/'+value.id+'" class="btn btn-info pull-right">Voir</a></div>';
+
+                    $(containerHabitats).append(carteHabitat);
+
+
+                /*'<div class="jumbotron">
+                  <h1>'+value.nom_habitat+'</h1>
+
+                  <div>
+
+                    $.each(value, function(key, champ){
+                      if(champ == "nom_habitat"){
+                        <h1>'+champ+'</h1>
+                      }elseif(champ == "prix_habitat"){
+                        <p>Prix de l\'habitat: '+champ+'</p>
+                      }elseif(champ == "num_habitat"){
+
+                      }elseif(champ == "photo_habitat"){
+
+                      }else{
+                        <p>'+champ+': '+champ+'</p>
+                      }
+                    }
+
+                    <p>Nantes: Nantes</p>  
+                    <p>Prix de l\'habitat: '+value.prix_habitat+'</p>
+                  </div>
+                  
+                  <a href="http://localhost/atypik_house_website/public/habitat/'+value.id+'" class="btn btn-info pull-right">Voir</a>
+                </div>'*/
+
+                /*$(containerHabitats).append('<div>hello</div>');*/
               });
             })
             .fail(function(data) {

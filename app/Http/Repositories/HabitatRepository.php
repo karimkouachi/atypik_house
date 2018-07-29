@@ -4,6 +4,9 @@ namespace App\Http\Repositories;
 
 use App\Models\Habitat;
 use App\Models\Categorie;
+use App\Models\ChampHabitat;
+use App\Models\CreationChamp;
+use App\Models\TypeChamp;
 use Carbon\Carbon;
 use DB;
 
@@ -18,23 +21,23 @@ class HabitatRepository implements HabitatRepositoryInterface
 	}
 
     public function getHabitatsById($idHabitats){
-        return Habitat::where('id', $idHabitats)->get();
+        return Habitat::where('id', $idHabitats)->where('actif_habitat', 1)->get();
     }
 
     public function getHabitatsRecherche($recherche){
-        if(is_array($recherche)){
+        /*if(is_array($recherche)){
             return Habitat::where('categorie_id', $recherche)->get(); 
-        }else{
+        }else{*/
             $phrase = explode(" ", $recherche);
 
             $categories = [];
             $list_habitats = [];
 
             foreach($phrase as $mot){
-                $categorie = Categorie::where('libelle_categorie', $mot)->get();
-                if(count($categorie) > 0){
+                $categorie = Categorie::where('libelle_categorie', $mot)->first();
+                if(count((array)$categorie) > 0){
 
-                    $habitats = Habitat::where('categorie_id', $categorie[0]['id'])->get();
+                    $habitats = Habitat::where('categorie_id', $categorie['id'])->get();
                     if(count($habitats) > 0){
                         foreach($habitats as $key => $habitat){
                             $exist = false;
@@ -51,12 +54,11 @@ class HabitatRepository implements HabitatRepositoryInterface
                         
                     } 
                 }
+            }
 
+            foreach($phrase as $mot){
                 if(strlen($mot) > 4){
-                    $habitats = Habitat::where('ville_habitat', 'like', '%' . $mot . '%')
-                                    ->orWhere('nom_habitat', 'like', '%' . $mot . '%')
-                                    ->orWhere('pays_habitat', 'like', '%' . $mot . '%')
-                                    ->get(); 
+                    $habitats = Habitat::where('nom_habitat', 'like', '%' . $mot . '%')->get(); 
 
                     if(count($habitats) > 0){
                         foreach($habitats as $key => $habitat){
@@ -74,8 +76,39 @@ class HabitatRepository implements HabitatRepositoryInterface
                     }
                 }
             }
+
+            foreach($phrase as $mot){
+                if(strlen($mot) > 4){
+                    $champsHabitat = ChampHabitat::where('valeur_champ_habitat', 'like', '%' . $mot . '%')->get();
+
+                    foreach ($champsHabitat as $key => $champHabitat) {
+                        $creationChamp = CreationChamp::where('id', $champHabitat->champ_id)->first();
+                        $type = TypeChamp::where('id', $creationChamp->type_champ_id)->first();
+
+                        if($type->id == "5" || $type->id == "7"){
+                            $habitat = $this->habitat->where('id', $champHabitat->habitat_id)->first();
+                            $exist = false;
+                            foreach($list_habitats as $list_habitat){
+                                if($habitat['id'] == $list_habitat['id']){
+                                    $exist = true;
+                                    break;
+                                }
+                            } 
+                            if(!$exist){
+                                array_push($list_habitats, $habitat);
+                            }                     
+                        }
+
+                    }
+
+                    /*$habitats = Habitat::where('ville_habitat', 'like', '%' . $mot . '%')
+                                    ->orWhere('nom_habitat', 'like', '%' . $mot . '%')
+                                    ->orWhere('pays_habitat', 'like', '%' . $mot . '%')
+                                    ->get(); */
+                }
+            }
             return $list_habitats;
-        }
+        /*}*/
     }
 
     public function getAllHabitats(){
@@ -95,7 +128,7 @@ class HabitatRepository implements HabitatRepositoryInterface
     }
 
     public function getHabitatsByOneCategorie($idCategorie){
-        $habitats = $this->habitat->where('categorie_id', $idCategorie)->get();
+        $habitats = $this->habitat->where('categorie_id', $idCategorie)->where('actif_habitat', 1)->get();
 
         return $habitats;
     }

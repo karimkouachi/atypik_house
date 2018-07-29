@@ -32,6 +32,10 @@ class HabitatController extends Controller
    */
   public function index(ChampHabitatRepository $champHabitatRepository, CreationChampRepository $creationChampRepository, HabitatRepository $habitatRepository, CategorieRepository $categorieRepository)
   {
+    $tabChampsHabitat = [];
+    $tabHabitatsMerge = [];
+    $idHabitatsByCategorie = [];
+    
     if($_POST){
       $conditions = [];
       $categorie = $_POST['categorie'];
@@ -39,29 +43,70 @@ class HabitatController extends Controller
       if($categorie != ""){
         $idEnums = $categorieRepository->getEnumsOneCategorie($categorie);
 
-        $champs = $creationChampRepository->getFieldById($idEnums); 
+        $champs = $creationChampRepository->getFieldById($idEnums);
 
         foreach ($champs as $key => $champ) {
-          if($champ->type_champ_id == "5"){
-            $id_champ = $champ->libelle_champ;
-            array_push($conditions, $_POST[$id_champ]);
+          if($champ->type_champ_id == "5" || $champ->type_champ_id == "7"){
+
+            $champsHabitat = $champHabitatRepository->getChampsHabitatById($champ->id);
+
+            foreach ($champsHabitat as $key => $champHabitat) {
+              array_push($tabChampsHabitat, $champHabitat);
+            }
+
+            $libelle_champ = $champ->libelle_champ;
+            if($_POST[$libelle_champ] != ""){
+              array_push($conditions, $_POST[$libelle_champ]);
+            }
           }
         }
-        
-        $idHabitatsByConditions = $champHabitatRepository->getIdHabitatsByConditions($conditions);
 
-        if(count($idHabitatsByConditions) > 0){
-          $habitats = $habitatRepository->getHabitatsById($idHabitatsByConditions);
+        $habitatsByCategorie = $habitatRepository->getHabitatsByOneCategorie($categorie)->toArray();
+        
+        foreach ($habitatsByCategorie as $key => $habitatByCategorie) {
+          array_push($idHabitatsByCategorie, $habitatByCategorie['id']);
+        }
+        
+        if(count($conditions) > 0){
+          $idHabitatsByConditions = $champHabitatRepository->getIdHabitatsByConditions($conditions, $idHabitatsByCategorie);
+
+          if(count($idHabitatsByConditions) > 0){
+            $habitats = $habitatRepository->getHabitatsById($idHabitatsByConditions);
+          }else{
+            $habitats = [];
+          }
+
         }else{
           $habitats = $habitatRepository->getHabitatsByOneCategorie($categorie);
         }
+
+        
       }else{
         $habitats = $habitatRepository->getAllHabitats();
       }
 
     }elseif($_GET){
       $phrase = $_GET['phrase'];
-      $habitats = $habitatRepository->getHabitatsRecherche($phrase);
+
+
+      if(strlen($phrase) > 0){
+        $habitats = [];
+        $list_habitats = $habitatRepository->getHabitatsRecherche($phrase);
+
+        foreach ($list_habitats as $key => $habitat) {
+          $champsHabitat = $champHabitatRepository->getAllFieldByHabitat($habitat->id);
+
+          foreach ($champsHabitat as $key => $champHabitat) {
+            $creationChampHabitat = $creationChampRepository->getFieldByOneId($champHabitat->id);
+            $habitatMerge = array_merge($habitat->toArray(), array($creationChampHabitat->label_champ => $champHabitat->valeur_champ_habitat));
+          
+          }
+          array_push($habitats, $habitatMerge); 
+        }
+
+      }else{
+        $habitats = $habitatRepository->getAllHabitats();
+      }
 
       return Response::json($habitats);
 
@@ -71,7 +116,18 @@ class HabitatController extends Controller
     
     $categories = $categorieRepository->getLibelleCategories();
 
-    return view("habitats")->with(array("habitats" => $habitats, "categories" => $categories));
+    foreach ($habitats as $key => $habitat) {
+      $tabChampsHabitatMerge = [];
+      foreach ($tabChampsHabitat as $key => $champHabitat) {
+        if($habitat->id == $champHabitat->habitat_id){
+          array_push($tabChampsHabitatMerge, $champHabitat->toArray());
+          $habitatMerge = array_merge($habitat->toArray(), array('champs_habitat' => $tabChampsHabitatMerge));
+          array_push($tabHabitatsMerge, $habitatMerge);
+        }
+      }
+    }
+
+    return view("habitats")->with(array("habitats" => $tabHabitatsMerge, "categories" => $categories));
   }
 
   /**
@@ -369,6 +425,7 @@ class HabitatController extends Controller
     ReservationRepository $reservationRepository, CreationChampRepository $creationChampRepository, ChampHabitatRepository $champHabitatRepository)
   {
     $idsCategorie = $_POST['categories'];
+    $label = $_POST['label'];
     $nom = $_POST['nom']."_habitat";
     $type = $_POST['type'];    
     $nullable = $_POST['nullable'];
@@ -393,7 +450,7 @@ class HabitatController extends Controller
       $longueur = $_POST['longueur'];  
     }
 
-    $idNouveauChamp = $creationChampRepository->createField($nom, $type, $longueur, $nullable, $placeholder);
+    $idNouveauChamp = $creationChampRepository->createField($label, $nom, $type, $longueur, $nullable, $placeholder);
 
     $habitats = $habitatRepository->getHabitatsByCategorie($idsCategorie);
 
