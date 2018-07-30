@@ -130,12 +130,12 @@
       <thead>
         <tr>
           <th class="col-lg-2">Catégorie</th>
-          <th class="col-lg-1">Label</th>
+          <th class="col-lg-2">Label</th>
           <th class="col-lg-2">Champ</th>
           <th class="col-lg-1">Longueur</th>
           <th class="col-lg-1">Obligatoire</th>
           <th class="col-lg-2">Type</th>
-          <th class="col-lg-2">Placeholder</th>
+          <th class="col-lg-1">Placeholder</th>
           <th class="col-lg-1">Action</th>
         </tr>
       </thead>
@@ -158,12 +158,13 @@
     <table class="table table-hover table-condensed table-striped">
       <thead>
         <tr>
-          <th class="col-lg-1">Label</th>
+          <th class="col-lg-2">Catégorie</th>
+          <th class="col-lg-2">Label</th>
           <th class="col-lg-2">Champ</th>
-          <th class="col-lg-2">Longueur</th>
+          <th class="col-lg-1">Longueur</th>
           <th class="col-lg-1">Obligatoire</th>
-          <th class="col-lg-3">Type</th>
-          <th class="col-lg-2">Placeholder</th>
+          <th class="col-lg-2">Type</th>
+          <th class="col-lg-1">Placeholder</th>
           <th class="col-lg-1">Action</th>
         </tr>
       </thead>
@@ -189,6 +190,7 @@
           $('.selectpicker').selectpicker({
             noneSelectedText: 'Catégorie(s) à modifier'
           });
+
 
           $('body').on("click", ".glyphicon-trash", function(){
 
@@ -224,7 +226,7 @@
               dataType: "json",                 
             })
             .done(function(reponse){
-              console.log(reponse);
+              alert(reponse);
 
               var trRemove = $('.select').remove();
               /*$('#tbody2').append(trRemove);*/
@@ -234,6 +236,8 @@
 
               $('.alert-success').text(reponse).toggleClass('none'); 
               $(".alert-success").delay(2000).fadeOut();
+
+              /*location.reload(true);*/
             })
             .fail(function(data) {
               alert("FAIL");console.log("FAIL"); 
@@ -277,36 +281,21 @@
                   dataType: "json",                 
               })
               .done(function(tabs){
-                //tableau de toutes les categories
-                console.log(tabs);
 
                 $.each(tabs[0], function(key, categories){
-                  //tableau de tout les champs de la categorie
                   var libelleCategorie = Object.keys(categories)[0];
 
                   $.each(categories, function(key, categorie){
-                    //tableau de toutes les colonnes du champ
-                    console.log(categorie); 
-
                     $.each(categorie, function(key, champ){
-                      $('#tbody1').append('<tr><td>'+libelleCategorie+'</td><td>'+champ.label_champ+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
-                        /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
-                        /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/
-                      );
+                      $('#tbody1').append('<tr><td>'+libelleCategorie+'</td><td>'+champ.label_champ+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>');
                     });
                   });
+
                 });
 
-                $.each(tabs[1], function(key, categorie){
-                    //tableau de toutes les colonnes du champ
-                    console.log(categorie); 
-
-                    $.each(categorie, function(key, champ){
-                      $('#tbody2').append('<tr><td>'+champ.label_champ+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></tr>'
-                        /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
-                        /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/
-                      );
-                    });
+                $.each(tabs[1], function(key, tabCategorieChamp){ 
+                  categorie = Object.keys(tabCategorieChamp)[0];
+                  $('#tbody2').append('<tr><td>'+categorie+'</td><td>'+tabCategorieChamp[categorie].label_champ+'</td><td>'+tabCategorieChamp[categorie].libelle_champ+'</td><td>'+tabCategorieChamp[categorie].longueur_champ+'</td><td>'+tabCategorieChamp[categorie].null_champ+'</td><td>'+tabCategorieChamp[categorie].type_champ_id+'</td><td>'+tabCategorieChamp[categorie].placeholder_champ+'</td><td><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></tr>');
                 });
 
               })
@@ -315,6 +304,31 @@
               });  
             }
           });
+
+
+          $('body').on("click", ".glyphicon-plus-sign", function(){
+            
+            $(this).closest('tr').addClass('select');
+
+            var url = '/atypik_house_website/public/habitats/add_field_categorie';
+            var libelleCategorie = $('.select').find(":first-child").text();
+            var libelleChamp = $('.select').find(":nth-child(3)").text();
+
+            $.ajax({
+                  url: url,
+                  data: {'libelleCategorie': libelleCategorie, 'libelleChamp': libelleChamp},
+                  dataType: "json",                 
+              })
+              .done(function(message){
+                alert(message);
+                location.reload(true);
+              })
+              .fail(function(data) {
+                alert("FAIL");console.log("FAIL"); 
+              });  
+          });
+
+
 
           /*$('body').on("click", ".btnSupChamp", function(){alert("supression");
 

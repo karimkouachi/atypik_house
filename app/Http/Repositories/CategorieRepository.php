@@ -27,6 +27,12 @@ class CategorieRepository implements CategorieRepositoryInterface
 		return $champs;
 	}*/
 
+    public function getOneCategorieById($idCategorie){
+        $categorie = $this->categorie->where('id', $idCategorie)->first();
+
+        return $categorie;
+    }
+
 	public function getLibelleCategories(){
 		$categories = $this->categorie->pluck('libelle_categorie', 'id')->toArray();
 		
@@ -85,7 +91,7 @@ class CategorieRepository implements CategorieRepositoryInterface
         return $tabEnums;
 	}	
 
-	public function addEnum($idsCategorie, $idNouveauChamp)
+	public function addEnums($idsCategorie, $idNouveauChamp)
 	{        
         $categories = $this->categorie->whereIn('id', $idsCategorie)->get();
         foreach ($categories as $categorie) {
@@ -99,6 +105,20 @@ class CategorieRepository implements CategorieRepositoryInterface
 
         return $categories;
 	}	
+
+    public function addOneEnum($idCategorie, $idNouveauChamp)
+    {        
+        $categorie = $this->categorie->where('id', $idCategorie)->first();
+        
+        $enums = $categorie->enum_categorie;
+
+        $tabEnums = explode(";", $enums);
+        if(!in_array($idNouveauChamp, $tabEnums)){
+            $this->categorie->where('id', $categorie->id)->update(['enum_categorie' => $idNouveauChamp.";".$enums]);
+        }
+        
+        return $categorie;
+    }   
 
 	public function deleteEnum($categorie, $idLibelleChamp)
 	{

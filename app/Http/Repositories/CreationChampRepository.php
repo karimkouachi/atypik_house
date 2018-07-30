@@ -103,10 +103,10 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 		$this->creationChamp->where('libelle_champ', $libelleChamp)->delete();
 	}
 
-	public function getIdByLibelleEnums($libelleEnums){
-		$idChamps = $this->creationChamp->where('libelle_champ', $libelleEnums)->get();
+	public function getFieldByOneLibelleEnum($libelleEnum){
+		$champ = $this->creationChamp->where('libelle_champ', $libelleEnum)->first();
 
-		return $idChamps;
+		return $champ;
 	}
 
 	public function getFieldTextById($tabIdEnums){		
