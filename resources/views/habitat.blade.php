@@ -16,6 +16,7 @@
 			<p>Ville: {{$habitat->ville_habitat}}</p>
 			<p>Pays: {{$habitat->pays_habitat}}</p>
 		</div>
+    
     <div class="btn-group" role="group" aria-label="...">
       @if ($habitat->dispo_habitat == 1)
         <a href="{{ URL::to('reservation/'.$habitat->id.'/makeReservation') }}" class="btn btn-info">Réserver cet habitat</a>

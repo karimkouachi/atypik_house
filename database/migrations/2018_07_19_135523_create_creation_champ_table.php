@@ -15,6 +15,7 @@ class CreateCreationChampTable extends Migration
     {
         Schema::create('creation_champ', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('label_champ');
             $table->string('libelle_champ');
             $table->integer('longueur_champ')->nullable();
             $table->tinyInteger('null_champ')->default(0);

@@ -46,6 +46,13 @@
 			</div>
 		</div>     
 
+    <div class="form-group">
+      {!! Form::label('label', "Label:", ['class' => 'col-lg-2 control-label']) !!}
+      <div class="col-lg-10">
+        {!! Form::text('label', null, ['class' => 'form-control', 'placeholder' => 'Nom']) !!}
+      </div>
+    </div>
+
 		<div class="form-group">
 			{!! Form::label('nom', "Nom:", ['class' => 'col-lg-2 control-label']) !!}
 			<div class="col-lg-10">

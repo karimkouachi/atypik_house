@@ -30,6 +30,12 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 		return $champs;
 	}
 
+	public function getFieldByOneId($idChamp){
+		$champ = $this->creationChamp->where('id', $idChamp)->first();
+
+		return $champ;
+	}
+
 	public function getFieldsAllCategories($tabIdEnumsCategories)
 	{	
 		$tabChampsCategories = [];
@@ -70,7 +76,7 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 		return $tabChampsDispo;
 	}
 
-	public function CreateField($nom, $type, $longueur, $nullable, $placeholder)
+	public function CreateField($label, $nom, $type, $longueur, $nullable, $placeholder)
 	{	
 		$champ = $this->creationChamp->where('libelle_champ', $nom)->get();
 
@@ -79,6 +85,7 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 
 			return $lastId;
 		}else{
+			$this->creationChamp->label_champ = $label;
 			$this->creationChamp->libelle_champ = $nom;
 			$this->creationChamp->type_champ_id = $type;
 			$this->creationChamp->longueur_champ = $longueur;
