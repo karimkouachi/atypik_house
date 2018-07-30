@@ -130,7 +130,8 @@
       <thead>
         <tr>
           <th class="col-lg-2">Catégorie</th>
-          <th class="col-lg-3">Champ</th>
+          <th class="col-lg-1">Label</th>
+          <th class="col-lg-2">Champ</th>
           <th class="col-lg-1">Longueur</th>
           <th class="col-lg-1">Obligatoire</th>
           <th class="col-lg-2">Type</th>
@@ -157,7 +158,8 @@
     <table class="table table-hover table-condensed table-striped">
       <thead>
         <tr>
-          <th class="col-lg-3">Champ</th>
+          <th class="col-lg-1">Label</th>
+          <th class="col-lg-2">Champ</th>
           <th class="col-lg-2">Longueur</th>
           <th class="col-lg-1">Obligatoire</th>
           <th class="col-lg-3">Type</th>
@@ -192,7 +194,7 @@
 
             $(this).closest('tr').addClass('select');
             var nomCategorie = $('.select').find(":first-child").text();
-            var nomChamp = $('.select').find(":nth-child(2)").text();
+            var nomChamp = $('.select').find(":nth-child(3)").text();
 
             $('.p-body').text('Attention, cette action supprimera définitivement le champ "'+nomChamp+'" pour tout les habitats de catégorie "'+nomCategorie+'".');
 
@@ -214,7 +216,7 @@
           $('#btnConfirmer').click(function(){
             var url = "/atypik_house_website/public/habitats/delete_enum";
             var categorie = $('.select').find(":first-child").text();
-            var libelleChamp = $('.select').find(":nth-child(2)").text();
+            var libelleChamp = $('.select').find(":nth-child(3)").text();
             
             $.ajax({
               url: url,
@@ -224,8 +226,8 @@
             .done(function(reponse){
               console.log(reponse);
 
-              /*var trRemove = $('.select').remove();
-              $('#tbody2').append(trRemove);*/
+              var trRemove = $('.select').remove();
+              /*$('#tbody2').append(trRemove);*/
 
               console.log(trRemove);
               $('#modal').modal('toggle');
@@ -287,7 +289,7 @@
                     console.log(categorie); 
 
                     $.each(categorie, function(key, champ){
-                      $('#tbody1').append('<tr><td>'+libelleCategorie+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
+                      $('#tbody1').append('<tr><td>'+libelleCategorie+'</td><td>'+champ.label_champ+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>'
                         /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
                         /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/
                       );
@@ -300,7 +302,7 @@
                     console.log(categorie); 
 
                     $.each(categorie, function(key, champ){
-                      $('#tbody2').append('<tr><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></tr>'
+                      $('#tbody2').append('<tr><td>'+champ.label_champ+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></tr>'
                         /*'<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'*/
                         /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'*/
                       );
