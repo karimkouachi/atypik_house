@@ -261,6 +261,12 @@ class HabitatController extends Controller
   {
     $habitat = $habitatRepository->getHabitat($id);
 
+    //RECUPERER LES CHAMPS CREES POUR CETTE CATEGORIE D'HABITAT
+    /*$creationChampRepository*/
+    //ET MERGER A L'HABITAT POUR POUVOIR LES AFFICHER DANS LA VUE
+    
+
+
     return view('habitat')->with('habitat', $habitat);
   }
 

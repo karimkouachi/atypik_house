@@ -43,6 +43,8 @@
 
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
+<p id="montant">105</p>
+
 <div id="paypal-button"></div>
 @endsection
 
@@ -62,10 +64,13 @@
             shape: 'rect'    // 'rect', 'pill'
           },
           payment: function (data, actions) {
+
+            var montant = $('#montant').text();
+
             return actions.payment.create({
               transactions: [{
                 amount: {
-                  total: '0.01',
+                  total: montant,
                   currency: 'EUR'/*,
                   details: {
                     subtotal: '30.00',
@@ -121,7 +126,26 @@
           onAuthorize: function (data, actions) {
             return actions.payment.execute('/atypik_house_website/public/habitats')
               .then(function () {
-                window.alert('Thank you for your purchase!');
+
+                var url = '/atypik_house_website/public/transaction/create';
+                
+                var type = "payement";
+                var proprietaire = "Pseudo";
+
+                $.ajax({
+                  url: url,
+                  data: {'montant': montant, 'type': type, 'proprietaire': proprietaire},
+                  dataType: "json",                 
+                })
+                .done(function(reponse){
+
+                  window.alert('Thank you for your purchase!');
+
+                })
+                .fail(function(data) {
+                  alert("FAIL");console.log("FAIL"); 
+                });  
+                
               });
           }
         }, '#paypal-button');
