@@ -377,12 +377,41 @@ class HabitatController extends Controller
 
     $tabChampsDispo = $creationChampRepository->getFieldsNotAllCategories($idEnumsNotCategories);
 
+    $tabChampsDispoCategorie = [];
+    foreach ($tabChampsDispo as $key => $champ) {
+      foreach ($idsCategorie as $key => $idCategorie) {
+
+        $enumsCategorie = $categorieRepository->getEnumsOneCategorie($idCategorie);
+        $categorie = $categorieRepository->getOneCategorieById($idCategorie);
+        $libelleCategorie = $categorie->libelle_categorie;
+
+        if(!in_array($champ->id, $enumsCategorie)){
+          array_push($tabChampsDispoCategorie, array($libelleCategorie => $champ));
+        }
+      }
+    }
 
     array_push($tabs, $tabChampsCategories);
 
-    array_push($tabs, $tabChampsDispo);
+    array_push($tabs, $tabChampsDispoCategorie);
 
     return Response::json( $tabs );
+  }
+
+  public function add_field_categorie(CategorieRepository $categorieRepository, CreationChampRepository $creationChampRepository){
+
+    $libelleCategorie = $_GET['libelleCategorie'];
+    $libelleChamp = $_GET['libelleChamp'];
+
+    $idCategorie = $categorieRepository->getIdCategorie($libelleCategorie);
+    $champ = $creationChampRepository->getFieldByOneLibelleEnum($libelleChamp);
+    $idChamp = $champ->id;
+
+    $categorieRepository->addOneEnum($idCategorie, $idChamp);
+
+    $message = "Champ rajouté avec succès pour la catégorie ".$_GET['libelleCategorie'];
+
+    return Response::json( $message );
   }
 
   public function delete_enum(HabitatRepository $habitatRepository, CategorieRepository $categorieRepository, CreationChampRepository $creationChampRepository, ChampHabitatRepository $champHabitatRepository){
@@ -392,9 +421,9 @@ class HabitatController extends Controller
 
     /*$idCategorie = $categorieRepository->getIdCategorie($categorie);*/
 
-    $champ = $creationChampRepository->getIdByLibelleEnums($libelleChamp); 
+    $champ = $creationChampRepository->getFieldByOneLibelleEnum($libelleChamp); 
 
-    $idChamp = $champ[0]->id;
+    $idChamp = $champ->id;
 
     $enums = $categorieRepository->deleteEnum($categorie, $idChamp); 
 
@@ -465,7 +494,7 @@ class HabitatController extends Controller
 
     $habitatRepository->addField($habitats, $idNouveauChamp, $reservationRepository);
 
-    $categorieRepository->addEnum($idsCategorie, $idNouveauChamp);
+    $categorieRepository->addEnums($idsCategorie, $idNouveauChamp);
 
     Session::flash('message', 'Habitats modifier avec succès!');    
 

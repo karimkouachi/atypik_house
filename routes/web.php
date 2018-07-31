@@ -39,6 +39,7 @@ Route::any("/habitats/edit", "HabitatController@edit_habitats_gerant")->name("ed
 Route::any("/habitats/update", "HabitatController@update_habitats_gerant")->name("updateHabitatsGerant");
 Route::any("/habitats/get_enums", "HabitatController@get_enums_categorie")->name("getEnumsCategorie");
 Route::any("/habitats/delete_enum", "HabitatController@delete_enum")->name("deleteEnum");
+Route::any("/habitats/add_field_categorie", "HabitatController@add_field_categorie");
 
 //RESERVATION
 Route::any("/reservation/{idReservation}/commentStay", "ReservationController@comment_stay")->name("commentStay");
