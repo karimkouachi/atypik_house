@@ -41,38 +41,56 @@ class CreationChampRepository implements CreationChampRepositoryInterface
 		$tabChampsCategories = [];
 
 		foreach ($tabIdEnumsCategories as $key => $categories) {
-			foreach ($categories as $keyIdChamps => $idChamps) {
-				$champs = $this->creationChamp->whereIn('id', $idChamps)->get();
+			foreach ($categories as $libelleCategorie => $tabIdChamps) {
+				$champs = $this->creationChamp->whereIn('id', $tabIdChamps)->get();
 
 				foreach ($champs as $key => $champ) {
 					$type = TypeChamp::where('id', $champ->type_champ_id)->first();
 					$libelleType = $type->libelle_type_champ;
 					$champ->type_champ_id = $libelleType;
+
+					if($champ->null_champ == 0){
+						$champ->null_champ = "Oui";
+					}else{
+						$champ->null_champ = "Non";
+					}
 				}
 
-				array_push($tabChampsCategories, array($keyIdChamps => $champs));				
+				array_push($tabChampsCategories, array($libelleCategorie => $champs));				
 			}
 		}
 		return $tabChampsCategories;
 	}
 
-	public function getFieldsNotAllCategories($tabIdEnumsNotCategories)
+	public function getFieldsNotAllCategories($tabIdEnumsCategories)
 	{	
 		$tabChampsDispo = [];
 
-		foreach ($tabIdEnumsNotCategories as $key => $idChamps) {
-			
-				return $champs = $this->creationChamp->whereNotIn('id', $idChamps)->get();
-
-				foreach ($champs as $key => $champ) {
-					$type = TypeChamp::where('id', $champ->type_champ_id)->first();
-					$libelleType = $type->libelle_type_champ;
-					$champ->type_champ_id = $libelleType;
+		foreach ($tabIdEnumsCategories as $key => $categories) {
+			foreach ($categories as $libelleCategorie => $tabIdChamps) {
+				if(count($tabIdChamps) > 0){
+					$champsDispoByCategorie = $this->creationChamp->whereNotIn('id', $tabIdChamps)->get();
+				}else{
+					$champsDispoByCategorie = $this->creationChamp->get()->all();
 				}
 
-				array_push($tabChampsDispo, $champs);				
-			
+				if(count($champsDispoByCategorie) > 0){
+					foreach ($champsDispoByCategorie as $key => $champ) {
+						$type = TypeChamp::where('id', $champ->type_champ_id)->first();
+						$libelleType = $type->libelle_type_champ;
+						$champ->type_champ_id = $libelleType;
+
+						if($champ->null_champ == 0){
+							$champ->null_champ = "Oui";
+						}else{
+							$champ->null_champ = "Non";
+						}
+					}
+					array_push($tabChampsDispo, array($libelleCategorie => $champsDispoByCategorie));
+				}
+			}
 		}
+
 		return $tabChampsDispo;
 	}
 

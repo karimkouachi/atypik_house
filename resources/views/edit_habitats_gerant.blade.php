@@ -18,21 +18,18 @@
     </div>
 	@endif
 
-  <div id="modal" class="modal" tabindex="-1" role="dialog">
+  <div id="modal" class="modal" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h2 class="modal-title">Supprimer un champ</h2>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <h2 class="modal-title"></h2>
         </div>
         <div class="modal-body">
-          <p class="p-body"></p>
+          
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-          <button id="btnConfirmer" type="button" class="btn btn-danger">Confirmer</button>
+          <button id="btnAnnuler" type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button id="" type="button" class="btn btn-danger">Confirmer</button>
         </div>
       </div>
     </div>
@@ -140,13 +137,6 @@
         </tr>
       </thead>
       <tbody id="tbody1">
-        
-        <!-- <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr> -->
   
       </tbody>
     </table>
@@ -169,13 +159,6 @@
         </tr>
       </thead>
       <tbody id="tbody2">
-        
-        <!-- <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr> -->
   
       </tbody>
     </table>
@@ -187,35 +170,33 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
+      /*----------------------------------------------------------------------------------------------------------------*/
           $('.selectpicker').selectpicker({
             noneSelectedText: 'Catégorie(s) à modifier'
           });
 
-
+      /*----------------------------------------------------------------------------------------------------------------*/
           $('body').on("click", ".glyphicon-trash", function(){
 
             $(this).closest('tr').addClass('select');
             var nomCategorie = $('.select').find(":first-child").text();
             var nomChamp = $('.select').find(":nth-child(3)").text();
 
-            $('.p-body').text('Attention, cette action supprimera définitivement le champ "'+nomChamp+'" pour tout les habitats de catégorie "'+nomCategorie+'".');
+            $('.modal-title').text('Supprimer un champ'); 
+            $('.modal-body').text('Attention, cette action supprimera définitivement le champ "'+nomChamp+'" pour tout les habitats de catégorie "'+nomCategorie+'".');
+            $('.btn-danger').attr('id', 'btnConfirmerSup');
 
             $('#modal').modal();
 
           });
 
-          /*var colonnesTable = 
-
-          $.each(colonnesTable, function(key, value){console.log(key); console.log(value); 
-              $('tbody').append('<tr><td>'+value.nom+'</td><td>'+value.type+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true" data-toggle="modal" data-target="#modal"></span></tr>'
-                
-                '<div data-enum="'+value+'" class="btn btn-danger">'+value+'<button type="button" class="btnSupChamp close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'
-                /*'<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'
-              
-              );
+      /*----------------------------------------------------------------------------------------------------------------*/
+          $('#btnAnnuler').click(function(){
+            $('.select').removeClass('select');
           });
-*/
-          $('#btnConfirmer').click(function(){
+
+      /*----------------------------------------------------------------------------------------------------------------*/
+          $('body').on("click", "#btnConfirmerSup", function(){
             var url = "/atypik_house_website/public/habitats/delete_enum";
             var categorie = $('.select').find(":first-child").text();
             var libelleChamp = $('.select').find(":nth-child(3)").text();
@@ -226,26 +207,28 @@
               dataType: "json",                 
             })
             .done(function(reponse){
-              alert(reponse);
 
-              var trRemove = $('.select').remove();
-              /*$('#tbody2').append(trRemove);*/
+              $('.select td:last-child').remove();
+              var trNew = $('.select').append('<td><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></td>');
 
-              console.log(trRemove);
+              trNew.removeClass('select');
+              $('#tbody2').append(trNew);
+
               $('#modal').modal('toggle');
 
-              $('.alert-success').text(reponse).toggleClass('none'); 
-              $(".alert-success").delay(2000).fadeOut();
+              /*$('.alert-success').text(reponse).toggleClass('none'); 
+              $(".alert-success").delay(2000).fadeOut();*/
 
-              /*location.reload(true);*/
             })
             .fail(function(data) {
               alert("FAIL");console.log("FAIL"); 
             });  
           });
 
+      /*----------------------------------------------------------------------------------------------------------------*/
           $(".alert-success").delay(2000).fadeOut();
 
+      /*----------------------------------------------------------------------------------------------------------------*/
           $('#type').change(function(){
             if($(this).val() == "7" || $(this).val() == "4"){
               $('#divLongueur').toggleClass('none');
@@ -262,13 +245,8 @@
             }
           });
 
-          //select toutes les valeurs enums de la colonne enum de la categorie selectionnée dans la table categorie
-          $("#categories").on("hidden.bs.select", function(e){
-            
-            /*$.get("/atypik_house_website/public/habitats/get_enums", function(data){
-              alert(data);
-            });*/
-            
+      /*----------------------------------------------------------------------------------------------------------------*/
+          $("#categories").on("hidden.bs.select", function(e){            
             $('tbody').empty();
 
             var url = '/atypik_house_website/public/habitats/get_enums';
@@ -281,21 +259,25 @@
                   dataType: "json",                 
               })
               .done(function(tabs){
+                console.log(tabs);
 
                 $.each(tabs[0], function(key, categories){
                   var libelleCategorie = Object.keys(categories)[0];
 
                   $.each(categories, function(key, categorie){
                     $.each(categorie, function(key, champ){
-                      $('#tbody1').append('<tr><td>'+libelleCategorie+'</td><td>'+champ.label_champ+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></tr>');
+                      $('#tbody1').append('<tr><td>'+libelleCategorie+'</td><td>'+champ.label_champ+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td></tr>');
                     });
                   });
 
                 });
 
-                $.each(tabs[1], function(key, tabCategorieChamp){ 
-                  categorie = Object.keys(tabCategorieChamp)[0];
-                  $('#tbody2').append('<tr><td>'+categorie+'</td><td>'+tabCategorieChamp[categorie].label_champ+'</td><td>'+tabCategorieChamp[categorie].libelle_champ+'</td><td>'+tabCategorieChamp[categorie].longueur_champ+'</td><td>'+tabCategorieChamp[categorie].null_champ+'</td><td>'+tabCategorieChamp[categorie].type_champ_id+'</td><td>'+tabCategorieChamp[categorie].placeholder_champ+'</td><td><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></tr>');
+                $.each(tabs[1], function(key, categorie){ 
+                  $.each(categorie, function(libelleCategorie, tabChamp){ 
+                    $.each(tabChamp, function(key, champ){ 
+                      $('#tbody2').append('<tr><td>'+libelleCategorie+'</td><td>'+champ.label_champ+'</td><td>'+champ.libelle_champ+'</td><td>'+champ.longueur_champ+'</td><td>'+champ.null_champ+'</td><td>'+champ.type_champ_id+'</td><td>'+champ.placeholder_champ+'</td><td><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></td></tr>');
+                    });
+                  });
                 });
 
               })
@@ -305,10 +287,21 @@
             }
           });
 
-
-          $('body').on("click", ".glyphicon-plus-sign", function(){
-            
+      /*----------------------------------------------------------------------------------------------------------------*/
+          $('body').on("click", ".glyphicon-plus-sign", function(){  
             $(this).closest('tr').addClass('select');
+
+            var nomCategorie = $('.select').find(":first-child").text();
+            var nomChamp = $('.select').find(":nth-child(3)").text();
+
+            $('.modal-title').text('Ajouter un champ'); 
+            $('.modal-body').text('Attention, cette action ajoutera le champ "'+nomChamp+'" pour tout les habitats de catégorie "'+nomCategorie+'".');
+            $('.btn-danger').attr('id', 'btnConfirmerAdd');
+
+            $('#modal').modal();
+          });
+
+          $('body').on("click", "#btnConfirmerAdd", function(){
 
             var url = '/atypik_house_website/public/habitats/add_field_categorie';
             var libelleCategorie = $('.select').find(":first-child").text();
@@ -320,43 +313,26 @@
                   dataType: "json",                 
               })
               .done(function(message){
-                alert(message);
-                location.reload(true);
+
+                $('.select td:last-child').remove();
+                var trNew = $('.select').append('<td><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></td>');
+
+                trNew.removeClass('select');
+
+                $('#tbody1').append(trNew);
+
+                $('#modal').modal('toggle');
+
+                /*$('.alert-success').text(message).toggleClass('none'); 
+                $(".alert-success").delay(2000).fadeOut();*/
+
               })
               .fail(function(data) {
                 alert("FAIL");console.log("FAIL"); 
               });  
           });
 
-
-
-          /*$('body').on("click", ".btnSupChamp", function(){alert("supression");
-
-            var url = "/atypik_house_website/public/habitats/delete_enum";
-            var idsCategorie = $('#categories').val();
-            var champ = $(this).attr('data-enum');
-
-            $.ajax({
-              url: url,
-              data: {'idsCategorie': idsCategorie, 'champ': champ},
-              dataType: "json",                 
-            })
-            .done(function(data){
-              alert(data);console.log(data); 
-
-              $('.containerChamp,.containerBtn').remove();
-
-              $.each(data, function(key, value){
-                $('hr').before(
-                    '<div class="containerChamp col-lg-8 col-lg-offset-2"><div class="form-control">'+value+'</div></div><div class="containerBtn col-lg-2"><p data-enum="'+value+'" class="btnSupChamp btn btn-danger pull-right">Supprimer</p></div>'
-                  );
-              });
-            })
-            .fail(function(data) {
-              alert("FAIL");console.log("FAIL"); 
-            });  
-          });*/
-
+      /*----------------------------------------------------------------------------------------------------------------*/
         });
     </script>
 @endsection

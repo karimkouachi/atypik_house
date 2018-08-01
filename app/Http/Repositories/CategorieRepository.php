@@ -75,22 +75,6 @@ class CategorieRepository implements CategorieRepositoryInterface
         return $tabEnumsCategories;
 	}	
 
-	public function getEnumsNotAllCategories($idsCategorie)
-	{
-        $categories = $this->categorie->whereIn('id', $idsCategorie)->get();
-
-        $tabEnums = [];
-
-        foreach ($categories as $categorie) {
-        	$enums = $categorie->enum_categorie;
-        	$enums = explode(";", $enums);
-        	array_pop($enums);
-      		array_push($tabEnums, $enums);
-        }
-
-        return $tabEnums;
-	}	
-
 	public function addEnums($idsCategorie, $idNouveauChamp)
 	{        
         $categories = $this->categorie->whereIn('id', $idsCategorie)->get();

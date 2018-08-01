@@ -261,6 +261,12 @@ class HabitatController extends Controller
   {
     $habitat = $habitatRepository->getHabitat($id);
 
+    //RECUPERER LES CHAMPS CREES POUR CETTE CATEGORIE D'HABITAT
+    /*$creationChampRepository*/
+    //ET MERGER A L'HABITAT POUR POUVOIR LES AFFICHER DANS LA VUE
+    
+
+
     return view('habitat')->with('habitat', $habitat);
   }
 
@@ -370,30 +376,15 @@ class HabitatController extends Controller
 
     $idEnumsCategories = $categorieRepository->getEnumsAllCategories($idsCategorie);
 
-    $idEnumsNotCategories = $categorieRepository->getEnumsNotAllCategories($idsCategorie); 
-
 
     $tabChampsCategories = $creationChampRepository->getFieldsAllCategories($idEnumsCategories);
 
-    $tabChampsDispo = $creationChampRepository->getFieldsNotAllCategories($idEnumsNotCategories);
+    $tabChampsDispo = $creationChampRepository->getFieldsNotAllCategories($idEnumsCategories);
 
-    $tabChampsDispoCategorie = [];
-    foreach ($tabChampsDispo as $key => $champ) {
-      foreach ($idsCategorie as $key => $idCategorie) {
-
-        $enumsCategorie = $categorieRepository->getEnumsOneCategorie($idCategorie);
-        $categorie = $categorieRepository->getOneCategorieById($idCategorie);
-        $libelleCategorie = $categorie->libelle_categorie;
-
-        if(!in_array($champ->id, $enumsCategorie)){
-          array_push($tabChampsDispoCategorie, array($libelleCategorie => $champ));
-        }
-      }
-    }
 
     array_push($tabs, $tabChampsCategories);
 
-    array_push($tabs, $tabChampsDispoCategorie);
+    array_push($tabs, $tabChampsDispo);
 
     return Response::json( $tabs );
   }

@@ -48,6 +48,9 @@ Route::any("/reservation/{idHabitat}/makeReservation", "ReservationController@ma
 Route::any("/reservation/{idReservation}", "ReservationController@show")->name("showReservation");
 Route::any("/reservation/{idHabitat}/storeReservation", "ReservationController@store")->name("storeReservation");
 
+//TRANSACTION
+Route::any("/transaction/create", "TransactionController@create");
+
 Route::resource('habitat', 'HabitatController');
 Route::resource('membre', 'MembreController');
 Route::resource('activite', 'ActiviteController');
