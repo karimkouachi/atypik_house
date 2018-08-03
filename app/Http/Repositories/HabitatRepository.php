@@ -24,6 +24,10 @@ class HabitatRepository implements HabitatRepositoryInterface
         return Habitat::where('id', $idHabitats)->where('actif_habitat', 1)->get();
     }
 
+    public function getHabitatsByOwner($id){
+        return Habitat::where('proprietaire_id', $id)->get();
+    }
+
     public function getHabitatsRecherche($recherche){
         /*if(is_array($recherche)){
             return Habitat::where('categorie_id', $recherche)->get(); 

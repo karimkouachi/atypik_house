@@ -44,29 +44,54 @@
 
       @if (Carbon\Carbon::now() > $reservation->date_fin_reservation && $reservation->commentaire_reservation == null)
         <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#modalCommenterLocation">Commenter la location</button>
-          <div class="modal fade" id="modalCommenterLocation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title" id="exampleModalLabel">Commenter votre séjour</h4>
-                </div>
-                {!! Form::open(array('url' => 'reservation/'.$reservation->id.'/commentStay')) !!}
-                  {{ Form::hidden('_method', 'POST') }}
-                <div class="modal-body">
-                    <div class="form-group">
-                      {!! Form::label('commentaire_reservation', "Commentaire :", ['class' => 'control-label']) !!}
-                        {!! Form::textarea('commentaire_reservation', null, ['class' => 'form-control', 'id' => 'commentaire_reservation', 'rows' => 4, 'cols' => 54]) !!}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                  {!! Form::submit('Envoyer', array('class' => 'btn btn-success')) !!}
-                </div>
-                {!! Form::close() !!}
+        <div class="modal fade" id="modalCommenterLocation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Commenter votre séjour</h4>
               </div>
+              {!! Form::open(array('url' => 'reservation/'.$reservation->id.'/commentStay')) !!}
+                {{ Form::hidden('_method', 'POST') }}
+              <div class="modal-body">
+                  <div class="form-group">
+                    {!! Form::label('commentaire_reservation', "Commentaire :", ['class' => 'control-label']) !!}
+                      {!! Form::textarea('commentaire_reservation', null, ['class' => 'form-control', 'id' => 'commentaire_reservation', 'rows' => 4, 'cols' => 54]) !!}
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                {!! Form::submit('Envoyer', array('class' => 'btn btn-success')) !!}
+              </div>
+              {!! Form::close() !!}
             </div>
           </div>
+        </div>
+
+        <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#modalPostImage">Poster une image</button>
+        <div class="modal fade" id="modalPostImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Poster une image</h4>
+              </div>
+              {!! Form::open(['url' => 'reservation/'.$reservation->id.'/postImage', 'method' => 'post', 'files' => true]) !!}
+                {{ csrf_field() }}
+              <div class="modal-body">
+                  <div class="form-group">
+                    {!! Form::label('url_image', "URL :", ['class' => 'control-label']) !!}
+                    {!! Form::file('url_image', ['class' => 'form-control', 'id' => 'url_image']) !!}
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                {!! Form::submit('Envoyer', array('class' => 'btn btn-success')) !!}
+              </div>
+              {!! Form::close() !!}
+            </div>
+          </div>
+        </div>
       @endif
 		</div>
   </div>

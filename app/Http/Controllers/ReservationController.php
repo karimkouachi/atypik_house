@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\ReservationRequest;
 use App\Http\Repositories\HabitatRepository;
 use App\Http\Repositories\ReservationRepository;
+use App\Http\Requests\ReservationRequest;
+use Dingo\Api\Routing\Helpers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 use Auth;
 use Session;
+use \Input as Input;
 
 class ReservationController extends Controller 
 {
+
+  use Helpers;
 
   /**
    * Display a listing of the resource.
@@ -108,13 +112,15 @@ class ReservationController extends Controller
     
   }
 
-  public function comment_stay($id, ReservationRepository $reservationRepository)
+  public function comment_stay(Request $request, $id, ReservationRepository $reservationRepository)
   {
 
-    $reservationRepository->commentStay(
-      $id,
-      $_POST['commentaire_reservation']
-    );
+    $validatedData = $request->validate([
+      'commentaire_reservation' => 'required',
+    ]);
+
+    $this->api->post('api/reservation/'.$id.'/commentStay', $validatedData);
+    
 
     Session::flash('message', 'Commentaire envoyé avec succès!');
 
@@ -125,6 +131,23 @@ class ReservationController extends Controller
     $reservationRepository->deleteComment($id);
 
     Session::flash('message', 'Commentaire supprimé avec succès!');
+
+    return Redirect::to('reservation/'.$id);
+  }
+
+  public function post_image(Request $request, $id){
+
+    $validatedData = $request->validate([
+      'url_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
+
+    if($request->hasFile('url_image')){
+      $url_image = $request->url_image;
+      $new_url = rand().'.'.$url_image->getClientOriginalExtension();
+      $url_image->move('images', $new_url);
+    }
+
+    $this->api->post('api/reservation/'.$id.'/postImage', $new_url);
 
     return Redirect::to('reservation/'.$id);
   }

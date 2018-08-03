@@ -40,7 +40,7 @@
   </div>
 
   <div id="containerHabitats" class="container">
-   <!--  @foreach ($habitats as $habitat)      
+    @foreach ($habitats as $habitat)      
      <div class="jumbotron">
        <h1>{{$habitat['nom_habitat']}}</h1>
    
@@ -72,7 +72,7 @@
        
        <a href="{{ URL::to('habitat/'.$habitat['id']) }}" class="btn btn-info pull-right">Voir</a>
      </div>
-   @endforeach -->
+   @endforeach
   </div>
 @endsection
 

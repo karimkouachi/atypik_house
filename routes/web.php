@@ -45,6 +45,7 @@ Route::any("/habitats/add_field_categorie", "HabitatController@add_field_categor
 Route::any("/reservation/{idReservation}/commentStay", "ReservationController@comment_stay")->name("commentStay");
 Route::any("/reservation/{idReservation}/deleteComment", "ReservationController@delete_comment")->name("deleteComment");
 Route::any("/reservation/{idHabitat}/makeReservation", "ReservationController@make")->name("makeReservation");
+Route::any("/reservation/{idReservation}/postImage", "ReservationController@post_image");
 Route::any("/reservation/{idReservation}", "ReservationController@show")->name("showReservation");
 Route::any("/reservation/{idHabitat}/storeReservation", "ReservationController@store")->name("storeReservation");
 
