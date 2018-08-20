@@ -141,6 +141,7 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
+        Barryvdh\Cors\ServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,

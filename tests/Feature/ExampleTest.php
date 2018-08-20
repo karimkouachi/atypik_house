@@ -18,4 +18,10 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+/*    public function testLayout(){
+        $response = $this->get('/');
+
+        $response->assertViewIs('layout');
+    }*/
 }
